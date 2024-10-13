@@ -86,24 +86,20 @@ class LensController extends Controller {
   async getAllLens(req, res, next) {
     try {
       const { page = 1, size = 10, search = "" } = req.query;
-      console.log("Query Parameters:", req.query); // Check query params
 
       const limit = parseInt(size, 10);
       const offset = (page - 1) * limit;
 
-      // فقط بر اساس lensName جستجو می‌کنیم و به حروف بزرگ و کوچک حساس نیستیم
       const whereCondition = search
         ? {
             lensName: {
               [Sequelize.Op.like]: Sequelize.fn(
                 "LOWER",
                 `%${search.toLowerCase()}%`
-              ), // تبدیل به حروف کوچک
+              ),
             },
           }
         : {};
-
-      console.log("Where Condition:", whereCondition); // Check where condition
 
       const includeCondition = [
         {
@@ -132,8 +128,6 @@ class LensController extends Controller {
         },
       });
 
-      console.log("All Lens Result:", allLens); // Check result from database
-
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         allLens: allLens.rows,
@@ -145,7 +139,6 @@ class LensController extends Controller {
         },
       });
     } catch (error) {
-      console.error("Error in getAllLens:", error); // Log the error
       next(error);
     }
   }
