@@ -5,16 +5,30 @@ import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { IoRemoveOutline } from "react-icons/io5";
 import Image from "next/image";
-import { deleteLens } from "@/redux/slices/lensSlice";
-import { useState } from "react";
+import {
+  deleteLens,
+  fetchAllLens,
+  fetchAllLensCategories,
+} from "@/redux/slices/lensSlice";
+import { useState, useEffect } from "react";
 import BasicWrapper from "../BasicWrapper";
 import ShowPricingLensModal from "./ShowPricingLensModal";
+import { useRouter } from "next/navigation";
+import Pagination from "@/components/Ui/Pagination";
 
 export default function ListOfLens() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [selectedLens, setSelectedLens] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
-  const { lensList, isLoading } = useSelector((state) => state.lensSlice);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { lensList, isLoading, lensPagination } = useSelector(
+    (state) => state.lensSlice
+  );
+
+  useEffect(() => {
+    dispatch(fetchAllLensCategories());
+  }, [dispatch]);
 
   const handleDeleteLens = (id) => {
     dispatch(deleteLens(id));
@@ -23,6 +37,11 @@ export default function ListOfLens() {
   const handleShowPricing = (lens) => {
     setSelectedLens(lens);
     setShowEditModal(true);
+  };
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    router.push(`?page=${page}`);
+    dispatch(fetchAllLens({ page }));
   };
 
   return (
@@ -134,6 +153,11 @@ export default function ListOfLens() {
           </Table.Body>
         </Table>
       )}
+      <Pagination
+        totalPages={lensPagination.totalPages}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
       {selectedLens && showEditModal && (
         <ShowPricingLensModal
           lens={selectedLens}

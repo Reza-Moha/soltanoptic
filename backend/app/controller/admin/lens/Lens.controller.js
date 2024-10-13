@@ -84,7 +84,11 @@ class LensController extends Controller {
 
   async getAllLens(req, res, next) {
     try {
-      const allLens = await LensModel.findAll({
+      const { page = 1, size = 5 } = req.query;
+      const limit = parseInt(size);
+      const offset = (page - 1) * limit;
+
+      const { count, rows: allLens } = await LensModel.findAndCountAll({
         include: [
           { model: LensType },
           { model: RefractiveIndex },
@@ -109,10 +113,21 @@ class LensController extends Controller {
             "LensGroupId",
           ],
         },
+        limit,
+        offset,
       });
+
+      const totalPages = Math.ceil(count / limit);
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         allLens,
+        pagination: {
+          totalItems: count,
+          totalPages,
+          currentPage: parseInt(page),
+          pageSize: limit,
+        },
       });
     } catch (error) {
       next(error);

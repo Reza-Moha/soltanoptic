@@ -57,10 +57,10 @@ export const pricingLens = createAsyncThunk(
 
 export const fetchAllLens = createAsyncThunk(
   "lens/fetchAllLens",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1, size = 5 }, { rejectWithValue }) => {
     try {
-      const data = await getAllLensApi();
-      return data.allLens;
+      const data = await getAllLensApi(page, size);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -218,6 +218,7 @@ const lensSlice = createSlice({
   name: "lens",
   initialState: {
     lensList: [],
+    lensPagination: {},
     refractiveIndexList: [],
     lensType: [],
     lensCategories: [],
@@ -230,7 +231,8 @@ const lensSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllLens.fulfilled, (state, action) => {
-        state.lensList = action.payload;
+        state.lensList = action.payload.allLens;
+        state.lensPagination = action.payload.pagination;
         state.isLoading = false;
       })
       .addCase(fetchAllLens.rejected, (state, action) => {

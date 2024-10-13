@@ -9,19 +9,23 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import Input from "@/components/Ui/Input";
 import { ImageInput } from "@/components/Ui/ImageInput";
 import { createNewLens, fetchAllLens } from "@/redux/slices/lensSlice";
-import { useEffect } from "react";
-import ListOfLens from "./ListOfLens";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function CreateNewLens() {
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
+  const [resetImage, setResetImage] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchAllLens());
+    const currentPage = searchParams.get("page") || 1;
+    dispatch(fetchAllLens({ page: currentPage }));
   }, []);
 
   const createNewLensHandler = (values, { resetForm }) => {
     dispatch(createNewLens(values));
     resetForm();
+    setResetImage(!resetImage);
   };
   const { lensType, lensCategories, refractiveIndexList } = useSelector(
     (state) => state.lensSlice
@@ -48,7 +52,7 @@ export default function CreateNewLens() {
           initialValues={{
             lensName: "",
             description: "",
-            lensIamge: "",
+            lensImage: "",
             LensCategoryId: "",
             RefractiveIndexId: "",
             LensTypeId: "",
@@ -95,8 +99,9 @@ export default function CreateNewLens() {
 
               <ImageInput
                 setFieldValue={setFieldValue}
-                name="lensIamge"
+                name="lensImage"
                 prevTitle="عکس عدسی"
+                resetPreview={resetImage}
               />
 
               <div className="md:col-span-3 px-10">

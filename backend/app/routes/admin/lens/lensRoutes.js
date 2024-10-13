@@ -37,7 +37,7 @@ router.delete(
 
 router.post(
   "/create-new-lens",
-  uploadFile.single("lensIamge"),
+  uploadFile.single("lensImage"),
   LensController.createNewLens
 );
 
