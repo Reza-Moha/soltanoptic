@@ -1,5 +1,6 @@
 import { FaUserDoctor } from "react-icons/fa6";
 import { GiMicroscopeLens } from "react-icons/gi";
+import { BsEyeglasses } from "react-icons/bs";
 export const toPersianDigits = (number) => {
   const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return number.toString().replace(/\d/g, (x) => farsiDigits[parseInt(x)]);
@@ -55,6 +56,13 @@ export const BasicDefinitionsLinks = [
     className: "text-sm",
     svg: <GiMicroscopeLens size="20" />,
     href: "create-lens",
+  },
+  {
+    id: 5,
+    title: "تعریف فریم",
+    className: "text-sm",
+    svg: <BsEyeglasses size="20" />,
+    href: "create-frame",
   },
 ];
 

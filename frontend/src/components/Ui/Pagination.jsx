@@ -15,9 +15,9 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
         قبلی
       </button>
 
-      {pages.map((page) => (
+      {pages.map((page, index) => (
         <button
-          key={page}
+          key={index}
           className={`px-3 py-1 rounded-md border transition-all ${
             page === currentPage
               ? "bg-blue-500 text-white"
@@ -28,7 +28,6 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
           {page}
         </button>
       ))}
-
       <button
         className={`px-3 py-1 rounded-md border ${
           currentPage === totalPages

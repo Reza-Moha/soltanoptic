@@ -49,6 +49,8 @@ export default function ListOfLens() {
   };
 
   const handlePageChange = (page) => {
+    console.log(page);
+
     setCurrentPage(page);
     router.push(`?page=${page}`);
     dispatch(fetchAllLens({ page }));
@@ -189,7 +191,7 @@ export default function ListOfLens() {
       {lensPagination.totalItems > 0 && (
         <Pagination
           currentPage={currentPage}
-          totalItems={lensPagination.totalItems}
+          totalPages={lensPagination.totalPages}
           pageSize={lensPagination.size}
           onPageChange={handlePageChange}
         />
