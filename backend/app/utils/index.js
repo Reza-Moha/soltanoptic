@@ -100,6 +100,7 @@ function deleteFileInPublic(fileAddress) {
     if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
   }
 }
+
 function filterEmptyFieldsInDatabase(data) {
   return Object.fromEntries(
     Object.entries(data).filter(
@@ -107,6 +108,7 @@ function filterEmptyFieldsInDatabase(data) {
     )
   );
 }
+
 function validateNationalId(code) {
   if (!/^\d{10}$/.test(code)) {
     return false;
@@ -125,6 +127,7 @@ function validateNationalId(code) {
     (remainder >= 2 && controlDigit === 11 - remainder)
   );
 }
+
 module.exports = {
   randomNumberGenerator,
   SignAccessToken,

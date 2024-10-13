@@ -184,12 +184,13 @@ export async function createNewLensApi(data) {
     })
     .then(({ data }) => data);
 }
-export async function getAllLensApi(page = 1, size = 10) {
+export async function getAllLensApi(page = 1, size = 10, search = "") {
   return httpService
     .get(`/api/admin/lens/all-lens`, {
       params: {
         page,
         size,
+        search,
       },
     })
     .then(({ data }) => data);

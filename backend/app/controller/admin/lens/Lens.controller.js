@@ -18,6 +18,7 @@ const { LensCategory } = require("../../../models/lens/LensCategory.model");
 const LensModel = require("../../../models/lens/Lens.model");
 const { deleteFileInPublic } = require("../../../utils");
 const { LensGroup } = require("../../../models/lens/LensGroup.model");
+const { Sequelize, Op } = require("sequelize");
 class LensController extends Controller {
   async createNewLens(req, res, next) {
     try {
@@ -84,27 +85,43 @@ class LensController extends Controller {
 
   async getAllLens(req, res, next) {
     try {
-      const { page = 1, size = 5 } = req.query;
-      const limit = parseInt(size);
+      const { page = 1, size = 10, search = "" } = req.query;
+      console.log("Query Parameters:", req.query); // Check query params
+
+      const limit = parseInt(size, 10);
       const offset = (page - 1) * limit;
 
-      const { count, rows: allLens } = await LensModel.findAndCountAll({
-        include: [
-          { model: LensType },
-          { model: RefractiveIndex },
-          {
-            model: LensCategory,
-            attributes: {
-              exclude: ["createdAt", "updatedAt"],
+      // فقط بر اساس lensName جستجو می‌کنیم و به حروف بزرگ و کوچک حساس نیستیم
+      const whereCondition = search
+        ? {
+            lensName: {
+              [Sequelize.Op.like]: Sequelize.fn(
+                "LOWER",
+                `%${search.toLowerCase()}%`
+              ), // تبدیل به حروف کوچک
             },
-          },
-          {
-            model: LensGroup,
-            attributes: {
-              exclude: ["createdAt", "updatedAt"],
-            },
-          },
-        ],
+          }
+        : {};
+
+      console.log("Where Condition:", whereCondition); // Check where condition
+
+      const includeCondition = [
+        {
+          model: LensType,
+        },
+        {
+          model: RefractiveIndex,
+        },
+        {
+          model: LensCategory,
+        },
+      ];
+
+      const allLens = await LensModel.findAndCountAll({
+        where: whereCondition,
+        limit,
+        offset,
+        include: includeCondition,
         attributes: {
           exclude: [
             "LensCategoryId",
@@ -113,23 +130,22 @@ class LensController extends Controller {
             "LensGroupId",
           ],
         },
-        limit,
-        offset,
       });
 
-      const totalPages = Math.ceil(count / limit);
+      console.log("All Lens Result:", allLens); // Check result from database
 
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
-        allLens,
+        allLens: allLens.rows,
         pagination: {
-          totalItems: count,
-          totalPages,
-          currentPage: parseInt(page),
-          pageSize: limit,
+          currentPage: page,
+          totalPages: Math.ceil(allLens.count / limit),
+          totalItems: allLens.count,
+          size,
         },
       });
     } catch (error) {
+      console.error("Error in getAllLens:", error); // Log the error
       next(error);
     }
   }

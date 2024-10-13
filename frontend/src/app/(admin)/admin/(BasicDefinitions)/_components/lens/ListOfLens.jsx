@@ -1,7 +1,6 @@
 "use client";
 import Table from "@/components/Ui/Table";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { IoRemoveOutline } from "react-icons/io5";
 import Image from "next/image";
@@ -10,11 +9,12 @@ import {
   fetchAllLens,
   fetchAllLensCategories,
 } from "@/redux/slices/lensSlice";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import BasicWrapper from "../BasicWrapper";
 import ShowPricingLensModal from "./ShowPricingLensModal";
 import { useRouter } from "next/navigation";
 import Pagination from "@/components/Ui/Pagination";
+import debounce from "lodash.debounce";
 
 export default function ListOfLens() {
   const dispatch = useDispatch();
@@ -22,9 +22,18 @@ export default function ListOfLens() {
   const [selectedLens, setSelectedLens] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const { lensList, isLoading, lensPagination } = useSelector(
     (state) => state.lensSlice
   );
+
+  useEffect(() => {
+    if (router.isReady) {
+      const { page = 1, search = "" } = router.query;
+      setCurrentPage(Number(page));
+      setSearchTerm(search);
+    }
+  }, [router.isReady, router.query]);
 
   useEffect(() => {
     dispatch(fetchAllLensCategories());
@@ -38,14 +47,37 @@ export default function ListOfLens() {
     setSelectedLens(lens);
     setShowEditModal(true);
   };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
     router.push(`?page=${page}`);
     dispatch(fetchAllLens({ page }));
   };
 
+  const debouncedSearch = useMemo(() => {
+    return debounce((searchTerm) => {
+      router.push(`?page=1&size=${lensPagination.size}&search=${searchTerm}`);
+
+      dispatch(fetchAllLens({ page: 1, search: searchTerm }));
+    }, 300);
+  }, [lensPagination.size, router, dispatch]);
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      debouncedSearch(searchTerm);
+    }
+  };
+
   return (
     <BasicWrapper title="لیست عدسی ها">
+      <input
+        type="text"
+        placeholder="جستجوی عدسی ..."
+        value={searchTerm}
+        className="textField__input"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleSearch}
+      />
       {isLoading ? (
         <div className="spinner"></div>
       ) : (
@@ -134,7 +166,7 @@ export default function ListOfLens() {
                         >
                           <path
                             fillRule="evenodd"
-                            d="M3.75 3.375c0-1.036.84-1.875 1.875-1.875H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375Zm10.5 1.875a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25ZM12 10.5a.75.75 0 0 1 .75.75v.028a9.727 9.727 0 0 1 1.687.28.75.75 0 1 1-.374 1.452 8.207 8.207 0 0 0-1.313-.226v1.68l.969.332c.67.23 1.281.85 1.281 1.704 0 .158-.007.314-.02.468-.083.931-.83 1.582-1.669 1.695a9.776 9.776 0 0 1-.561.059v.028a.75.75 0 0 1-1.5 0v-.029a9.724 9.724 0 0 1-1.687-.278.75.75 0 0 1 .374-1.453c.425.11.864.186 1.313.226v-1.68l-.968-.332C9.612 14.974 9 14.354 9 13.5c0-.158.007-.314.02-.468.083-.931.831-1.582 1.67-1.694.185-.025.372-.045.56-.06v-.028a.75.75 0 0 1 .75-.75Zm-1.11 2.324c.119-.016.239-.03.36-.04v1.166l-.482-.165c-.208-.072-.268-.211-.268-.285 0-.113.005-.225.015-.336.013-.146.14-.309.374-.34Zm1.86 4.392V16.05l.482.165c.208.072.268.211.268.285 0 .113-.005.225-.015.336-.012.146-.14.309-.374.34-.12.016-.24.03-.361.04Z"
+                            d="M11.47 2.47a.75.75 0 0 1 1.06 0l9 9a.75.75 0 0 1-1.06 1.06L20 10.06v8.19a3.75 3.75 0 0 1-3.75 3.75h-8.5A3.75 3.75 0 0 1 4 18.25v-8.19l-.47.47a.75.75 0 0 1-1.06-1.06l9-9ZM6.5 9.06v9.19c0 1.24 1.01 2.25 2.25 2.25h8.5c1.24 0 2.25-1.01 2.25-2.25v-9.19l-6-6-6 6Z"
                             clipRule="evenodd"
                           />
                         </svg>
@@ -144,24 +176,28 @@ export default function ListOfLens() {
                 </motion.tr>
               ))
             ) : (
-              <Table.Row>
-                <td colSpan="3" className="text-center">
-                  عدسی یافت نشد.
+              <tr>
+                <td colSpan={6} className="text-center">
+                  هیچ لنزی پیدا نشد.
                 </td>
-              </Table.Row>
+              </tr>
             )}
           </Table.Body>
         </Table>
       )}
-      <Pagination
-        totalPages={lensPagination.totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
-      {selectedLens && showEditModal && (
+
+      {lensPagination.totalItems > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={lensPagination.totalItems}
+          pageSize={lensPagination.size}
+          onPageChange={handlePageChange}
+        />
+      )}
+
+      {showEditModal && (
         <ShowPricingLensModal
-          lens={selectedLens}
-          show={showEditModal}
+          selectedLens={selectedLens}
           onClose={() => setShowEditModal(false)}
         />
       )}

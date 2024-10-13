@@ -57,9 +57,9 @@ export const pricingLens = createAsyncThunk(
 
 export const fetchAllLens = createAsyncThunk(
   "lens/fetchAllLens",
-  async ({ page = 1, size = 5 }, { rejectWithValue }) => {
+  async ({ page = 1, size = 5, search = "" }, { rejectWithValue }) => {
     try {
-      const data = await getAllLensApi(page, size);
+      const data = await getAllLensApi(page, size, search);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
