@@ -5,6 +5,7 @@ const {
 } = require("../../controller/employee/Employee.controller");
 const { uploadFile } = require("../../utils/multer");
 const { doctorsRoutes } = require("./doctors/doctorsRoutes");
+const { frameRoutes } = require("./frames/frameRoutes");
 const { lensRoutes } = require("./lens/lensRoutes");
 const { RBACRoutes } = require("./RBAC/RBACRoutes");
 
@@ -33,6 +34,7 @@ router.patch(
 router.use("/doctors", doctorsRoutes);
 router.use("/RBAC", RBACRoutes);
 router.use("/lens", lensRoutes);
+router.use("/frame", frameRoutes);
 
 module.exports = {
   AdminRoutes: router,

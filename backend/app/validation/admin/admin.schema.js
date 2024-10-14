@@ -222,6 +222,7 @@ const createNewLensSchema = Joi.object({
   RefractiveIndexId: Joi.string().trim().guid({ version: "uuidv4" }).required(),
   LensTypeId: Joi.string().trim().guid({ version: "uuidv4" }).required(),
 });
+
 const pricingSchema = Joi.object({
   group: Joi.string().required().messages({
     "string.empty": "وارد کردن گروه الزامی است",
@@ -232,6 +233,7 @@ const pricingSchema = Joi.object({
     "any.required": "وارد کردن قیمت الزامی است",
   }),
 });
+
 const pricingLensSchema = Joi.object({
   LensCategoryId: Joi.string().trim().guid({ version: "uuidv4" }).required(),
   LensId: Joi.string().trim().guid({ version: "uuidv4" }).required(),
@@ -241,6 +243,13 @@ const pricingLensSchema = Joi.object({
   }),
 });
 
+const createFrameCategorySchema = Joi.object({
+  title: Joi.string().required().messages({
+    "string.base": "عنوان فریم باید یک رشته باشد",
+    "any.required": "عنوان فریم را وارد کنید",
+  }),
+  description: Joi.string().allow("", null),
+});
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -253,4 +262,5 @@ module.exports = {
   createNewLensCategorySchema,
   createNewLensSchema,
   pricingLensSchema,
+  createFrameCategorySchema,
 };

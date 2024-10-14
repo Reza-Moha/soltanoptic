@@ -4,7 +4,7 @@ import {
   getAllEmployeeApi,
   deleteEmployeeByIdApi,
   updateEmployeeApi,
-} from "@/services/admin/admin.service";
+} from "@/services/admin/employee/employee.service";
 import toast from "react-hot-toast";
 
 export const fetchAllEmployees = createAsyncThunk(

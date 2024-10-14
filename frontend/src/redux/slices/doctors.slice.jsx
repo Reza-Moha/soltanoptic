@@ -4,7 +4,7 @@ import {
   deleteDoctorById,
   getAllDoctorsApi,
   updateDoctorsApi,
-} from "@/services/admin/admin.service";
+} from "@/services/admin/doctor/doctor.service";
 import toast from "react-hot-toast";
 
 export const fetchAllDoctors = createAsyncThunk(

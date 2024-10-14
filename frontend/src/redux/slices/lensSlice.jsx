@@ -12,7 +12,7 @@ import {
   getAllLensApi,
   deleteLensByIdApi,
   pricingLensApi,
-} from "@/services/admin/admin.service";
+} from "@/services/admin/lens/lens.service";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import toast from "react-hot-toast";
