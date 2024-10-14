@@ -221,3 +221,11 @@ export const pricingLensSchema = Yup.object().shape({
     }
   ),
 });
+
+export const createNewFrameCategorySchema = Yup.object().shape({
+  title: Yup.string()
+    .trim()
+    .required("لطفا عنوان دسته بندی را وارد فرمائید")
+    .min(3, "عنوان نباید کم تر از سه کارکتر باشد"),
+  description: Yup.string(),
+});

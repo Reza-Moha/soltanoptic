@@ -29,7 +29,7 @@ export const createNewEmployee = createAsyncThunk(
         return newEmployee.newEmployee;
       }
     } catch (error) {
-      const data = error?.response?.data;
+      const data = error?.response?.data.errors;
       toast.error(data.message);
       return rejectWithValue(data);
     }
@@ -44,7 +44,7 @@ export const updateEmployee = createAsyncThunk(
       toast.success(data.message);
       return data.updatedEmployee;
     } catch (error) {
-      const data = error?.response?.data;
+      const data = error?.response?.data.errors;
       toast.error(data.message);
       return rejectWithValue(data);
     }
@@ -59,7 +59,7 @@ export const deleteEmployee = createAsyncThunk(
       toast.success(data.message);
       return id;
     } catch (error) {
-      const data = error?.response?.data;
+      const data = error?.response?.data.errors;
       toast.error(data.message);
       return rejectWithValue(data);
     }

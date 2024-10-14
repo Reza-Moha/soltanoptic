@@ -12,7 +12,7 @@ export const createNewFrameCategory = createAsyncThunk(
         return newCategory.newFrameCategory;
       }
     } catch (error) {
-      const data = error?.response?.data;
+      const data = error?.response?.data.errors;
       toast.error(data.message);
       return rejectWithValue(data);
     }

@@ -3,7 +3,8 @@ const {
   createFrameCategorySchema,
 } = require("../../../validation/admin/admin.schema");
 const Controller = require("../../Controller");
-
+const { StatusCodes: HttpStatus } = require("http-status-codes");
+const CreateError = require("http-errors");
 class FrameController extends Controller {
   async createFrameCategory(req, res, next) {
     try {

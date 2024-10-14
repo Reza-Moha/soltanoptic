@@ -4,7 +4,7 @@ import {
   getAllRolesApi,
   deleteRoleByIdApi,
   updateRolesApi,
-} from "@/services/admin/admin.service";
+} from "@/services/admin/permission/permission.service";
 import toast from "react-hot-toast";
 
 export const fetchRoles = createAsyncThunk(
