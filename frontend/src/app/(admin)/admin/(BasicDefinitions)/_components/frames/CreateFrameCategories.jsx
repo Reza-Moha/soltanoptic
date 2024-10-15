@@ -6,6 +6,7 @@ import { createNewFrameCategorySchema } from "@/validators/admin";
 import Input from "@/components/Ui/Input";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { createNewFrameCategory } from "@/redux/slices/frame.slice";
+import ListOfFrameCategories from "./ListOfFrameCategories";
 
 export default function LensCategories() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ export default function LensCategories() {
             </Form>
           )}
         </Formik>
+        <ListOfFrameCategories />
       </BasicWrapper>
     </>
   );

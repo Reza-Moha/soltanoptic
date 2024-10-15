@@ -2,33 +2,33 @@
 import { useDispatch } from "react-redux";
 import BasicWrapper from "../BasicWrapper";
 import { Form, Formik } from "formik";
-import { createNewFrameCategorySchema } from "@/validators/admin";
+import { createNewFrameGenderSchema } from "@/validators/admin";
 import Input from "@/components/Ui/Input";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
-import ListOfFrameType from "./ListOfFrameType";
-import { createNewFrameType } from "@/redux/slices/frame.slice";
+import { createNewFrameGender } from "@/redux/slices/frame.slice";
+import ListOfFrameGender from "./ListOfFrameGender";
 
-export default function LensCategories() {
+export default function CreateFrameGender() {
   const dispatch = useDispatch();
 
-  const createNewFrameTypeHandler = (values, { resetForm }) => {
-    dispatch(createNewFrameType(values));
+  const createNewFrameGenderHandler = (values, { resetForm }) => {
+    dispatch(createNewFrameGender(values));
     resetForm();
   };
   return (
     <>
-      <BasicWrapper title="تعریف نوع فریم">
+      <BasicWrapper title="تعریف جنسیت فریم">
         <Formik
-          initialValues={{ title: "", description: "" }}
-          onSubmit={createNewFrameTypeHandler}
-          validationSchema={createNewFrameCategorySchema}
+          initialValues={{ gender: "", description: "" }}
+          onSubmit={createNewFrameGenderHandler}
+          validationSchema={createNewFrameGenderSchema}
         >
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2">
                 <Input
-                  label="عنوان دسته بندی فریم"
-                  name="title"
+                  label="عنوان جنسیت فریم"
+                  name="gender"
                   type="text"
                   bg="bg-white"
                 />
@@ -46,7 +46,7 @@ export default function LensCategories() {
             </Form>
           )}
         </Formik>
-        <ListOfFrameType />
+        <ListOfFrameGender />
       </BasicWrapper>
     </>
   );

@@ -229,3 +229,11 @@ export const createNewFrameCategorySchema = Yup.object().shape({
     .min(3, "عنوان نباید کم تر از سه کارکتر باشد"),
   description: Yup.string(),
 });
+
+export const createNewFrameGenderSchema = Yup.object().shape({
+  gender: Yup.string()
+    .trim()
+    .required("لطفا عنوان دسته بندی را وارد فرمائید")
+    .min(3, "عنوان نباید کم تر از سه کارکتر باشد"),
+  description: Yup.string(),
+});

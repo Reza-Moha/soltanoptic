@@ -250,6 +250,13 @@ const createFrameCategorySchema = Joi.object({
   }),
   description: Joi.string().allow("", null),
 });
+const createFrameGenderSchema = Joi.object({
+  gender: Joi.string().required().messages({
+    "string.base": "جنسیت فریم باید یک رشته باشد",
+    "any.required": "جنسیت فریم را وارد کنید",
+  }),
+  description: Joi.string().allow("", null),
+});
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -263,4 +270,5 @@ module.exports = {
   createNewLensSchema,
   pricingLensSchema,
   createFrameCategorySchema,
+  createFrameGenderSchema,
 };
