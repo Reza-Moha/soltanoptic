@@ -237,3 +237,16 @@ export const createNewFrameGenderSchema = Yup.object().shape({
     .min(3, "عنوان نباید کم تر از سه کارکتر باشد"),
   description: Yup.string(),
 });
+
+export const createNewFrameSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+  price: Yup.string().required("لطفا قیمت فروش فریم را وارد فرمائید"),
+  serialNumber: Yup.string().required("Required"),
+  description: Yup.string(),
+  colors: Yup.array().of(
+    Yup.object({
+      name: Yup.string().required("Required"),
+      images: Yup.mixed().required("Required"),
+    })
+  ),
+});
