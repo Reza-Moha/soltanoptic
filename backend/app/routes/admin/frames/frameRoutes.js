@@ -1,7 +1,7 @@
 const {
   FrameController,
 } = require("../../../controller/admin/frame/Frame.controller");
-
+const { uploadFile } = require("../../../utils/multer");
 const router = require("express").Router();
 
 router.post("/create-category", FrameController.createFrameCategory);
@@ -21,6 +21,12 @@ router.post("/create-gender", FrameController.createFrameGender);
 router.get("/all-genders", FrameController.getAllFrameGender);
 
 router.delete("/delete-gender/:id", FrameController.deleteFrameGender);
+
+router.post(
+  "/create-frame",
+  uploadFile.array("images"),
+  FrameController.createNewFrame
+);
 
 module.exports = {
   frameRoutes: router,

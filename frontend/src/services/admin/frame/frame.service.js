@@ -49,3 +49,13 @@ export async function deleteFrameGenderByIdApi(id) {
     .delete(`/api/admin/frame/delete-gender/${id}`)
     .then(({ data }) => data);
 }
+
+export async function createNewFrameApi(data) {
+  return httpService
+    .post(`/api/admin/frame/create-frame`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(({ data }) => data);
+}

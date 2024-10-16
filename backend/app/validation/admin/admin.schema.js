@@ -250,6 +250,7 @@ const createFrameCategorySchema = Joi.object({
   }),
   description: Joi.string().allow("", null),
 });
+
 const createFrameGenderSchema = Joi.object({
   gender: Joi.string().required().messages({
     "string.base": "جنسیت فریم باید یک رشته باشد",
@@ -257,6 +258,54 @@ const createFrameGenderSchema = Joi.object({
   }),
   description: Joi.string().allow("", null),
 });
+
+const createNewFrameSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "any.required": "لطفا نام فریم را وارد فرمائید",
+  }),
+  price: Joi.string().required().messages({
+    "any.required": "لطفا قیمت فروش فریم را وارد فرمائید",
+  }),
+  frameCategory: idSchema.extract("id").messages({
+    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+  frameType: idSchema.extract("id").messages({
+    "any.required": "لطفا یکی از نوع فریم را انتخاب کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+  frameGender: idSchema.extract("id").messages({
+    "any.required": "لطفا جنسیت فریم را مشخصی کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+  serialNumber: Joi.string().required().messages({
+    "any.required": "لطفا سریال فریم را وارد فرمائید",
+  }),
+  description: Joi.string().allow(""),
+  fileUploadPath: Joi.allow(),
+  filename: Joi.string()
+    .regex(/(\.png|\.jpg|\.webp|\.jpeg)$/)
+    .error(CreateError.BadRequest("تصویر ارسال شده صحیح نمیباشد")),
+  colors: Joi.array()
+    .items(
+      Joi.object({
+        colorCode: Joi.string().required().messages({
+          "any.required": "رنگ الزامی است",
+        }),
+        count: Joi.number().greater(0).required().messages({
+          "number.base": "تعداد باید یک عدد باشد",
+          "number.greater": "تعداد فریم باید بیشتر از صفر باشد",
+          "any.required": "وارد کردن تعداد فریم الزامی است",
+        }),
+        images: Joi.array().items(Joi.string().required()).min(1).messages({
+          "array.min": "لطفا حداقل یک عکس انتخاب کنید",
+          "any.required": "انتخاب عکس الزامی است",
+        }),
+      })
+    )
+    .required(),
+});
+
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -271,4 +320,5 @@ module.exports = {
   pricingLensSchema,
   createFrameCategorySchema,
   createFrameGenderSchema,
+  createNewFrameSchema,
 };

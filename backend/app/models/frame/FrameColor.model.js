@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const { sequelize } = require("../../libs/DBConfig");
 
-class FrameModel extends Model {}
+class FrameColor extends Model {}
 
-FrameModel.init(
+FrameColor.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -12,28 +12,20 @@ FrameModel.init(
       unique: true,
       primaryKey: true,
     },
-    name: {
+    colorCode: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    price: {
-      type: DataTypes.STRING,
+    count: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    serialNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    description: {
-      type: DataTypes.STRING,
     },
   },
   {
     sequelize,
     timestamps: false,
-    tableName: "FrameModel",
+    tableName: "FrameColor",
   }
 );
 
-module.exports = { FrameModel };
+module.exports = { FrameColor };

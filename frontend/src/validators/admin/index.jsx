@@ -261,13 +261,21 @@ export const createNewFrameSchema = Yup.object().shape({
     )
     .required("لطفا جنسیت فریم را مشخصی کنید"),
   name: Yup.string().required("لطفا نام فریم را وارد فرمائید"),
-  price: Yup.string().required("لطفا قیمت فروش فریم را وارد فرمائید"),
+  price: Yup.string()
+    .required("لطفا قیمت فروش فریم را وارد فرمائید")
+    .test("is-valid-number", "قیمت باید یک عدد معتبر و مثبت باشد.", (value) => {
+      if (!value) return false;
+      const numberValue = parseFloat(value.replace(/,/g, ""));
+      return !isNaN(numberValue) && numberValue > 0;
+    }),
   serialNumber: Yup.string().required("لطفا سریال فریم را وارد فرمائید"),
   description: Yup.string(),
+
   colors: Yup.array().of(
     Yup.object({
-      colorCode: Yup.string().required("Required"),
-      images: Yup.mixed().required("Required"),
+      colorCode: Yup.string().required("لطفا یک رنگ را برای فریم انتخاب کنید"),
+      count: Yup.number().required("لطفا تعداد فریم را وارد فرمائید"),
+      images: Yup.mixed().required("حداقل یک عکس از فریم را باید آپلود کنید"),
     })
   ),
 });

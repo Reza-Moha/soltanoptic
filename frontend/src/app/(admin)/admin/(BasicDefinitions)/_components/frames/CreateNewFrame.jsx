@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import BasicWrapper from "../BasicWrapper";
 import { useEffect, useState } from "react";
 import {
+  createNewFrame,
   fetchAllFrameCategories,
   fetchAllFrameGender,
   fetchAllFrameType,
@@ -15,6 +16,7 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import FileInput from "@/components/Ui/FileInput";
 import { BsTrash3 } from "react-icons/bs";
 import NewFrameOptions from "./NewFrameOptions";
+import { BsSunglasses } from "react-icons/bs";
 
 export default function CreateNewFrame() {
   const dispatch = useDispatch();
@@ -30,12 +32,35 @@ export default function CreateNewFrame() {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
-      setFieldValue(`colors[${index}].images`, files);
+      setFieldValue(`colors[${index}].images`, files); // ذخیره فایل‌ها
       setImagePreviews((prevPreviews) => ({
         ...prevPreviews,
         [index]: imageUrls,
       }));
+      return () => {
+        imageUrls.forEach((url) => URL.revokeObjectURL(url));
+      };
     }
+  };
+
+  const handleSubmit = (values) => {
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("price", values.price);
+    formData.append("frameCategory", values.frameCategory);
+    formData.append("frameType", values.frameType);
+    formData.append("frameGender", values.frameGender);
+    formData.append("serialNumber", values.serialNumber);
+    formData.append("description", values.description);
+    values.colors.forEach((color, index) => {
+      formData.append(`colors[${index}][colorCode]`, color.colorCode);
+      formData.append(`colors[${index}][count]`, color.count);
+      color.images.forEach((image) => {
+        formData.append(`images`, image);
+      });
+    });
+
+    dispatch(createNewFrame(formData));
   };
 
   return (
@@ -53,25 +78,12 @@ export default function CreateNewFrame() {
           colors: [
             {
               colorCode: "#7fff00",
+              count: 1,
               images: [],
             },
           ],
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
-          const formData = new FormData();
-          formData.append("name", values.name);
-          formData.append("price", values.price);
-          formData.append("serialNumber", values.serialNumber);
-          formData.append("description", values.description);
-          values.colors.forEach((color, index) => {
-            formData.append(`colors[${index}][colorCode]`, color.colorCode);
-            color.images.forEach((image) => {
-              formData.append(`colors[${index}][images]`, image);
-            });
-          });
-          console.log("Submitting form data:", formData);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ values, setFieldValue }) => (
           <Form className="grid md:grid-cols-2">
@@ -113,7 +125,7 @@ export default function CreateNewFrame() {
                       }}
                     >
                       <div className="md:col-span-11">
-                        <div className="flex items-center space-x-4 col-span-1">
+                        <div className="flex items-center justify-between px-10 space-x-4 col-span-1">
                           <Input
                             label={`لطفا یک رنگ برای فریم انتخاب کنید`}
                             name={`colors[${index}].colorCode`}
@@ -126,38 +138,53 @@ export default function CreateNewFrame() {
                               )
                             }
                           />
-
-                          <div
-                            className="w-8 h-8 rounded-full"
+                          <BsSunglasses
+                            size={50}
                             style={{
-                              backgroundColor: color.colorCode,
-                              border: "1px solid #000",
+                              color: color.colorCode,
                             }}
-                          ></div>
+                          />
                         </div>
-                        <FileInput
-                          name={`colors[${index}].images`}
-                          label="انتخاب تصاویر"
-                          accept="image/*"
-                          id={`file-input-${index}`}
-                          multiple
-                          onChange={(event) =>
-                            handleImageChange(event, index, setFieldValue)
-                          }
-                        />
+                        <div>
+                          <Input
+                            label="تعداد"
+                            name={`colors[${index}].count`}
+                            type="number"
+                            bg="bg-white"
+                            value={color.count}
+                            onChange={(e) =>
+                              setFieldValue(
+                                `colors[${index}].count`,
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <FileInput
+                            name={`colors[${index}].images`}
+                            label="انتخاب تصاویر"
+                            accept="image/*"
+                            id={`file-input-${index}`}
+                            multiple
+                            onChange={(event) =>
+                              handleImageChange(event, index, setFieldValue)
+                            }
+                          />
 
-                        {imagePreviews[index] && (
-                          <div className="flex space-x-2 mt-2 gap-x-2 items-center justify-center">
-                            {imagePreviews[index].map((url, imgIndex) => (
-                              <img
-                                key={imgIndex}
-                                src={url}
-                                alt={`Preview ${index}-${imgIndex}`}
-                                className="w-20 h-20 object-cover rounded"
-                              />
-                            ))}
-                          </div>
-                        )}
+                          {imagePreviews[index] && (
+                            <div className="flex space-x-2 mt-2 gap-x-2 items-center justify-center">
+                              {imagePreviews[index].map((url, imgIndex) => (
+                                <img
+                                  key={imgIndex}
+                                  src={url}
+                                  alt={`Preview ${index}-${imgIndex}`}
+                                  className="w-20 h-20 object-cover rounded"
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <button
                         className="w-full h-5 md:w-5 md:h-full flex items-center justify-center bg-rose-100 text-rose-700 hover:bg-rose-200 rounded transition-all ease-linear"

@@ -4,6 +4,7 @@ import {
   createFrameCategoryApi,
   createFrameGenderApi,
   createFrameTypeApi,
+  createNewFrameApi,
   deleteFrameCategoryByIdApi,
   deleteFrameGenderByIdApi,
   deleteFrameTypeByIdApi,
@@ -12,6 +13,22 @@ import {
   getAllFrameTypeApi,
 } from "@/services/admin/frame/frame.service";
 
+export const createNewFrame = createAsyncThunk(
+  "frame/createNewFrame",
+  async (values, { rejectWithValue }) => {
+    try {
+      const newFrameData = await createNewFrameApi(values);
+      if (newFrameData.statusCode === 201) {
+        toast.success(newFrameData.message);
+        return newFrameData.newFrame;
+      }
+    } catch (error) {
+      const data = error?.response?.data.errors;
+      toast.error(data.message);
+      return rejectWithValue(data);
+    }
+  }
+);
 export const createNewFrameCategory = createAsyncThunk(
   "frame/createNewFrameCategory",
   async (values, { rejectWithValue }) => {
@@ -142,6 +159,7 @@ export const deleteFrameGender = createAsyncThunk(
 const frameSlice = createSlice({
   name: "frame",
   initialState: {
+    frameList: [],
     frameCategory: [],
     frameType: [],
     frameGender: [],
@@ -171,6 +189,9 @@ const frameSlice = createSlice({
       })
       .addCase(createNewFrameType.fulfilled, (state, action) => {
         state.frameType.push(action.payload);
+      })
+      .addCase(createNewFrame.fulfilled, (state, action) => {
+        state.frameList.push(action.payload);
       })
       .addCase(fetchAllFrameType.pending, (state) => {
         state.isLoading = true;

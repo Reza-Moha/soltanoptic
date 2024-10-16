@@ -12,6 +12,8 @@ const { Permissions } = require("./Permissions.model");
 const { RolePermissionsModel } = require("./RolePermissions.model");
 const { Roles } = require("./Roles.model");
 const { UserModel } = require("./User.model");
+const { FrameColor } = require("./frame/FrameColor.model");
+const { FrameImages } = require("./frame/FrameImage.model");
 
 const Associations = () => {
   // roles & permissions
@@ -49,7 +51,10 @@ const Associations = () => {
   FrameCategory.hasOne(FrameModel);
   FrameGender.hasOne(FrameModel);
   FrameType.hasOne(FrameModel);
-
+  FrameModel.hasMany(FrameColor);
+  FrameColor.hasMany(FrameImages);
+  FrameColor.belongsTo(FrameModel);
+  FrameImages.belongsTo(FrameColor);
   FrameModel.belongsTo(FrameCategory);
   FrameModel.belongsTo(FrameGender);
   FrameModel.belongsTo(FrameType);

@@ -1,15 +1,85 @@
 const { FrameCategory } = require("../../../models/frame/FramCategory.model");
 const { FrameType } = require("../../../models/frame/FrameType.model");
 const { FrameGender } = require("../../../models/frame/FrameGender.model");
+const { FrameColor } = require("../../../models/frame/FrameColor.model");
+const { FrameImages } = require("../../../models/frame/FrameImage.model");
+const { FrameModel } = require("../../../models/frame/Frame.model");
 const {
   createFrameCategorySchema,
   idSchema,
   createFrameGenderSchema,
+  createNewFrameSchema,
 } = require("../../../validation/admin/admin.schema");
 const Controller = require("../../Controller");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 const CreateError = require("http-errors");
+const { deleteFileInPublic } = require("../../../utils");
 class FrameController extends Controller {
+  async createNewFrame(req, res, next) {
+    try {
+      console.log(`----------------------`);
+      console.log("req.body", req.body);
+      console.log(`----------------------`);
+      console.log(`----------------------`);
+      console.log("req.files", req.files);
+      console.log(`----------------------`);
+      console.log("req.body.color.images", req.body.color.images);
+      console.log(
+        "type of req.body.color.images",
+        typeof req.body.color.images
+      );
+      console.log(`----------------------`);
+
+      const {
+        name,
+        price,
+        frameCategory: frameCategoryId,
+        frameType: frameTypeId,
+        frameGender: frameGenderId,
+        serialNumber,
+        description,
+        colors,
+      } = await createNewFrameSchema.validateAsync(req.body);
+
+      const frame = await FrameModel.create({
+        name,
+        price,
+        serialNumber,
+        description,
+        frameCategoryId,
+        frameTypeId,
+        frameGenderId,
+      });
+
+      for (const color of colors) {
+        const createdColor = await FrameColor.create({
+          colorCode: color.colorCode,
+          count: parseInt(color.count),
+          FrameModelId: frame.id,
+        });
+
+        for (const image of color.images) {
+          await FrameImages.create({
+            imageUrl: image.path,
+            FrameColorId: createdColor.id,
+          });
+        }
+      }
+      return res.status(HttpStatus.CREATED).send({
+        statusCode: HttpStatus.CREATED,
+        message: "فریم با موفقیت به انبار اضافه شد",
+        newFrame: frame,
+      });
+    } catch (error) {
+      if (req.files && req.files.length > 0) {
+        req.files.forEach((file) => {
+          deleteFileInPublic(req.body.fileUploadPath + "/" + file.filename);
+        });
+      }
+      next(error);
+    }
+  }
+
   async createFrameCategory(req, res, next) {
     try {
       const { title, description } =
