@@ -13,19 +13,20 @@ function FileInput({
     <div className={`file-input ${className}`}>
       <label
         htmlFor={id}
-        className="flex items-center justify-center w-full h-full rounded-full cursor-pointer bg-gray-200 overflow-hidden relative"
+        className="flex items-center justify-center w-32 h-9 rounded bg-slate-500 text-white cursor-pointer"
       >
-        <span className="text-sm text-gray-700">{label}</span>
-        <input
-          type="file"
-          name={name}
-          id={id}
-          accept={accept}
-          className={className}
-          onChange={onChange}
-          {...props}
-        />
+        {label || "انتخاب تصویر"}
       </label>
+
+      <input
+        type="file"
+        name={name}
+        id={id}
+        accept={accept}
+        className="hidden"
+        onChange={onChange}
+        {...props}
+      />
     </div>
   );
 }

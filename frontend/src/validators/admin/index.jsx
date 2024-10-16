@@ -239,13 +239,34 @@ export const createNewFrameGenderSchema = Yup.object().shape({
 });
 
 export const createNewFrameSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
+  frameCategory: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست"
+    )
+    .required("لطفا یکی از دسته بندی های فریم را انتخاب کنید"),
+  frameType: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست"
+    )
+    .required("لطفا یکی از نوع فریم را انتخاب کنید"),
+  frameGender: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست"
+    )
+    .required("لطفا جنسیت فریم را مشخصی کنید"),
+  name: Yup.string().required("لطفا نام فریم را وارد فرمائید"),
   price: Yup.string().required("لطفا قیمت فروش فریم را وارد فرمائید"),
-  serialNumber: Yup.string().required("Required"),
+  serialNumber: Yup.string().required("لطفا سریال فریم را وارد فرمائید"),
   description: Yup.string(),
   colors: Yup.array().of(
     Yup.object({
-      name: Yup.string().required("Required"),
+      colorCode: Yup.string().required("Required"),
       images: Yup.mixed().required("Required"),
     })
   ),

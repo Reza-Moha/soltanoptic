@@ -11,10 +11,14 @@ import { FieldArray, Form, Formik } from "formik";
 import { createNewFrameSchema } from "@/validators/admin";
 import Input from "@/components/Ui/Input";
 import { PriceInput } from "@/components/Ui/PriceInput";
+import SubmitBtn from "@/components/Ui/SubmitBtn";
+import FileInput from "@/components/Ui/FileInput";
+import { BsTrash3 } from "react-icons/bs";
+import NewFrameOptions from "./NewFrameOptions";
 
 export default function CreateNewFrame() {
   const dispatch = useDispatch();
-  const [imagePreviews, setImagePreviews] = useState({}); // ذخیره پیش‌نمایش‌ها
+  const [imagePreviews, setImagePreviews] = useState({});
 
   useEffect(() => {
     dispatch(fetchAllFrameCategories());
@@ -25,11 +29,8 @@ export default function CreateNewFrame() {
   const handleImageChange = (event, index, setFieldValue) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
-      // ایجاد URL پیش‌نمایش
       const imageUrls = files.map((file) => URL.createObjectURL(file));
       setFieldValue(`colors[${index}].images`, files);
-
-      // ذخیره URL پیش‌نمایش برای نمایش به کاربر
       setImagePreviews((prevPreviews) => ({
         ...prevPreviews,
         [index]: imageUrls,
@@ -40,49 +41,45 @@ export default function CreateNewFrame() {
   return (
     <BasicWrapper title="تعریف فریم جدید به انبار">
       <Formik
+        validationSchema={createNewFrameSchema}
         initialValues={{
           name: "",
           price: "",
+          frameCategory: "",
+          frameType: "",
+          frameGender: "",
           serialNumber: "",
           description: "",
           colors: [
             {
-              colorCode: "#ffffff",
+              colorCode: "#7fff00",
               images: [],
             },
           ],
         }}
-        validationSchema={createNewFrameSchema}
         onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
           const formData = new FormData();
           formData.append("name", values.name);
           formData.append("price", values.price);
           formData.append("serialNumber", values.serialNumber);
           formData.append("description", values.description);
-
-          // اضافه کردن رنگ‌ها و تصاویر به FormData
           values.colors.forEach((color, index) => {
             formData.append(`colors[${index}][colorCode]`, color.colorCode);
             color.images.forEach((image) => {
               formData.append(`colors[${index}][images]`, image);
             });
           });
-
-          console.log("Submitting form data:", formData); // لاگ برای بررسی داده‌ها
-
-          // شبیه‌سازی درخواست به سرور (شما می‌توانید اینجا Axios یا Fetch را اضافه کنید)
-          setTimeout(() => {
-            console.log("Form submitted successfully!");
-            setSubmitting(false);
-          }, 1000);
+          console.log("Submitting form data:", formData);
         }}
       >
         {({ values, setFieldValue }) => (
-          <Form encType="multipart/form-data">
+          <Form className="grid md:grid-cols-2">
+            <NewFrameOptions />
             <Input label="نام فریم" name="name" type="text" bg="bg-white" />
 
             <PriceInput
-              label="قیمت فروش فریم"
+              label="قیمت فروش"
               name="price"
               type="text"
               value={values.price}
@@ -97,7 +94,7 @@ export default function CreateNewFrame() {
             />
 
             <Input
-              label="توضیحات فریم"
+              label="توضیحات"
               name="description"
               type="text"
               bg="bg-white"
@@ -106,77 +103,89 @@ export default function CreateNewFrame() {
             <FieldArray
               name="colors"
               render={(arrayHelpers) => (
-                <div>
+                <div className="md:col-span-2 mx-3 overflow-hidden rounded-lg ">
                   {values.colors.map((color, index) => (
-                    <div key={index}>
-                      <div className="flex items-center space-x-4">
-                        <Input
-                          label={`Color ${index + 1}`}
-                          name={`colors[${index}].colorCode`}
-                          type="color"
-                          value={color.colorCode}
-                          onChange={(e) =>
-                            setFieldValue(
-                              `colors[${index}].colorCode`,
-                              e.target.value
-                            )
+                    <div
+                      key={index}
+                      className={`grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-white mb-4 border border-secondary-200 text-secondary-900`}
+                      style={{
+                        borderRight: `3px solid ${color.colorCode}`,
+                      }}
+                    >
+                      <div className="md:col-span-11">
+                        <div className="flex items-center space-x-4 col-span-1">
+                          <Input
+                            label={`لطفا یک رنگ برای فریم انتخاب کنید`}
+                            name={`colors[${index}].colorCode`}
+                            type="color"
+                            value={color.colorCode}
+                            onChange={(e) =>
+                              setFieldValue(
+                                `colors[${index}].colorCode`,
+                                e.target.value
+                              )
+                            }
+                          />
+
+                          <div
+                            className="w-8 h-8 rounded-full"
+                            style={{
+                              backgroundColor: color.colorCode,
+                              border: "1px solid #000",
+                            }}
+                          ></div>
+                        </div>
+                        <FileInput
+                          name={`colors[${index}].images`}
+                          label="انتخاب تصاویر"
+                          accept="image/*"
+                          id={`file-input-${index}`}
+                          multiple
+                          onChange={(event) =>
+                            handleImageChange(event, index, setFieldValue)
                           }
                         />
 
-                        {/* دایره نمایش رنگ انتخاب شده */}
-                        <div
-                          className="w-8 h-8 rounded-full"
-                          style={{
-                            backgroundColor: color.colorCode,
-                            border: "1px solid #000",
-                          }}
-                        ></div>
+                        {imagePreviews[index] && (
+                          <div className="flex space-x-2 mt-2 gap-x-2 items-center justify-center">
+                            {imagePreviews[index].map((url, imgIndex) => (
+                              <img
+                                key={imgIndex}
+                                src={url}
+                                alt={`Preview ${index}-${imgIndex}`}
+                                className="w-20 h-20 object-cover rounded"
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
-
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple // مجاز به انتخاب چند تصویر
-                        onChange={(event) =>
-                          handleImageChange(event, index, setFieldValue)
-                        }
-                      />
-
-                      {/* نمایش پیش‌نمایش تصاویر */}
-                      {imagePreviews[index] && (
-                        <div className="flex space-x-2 mt-2">
-                          {imagePreviews[index].map((url, imgIndex) => (
-                            <img
-                              key={imgIndex}
-                              src={url}
-                              alt={`Preview ${index}-${imgIndex}`}
-                              className="w-20 h-20 object-cover rounded"
-                            />
-                          ))}
-                        </div>
-                      )}
-
                       <button
+                        className="w-full h-5 md:w-5 md:h-full flex items-center justify-center bg-rose-100 text-rose-700 hover:bg-rose-200 rounded transition-all ease-linear"
                         type="button"
                         onClick={() => arrayHelpers.remove(index)}
                       >
-                        Remove Color
+                        <BsTrash3 />
                       </button>
                     </div>
                   ))}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      arrayHelpers.push({ colorCode: "#ffffff", images: [] })
-                    }
-                  >
-                    Add Color
-                  </button>
+                  <div className="md:col-span-2 my-4 flex items-center justify-center">
+                    <button
+                      className="rounded w-1/4 bg-slate-500 text-white py-2"
+                      type="button"
+                      onClick={() =>
+                        arrayHelpers.push({ colorCode: "#7fff00", images: [] })
+                      }
+                    >
+                      اضافه کردن رنگ
+                    </button>
+                  </div>
                 </div>
               )}
             />
 
-            <button type="submit">Submit</button>
+            <div className="md:col-span-2 px-10">
+              <SubmitBtn>ایجاد</SubmitBtn>
+            </div>
           </Form>
         )}
       </Formik>

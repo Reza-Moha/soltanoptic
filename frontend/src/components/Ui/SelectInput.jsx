@@ -19,8 +19,8 @@ const SelectInput = ({
         ? selectedOption.map((option) => option.value)
         : []
       : selectedOption
-        ? selectedOption.value
-        : "";
+      ? selectedOption.value
+      : "";
     form.setFieldValue(field.name, selectedValues);
   };
 
@@ -45,7 +45,7 @@ const SelectInput = ({
         onChange={handleChange}
         options={options}
         classNamePrefix="react-select"
-        className={`react-select-container ${
+        className={`react-select-container${
           form.touched[field.name] && form.errors[field.name]
             ? "border-red-500"
             : ""
