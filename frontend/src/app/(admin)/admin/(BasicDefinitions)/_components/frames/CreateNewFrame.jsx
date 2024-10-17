@@ -52,13 +52,22 @@ export default function CreateNewFrame() {
     formData.append("frameGender", values.frameGender);
     formData.append("serialNumber", values.serialNumber);
     formData.append("description", values.description);
+
     values.colors.forEach((color, index) => {
       formData.append(`colors[${index}][colorCode]`, color.colorCode);
       formData.append(`colors[${index}][count]`, color.count);
+
       color.images.forEach((image) => {
-        formData.append(`images`, image);
+        const newFileName = `${color.colorCode}-${image.name}`;
+        const renamedFile = new File([image], newFileName, {
+          type: image.type,
+        });
+        formData.append(`images`, renamedFile);
       });
     });
+
+    console.log(values);
+    console.log(formData);
 
     dispatch(createNewFrame(formData));
   };

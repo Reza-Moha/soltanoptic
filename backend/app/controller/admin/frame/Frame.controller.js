@@ -17,25 +17,12 @@ const { deleteFileInPublic } = require("../../../utils");
 class FrameController extends Controller {
   async createNewFrame(req, res, next) {
     try {
-      console.log(`----------------------`);
-      console.log("req.body", req.body);
-      console.log(`----------------------`);
-      console.log(`----------------------`);
-      console.log("req.files", req.files);
-      console.log(`----------------------`);
-      console.log("req.body.color.images", req.body.color.images);
-      console.log(
-        "type of req.body.color.images",
-        typeof req.body.color.images
-      );
-      console.log(`----------------------`);
-
       const {
         name,
         price,
-        frameCategory: frameCategoryId,
-        frameType: frameTypeId,
-        frameGender: frameGenderId,
+        frameCategory,
+        frameType,
+        frameGender,
         serialNumber,
         description,
         colors,
@@ -46,9 +33,9 @@ class FrameController extends Controller {
         price,
         serialNumber,
         description,
-        frameCategoryId,
-        frameTypeId,
-        frameGenderId,
+        FrameCategoryId: frameCategory,
+        FrameTypeId: frameType,
+        FrameGenderId: frameGender,
       });
 
       for (const color of colors) {
@@ -58,13 +45,17 @@ class FrameController extends Controller {
           FrameModelId: frame.id,
         });
 
-        for (const image of color.images) {
-          await FrameImages.create({
-            imageUrl: image.path,
-            FrameColorId: createdColor.id,
-          });
+        for (const file of req.files) {
+          const imageUrl = `${req.body.fileUploadPath}/${file.filename}`;
+          if (file.originalname.includes(color.colorCode)) {
+            await FrameImages.create({
+              imageUrl,
+              FrameColorId: createdColor.id,
+            });
+          }
         }
       }
+
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "فریم با موفقیت به انبار اضافه شد",
