@@ -4,6 +4,7 @@ import BasicWrapper from "../BasicWrapper";
 import { useEffect, useState } from "react";
 import {
   createNewFrame,
+  fetchAllFrame,
   fetchAllFrameCategories,
   fetchAllFrameGender,
   fetchAllFrameType,
@@ -26,6 +27,7 @@ export default function CreateNewFrame() {
     dispatch(fetchAllFrameCategories());
     dispatch(fetchAllFrameType());
     dispatch(fetchAllFrameGender());
+    dispatch(fetchAllFrame());
   }, [dispatch]);
 
   const handleImageChange = (event, index, setFieldValue) => {

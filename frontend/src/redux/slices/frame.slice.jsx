@@ -8,11 +8,23 @@ import {
   deleteFrameCategoryByIdApi,
   deleteFrameGenderByIdApi,
   deleteFrameTypeByIdApi,
+  getAllFrameApi,
   getAllFrameCategoryApi,
   getAllFrameGenderApi,
   getAllFrameTypeApi,
 } from "@/services/admin/frame/frame.service";
 
+export const fetchAllFrame = createAsyncThunk(
+  "frame/fetchAllFrame",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getAllFrameApi();
+      return data.frames;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const createNewFrame = createAsyncThunk(
   "frame/createNewFrame",
   async (values, { rejectWithValue }) => {
@@ -179,6 +191,17 @@ const frameSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchAllFrameCategories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllFrame.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllFrame.fulfilled, (state, action) => {
+        state.frameList = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchAllFrame.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })

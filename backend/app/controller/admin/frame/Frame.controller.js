@@ -14,6 +14,7 @@ const Controller = require("../../Controller");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 const CreateError = require("http-errors");
 const { deleteFileInPublic } = require("../../../utils");
+const path = require("path");
 class FrameController extends Controller {
   async createNewFrame(req, res, next) {
     try {
@@ -26,6 +27,7 @@ class FrameController extends Controller {
         serialNumber,
         description,
         colors,
+        fileUploadPath,
       } = await createNewFrameSchema.validateAsync(req.body);
 
       const frame = await FrameModel.create({
@@ -46,7 +48,9 @@ class FrameController extends Controller {
         });
 
         for (const file of req.files) {
-          const imageUrl = `${req.body.fileUploadPath}/${file.filename}`;
+          const imageUrl = path
+            .join(fileUploadPath, file.filename)
+            .replace(/\\/g, "/");
           if (file.originalname.includes(color.colorCode)) {
             await FrameImages.create({
               imageUrl,
@@ -67,6 +71,37 @@ class FrameController extends Controller {
           deleteFileInPublic(req.body.fileUploadPath + "/" + file.filename);
         });
       }
+      next(error);
+    }
+  }
+
+  async getAllFrame(req, res, next) {
+    try {
+      const frames = await FrameModel.findAll({
+        include: [
+          { model: FrameCategory },
+          { model: FrameType },
+          { model: FrameGender },
+          {
+            model: FrameColor,
+            include: [
+              { model: FrameImages, attributes: { exclude: ["FrameColorId"] } },
+            ],
+            attributes: {
+              exclude: ["FrameModelId"],
+            },
+          },
+        ],
+        attributes: {
+          exclude: ["FrameCategoryId", "FrameGenderId", "FrameTypeId"],
+        },
+      });
+
+      return res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        frames,
+      });
+    } catch (error) {
       next(error);
     }
   }

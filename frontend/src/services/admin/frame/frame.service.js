@@ -59,3 +59,7 @@ export async function createNewFrameApi(data) {
     })
     .then(({ data }) => data);
 }
+
+export async function getAllFrameApi() {
+  return httpService.get(`/api/admin/frame/all-frame`).then(({ data }) => data);
+}

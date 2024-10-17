@@ -27,7 +27,7 @@ router.post(
   uploadFile.array("images"),
   FrameController.createNewFrame
 );
-
+router.get("/all-frame", FrameController.getAllFrame);
 module.exports = {
   frameRoutes: router,
 };
