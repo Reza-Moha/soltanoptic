@@ -32,7 +32,7 @@ export default function CreateNewFrame() {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
-      setFieldValue(`colors[${index}].images`, files); // ذخیره فایل‌ها
+      setFieldValue(`colors[${index}].images`, files);
       setImagePreviews((prevPreviews) => ({
         ...prevPreviews,
         [index]: imageUrls,
@@ -43,7 +43,16 @@ export default function CreateNewFrame() {
     }
   };
 
-  const handleSubmit = (values) => {
+  const handleRemoveColor = (index, arrayHelpers) => {
+    arrayHelpers.remove(index);
+    setImagePreviews((prevPreviews) => {
+      const newPreviews = { ...prevPreviews };
+      delete newPreviews[index];
+      return newPreviews;
+    });
+  };
+
+  const handleSubmit = (values, { resetForm }) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("price", values.price);
@@ -66,10 +75,9 @@ export default function CreateNewFrame() {
       });
     });
 
-    console.log(values);
-    console.log(formData);
-
     dispatch(createNewFrame(formData));
+    resetForm();
+    setImagePreviews({});
   };
 
   return (
@@ -103,7 +111,7 @@ export default function CreateNewFrame() {
               label="قیمت فروش"
               name="price"
               type="text"
-              value={values.price}
+              value={values.price || ""}
               onChange={(e) => setFieldValue("price", e.target.value)}
             />
 
@@ -160,11 +168,13 @@ export default function CreateNewFrame() {
                             name={`colors[${index}].count`}
                             type="number"
                             bg="bg-white"
-                            value={color.count}
+                            value={color.count || 0}
                             onChange={(e) =>
                               setFieldValue(
                                 `colors[${index}].count`,
                                 e.target.value
+                                  ? parseInt(e.target.value, 10)
+                                  : 0
                               )
                             }
                           />
@@ -198,7 +208,7 @@ export default function CreateNewFrame() {
                       <button
                         className="w-full h-5 md:w-5 md:h-full flex items-center justify-center bg-rose-100 text-rose-700 hover:bg-rose-200 rounded transition-all ease-linear"
                         type="button"
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => handleRemoveColor(index, arrayHelpers)}
                       >
                         <BsTrash3 />
                       </button>
