@@ -22,11 +22,14 @@ router.get("/all-genders", FrameController.getAllFrameGender);
 
 router.delete("/delete-gender/:id", FrameController.deleteFrameGender);
 
+router.delete("/delete/:id", FrameController.deleteFrameById);
+
 router.post(
   "/create-frame",
   uploadFile.array("images"),
   FrameController.createNewFrame
 );
+
 router.get("/all-frame", FrameController.getAllFrame);
 module.exports = {
   frameRoutes: router,

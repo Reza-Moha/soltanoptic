@@ -1,6 +1,7 @@
 import { FaUserDoctor } from "react-icons/fa6";
 import { GiMicroscopeLens } from "react-icons/gi";
 import { BsEyeglasses } from "react-icons/bs";
+
 export const toPersianDigits = (number) => {
   const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return number.toString().replace(/\d/g, (x) => farsiDigits[parseInt(x)]);

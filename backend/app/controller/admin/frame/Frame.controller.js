@@ -75,6 +75,34 @@ class FrameController extends Controller {
     }
   }
 
+  async deleteFrameById(req, res, next) {
+    try {
+      await idSchema.validateAsync(req.params);
+      const { id } = req.params;
+
+      if (!id) throw CreateError.BadRequest("شناسه نامعتبر است");
+
+      const frame = await FrameModel.findByPk(id, {
+        include: [{ model: FrameColor, include: [FrameImages] }],
+      });
+      if (!frame) throw CreateError.NotFound("فریم با این مشخصات وجود ندارد");
+
+      for (const color of frame.FrameColors) {
+        for (const image of color.FrameImages) {
+          deleteFileInPublic(image.imageUrl);
+        }
+      }
+
+      await frame.destroy();
+      return res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        message: "فریم با موفقیت حذف گردید",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getAllFrame(req, res, next) {
     try {
       const frames = await FrameModel.findAll({

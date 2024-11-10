@@ -48,16 +48,16 @@ const Associations = () => {
 
   // frame
 
-  FrameCategory.hasOne(FrameModel);
-  FrameGender.hasOne(FrameModel);
-  FrameType.hasOne(FrameModel);
-  FrameModel.hasMany(FrameColor);
-  FrameColor.hasMany(FrameImages);
-  FrameColor.belongsTo(FrameModel);
-  FrameImages.belongsTo(FrameColor);
-  FrameModel.belongsTo(FrameCategory);
-  FrameModel.belongsTo(FrameGender);
-  FrameModel.belongsTo(FrameType);
+  FrameCategory.hasOne(FrameModel, { onDelete: "CASCADE" });
+  FrameGender.hasOne(FrameModel, { onDelete: "CASCADE" });
+  FrameType.hasOne(FrameModel, { onDelete: "CASCADE" });
+  FrameModel.hasMany(FrameColor, { onDelete: "CASCADE" });
+  FrameColor.hasMany(FrameImages, { onDelete: "CASCADE" });
+  FrameColor.belongsTo(FrameModel, { onDelete: "CASCADE" });
+  FrameImages.belongsTo(FrameColor, { onDelete: "CASCADE" });
+  FrameModel.belongsTo(FrameCategory, { onDelete: "CASCADE" });
+  FrameModel.belongsTo(FrameGender, { onDelete: "CASCADE" });
+  FrameModel.belongsTo(FrameType, { onDelete: "CASCADE" });
 };
 sequelize.sync({ alter: true });
 module.exports = {

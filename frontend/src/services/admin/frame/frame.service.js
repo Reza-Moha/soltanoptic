@@ -49,6 +49,11 @@ export async function deleteFrameGenderByIdApi(id) {
     .delete(`/api/admin/frame/delete-gender/${id}`)
     .then(({ data }) => data);
 }
+export async function deleteFrameByIdApi(id) {
+  return httpService
+    .delete(`/api/admin/frame/delete/${id}`)
+    .then(({ data }) => data);
+}
 
 export async function createNewFrameApi(data) {
   return httpService

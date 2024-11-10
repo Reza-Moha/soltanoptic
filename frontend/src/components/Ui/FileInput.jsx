@@ -1,11 +1,9 @@
-import React from "react";
-
 function FileInput({
   name,
   label,
   accept,
   onChange,
-  id,
+  id = `file-input-${name}`,
   className = "",
   ...props
 }) {

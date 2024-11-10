@@ -5,6 +5,7 @@ import {
   createFrameGenderApi,
   createFrameTypeApi,
   createNewFrameApi,
+  deleteFrameByIdApi,
   deleteFrameCategoryByIdApi,
   deleteFrameGenderByIdApi,
   deleteFrameTypeByIdApi,
@@ -38,6 +39,20 @@ export const createNewFrame = createAsyncThunk(
       const data = error?.response?.data.errors;
       toast.error(data.message);
       return rejectWithValue(data);
+    }
+  }
+);
+export const deleteFrame = createAsyncThunk(
+  "frame/deleteFrame",
+  async (id, { rejectWithValue }) => {
+    try {
+      const data = await deleteFrameByIdApi(id);
+      toast.success(data.message);
+      return id;
+    } catch (error) {
+      const errors = error?.response?.data?.errors;
+      toast.error(errors.message);
+      return rejectWithValue(errors);
     }
   }
 );
@@ -204,6 +219,11 @@ const frameSlice = createSlice({
       .addCase(fetchAllFrame.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteFrame.fulfilled, (state, action) => {
+        state.frameList = state.frameList.filter(
+          (frame) => frame.id !== action.payload
+        );
       })
       .addCase(deleteFrameCategory.fulfilled, (state, action) => {
         state.frameCategory = state.frameCategory.filter(
