@@ -5,14 +5,35 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Table from "@/components/Ui/Table";
 import { deleteFrame } from "@/redux/slices/frame.slice";
+import { toPersianDigits } from "@/utils";
+import classNames from "classnames";
 
 export default function ListOfFrame() {
   const { frameList, isLoading } = useSelector((state) => state.frameSlice);
   const dispatch = useDispatch();
 
   const handleDeleteFrame = (id) => {
-    console.log(id);
     dispatch(deleteFrame(id));
+  };
+  const isColorLight = (colorCode) => {
+    const rgb = parseInt(colorCode.slice(1), 16);
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = rgb & 0xff;
+    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+    return brightness > 186;
+  };
+  const darkenColor = (colorCode, amount = 20) => {
+    const color = parseInt(colorCode.slice(1), 16);
+    let r = (color >> 16) - amount;
+    let g = ((color >> 8) & 0x00ff) - amount;
+    let b = (color & 0x0000ff) - amount;
+
+    r = r < 0 ? 0 : r;
+    g = g < 0 ? 0 : g;
+    b = b < 0 ? 0 : b;
+
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
   };
   return (
     <BasicWrapper title="لیست فریم موجودی انبار">
@@ -22,6 +43,11 @@ export default function ListOfFrame() {
         <Table>
           <Table.Header>
             <th>عنوان</th>
+            <th>ارزش فریم</th>
+            <th>کد فریم</th>
+            <th>دسته بندی</th>
+            <th>جنسیت</th>
+            <th>تعداد</th>
             <th>توضیحات</th>
             <th>عملیات</th>
           </Table.Header>
@@ -30,6 +56,38 @@ export default function ListOfFrame() {
               frameList.map((frame) => (
                 <motion.tr key={frame.id}>
                   <td>{frame.name}</td>
+                  <td>{toPersianDigits(frame.price || 0)}</td>
+                  <td>{frame.serialNumber}</td>
+                  <td>{frame.FrameCategory?.title}</td>
+                  <td>{frame.FrameGender?.gender}</td>
+                  <td className="grid grid-cols-1 lg:grid-cols-3 gap-1">
+                    {frame?.FrameColors?.length > 0
+                      ? frame.FrameColors.map((frameColor) => {
+                          const isLight = isColorLight(frameColor.colorCode);
+                          const borderColor = darkenColor(frameColor.colorCode);
+                          return (
+                            <div key={frameColor.id}>
+                              <span
+                                className={`rounded-lg w-6 h-6 flex items-center justify-center`}
+                                style={{
+                                  backgroundColor: `${frameColor.colorCode}`,
+                                  border: `1px solid ${borderColor}`,
+                                }}
+                              >
+                                <span
+                                  className={classNames("font-bold text-base", {
+                                    "text-slate-800": isLight,
+                                    "text-slate-50": !isLight,
+                                  })}
+                                >
+                                  {toPersianDigits(frameColor.count || 0)}
+                                </span>
+                              </span>
+                            </div>
+                          );
+                        })
+                      : 0}
+                  </td>
                   <td>{frame.description}</td>
                   <td className="flex items-center gap-x-4">
                     <button

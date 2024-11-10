@@ -89,7 +89,7 @@ class FrameController extends Controller {
 
       for (const color of frame.FrameColors) {
         for (const image of color.FrameImages) {
-          deleteFileInPublic(image.imageUrl);
+          deleteFileInPublic(image.imagePath);
         }
       }
 

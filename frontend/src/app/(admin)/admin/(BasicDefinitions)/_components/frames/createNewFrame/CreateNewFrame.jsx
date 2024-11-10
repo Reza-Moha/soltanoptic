@@ -30,9 +30,6 @@ const CreateNewFrame = () => {
   }, [dispatch]);
 
   const handleImageChange = (event, index, setFieldValue) => {
-    console.log("click");
-
-    console.log(event, index, setFieldValue);
     const files = Array.from(event.target.files);
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
