@@ -102,7 +102,43 @@ class FrameController extends Controller {
       next(error);
     }
   }
+  async getFrameById(req, res, next) {
+    try {
+      await idSchema.validateAsync(req.params);
+      const { id } = req.params;
+      if (!id) throw CreateError.BadRequest("شناسه نامعتبر است");
 
+      const frame = await FrameModel.findOne({
+        where: { id },
+        include: [
+          { model: FrameCategory },
+          { model: FrameType },
+          { model: FrameGender },
+          {
+            model: FrameColor,
+            include: [
+              { model: FrameImages, attributes: { exclude: ["FrameColorId"] } },
+            ],
+            attributes: {
+              exclude: ["FrameModelId"],
+            },
+          },
+        ],
+        attributes: {
+          exclude: ["FrameCategoryId", "FrameGenderId", "FrameTypeId"],
+        },
+      });
+
+      if (!frame) throw CreateError.NotFound("فریمی با این مشخصات وجود ندارد");
+
+      return res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        frame,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   async getAllFrame(req, res, next) {
     try {
       const frames = await FrameModel.findAll({

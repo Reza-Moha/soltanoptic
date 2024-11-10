@@ -5,9 +5,10 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Table from "@/components/Ui/Table";
 import { deleteFrame } from "@/redux/slices/frame.slice";
-import { toPersianDigits } from "@/utils";
+import { darkenColor, isColorLight, toPersianDigits } from "@/utils";
 import classNames from "classnames";
-
+import Link from "next/link";
+import { CgEditExposure } from "react-icons/cg";
 export default function ListOfFrame() {
   const { frameList, isLoading } = useSelector((state) => state.frameSlice);
   const dispatch = useDispatch();
@@ -15,26 +16,7 @@ export default function ListOfFrame() {
   const handleDeleteFrame = (id) => {
     dispatch(deleteFrame(id));
   };
-  const isColorLight = (colorCode) => {
-    const rgb = parseInt(colorCode.slice(1), 16);
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >> 8) & 0xff;
-    const b = rgb & 0xff;
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-    return brightness > 186;
-  };
-  const darkenColor = (colorCode, amount = 20) => {
-    const color = parseInt(colorCode.slice(1), 16);
-    let r = (color >> 16) - amount;
-    let g = ((color >> 8) & 0x00ff) - amount;
-    let b = (color & 0x0000ff) - amount;
 
-    r = r < 0 ? 0 : r;
-    g = g < 0 ? 0 : g;
-    b = b < 0 ? 0 : b;
-
-    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
-  };
   return (
     <BasicWrapper title="لیست فریم موجودی انبار">
       {isLoading ? (
@@ -107,6 +89,12 @@ export default function ListOfFrame() {
                         />
                       </svg>
                     </button>
+                    <Link
+                      href={`frames/${frame.id}/edite`}
+                      className="text-slate-800"
+                    >
+                      <CgEditExposure size={20} />
+                    </Link>
                   </td>
                 </motion.tr>
               ))

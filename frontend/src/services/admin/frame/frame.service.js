@@ -32,6 +32,7 @@ export async function deleteFrameTypeByIdApi(id) {
     .delete(`/api/admin/frame/delete-type/${id}`)
     .then(({ data }) => data);
 }
+
 export async function createFrameGenderApi(data) {
   return httpService
     .post(`/api/admin/frame/create-gender`, data)
@@ -47,6 +48,11 @@ export async function getAllFrameGenderApi() {
 export async function deleteFrameGenderByIdApi(id) {
   return httpService
     .delete(`/api/admin/frame/delete-gender/${id}`)
+    .then(({ data }) => data);
+}
+export async function getFrameByIdApi(id) {
+  return httpService
+    .get(`/api/admin/frame/get-frame/${id}`)
     .then(({ data }) => data);
 }
 export async function deleteFrameByIdApi(id) {

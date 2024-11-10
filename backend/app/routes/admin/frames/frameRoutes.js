@@ -24,6 +24,8 @@ router.delete("/delete-gender/:id", FrameController.deleteFrameGender);
 
 router.delete("/delete/:id", FrameController.deleteFrameById);
 
+router.get("/get-frame/:id", FrameController.getFrameById);
+
 router.post(
   "/create-frame",
   uploadFile.array("images"),

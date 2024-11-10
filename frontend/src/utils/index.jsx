@@ -63,7 +63,7 @@ export const BasicDefinitionsLinks = [
     title: "تعریف فریم",
     className: "text-sm",
     svg: <BsEyeglasses size="20" />,
-    href: "create-frame",
+    href: "frames",
   },
 ];
 
@@ -84,4 +84,26 @@ export const validateNationalId = (code) => {
     (remainder < 2 && controlDigit === remainder) ||
     (remainder >= 2 && controlDigit === 11 - remainder)
   );
+};
+
+export const isColorLight = (colorCode) => {
+  const rgb = parseInt(colorCode.slice(1), 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >> 8) & 0xff;
+  const b = rgb & 0xff;
+  const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+  return brightness > 186;
+};
+
+export const darkenColor = (colorCode, amount = 20) => {
+  const color = parseInt(colorCode.slice(1), 16);
+  let r = (color >> 16) - amount;
+  let g = ((color >> 8) & 0x00ff) - amount;
+  let b = (color & 0x0000ff) - amount;
+
+  r = r < 0 ? 0 : r;
+  g = g < 0 ? 0 : g;
+  b = b < 0 ? 0 : b;
+
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 };
