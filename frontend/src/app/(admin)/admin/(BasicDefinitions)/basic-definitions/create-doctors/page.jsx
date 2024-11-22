@@ -17,10 +17,6 @@ export default function Doctors() {
     resetForm();
   };
 
-  useEffect(() => {
-    dispatch(fetchAllDoctors());
-  }, [dispatch]);
-
   return (
     <section>
       <Formik

@@ -22,13 +22,6 @@ const CreateNewFrame = () => {
   const dispatch = useDispatch();
   const [imagePreviews, setImagePreviews] = useState({});
 
-  useEffect(() => {
-    dispatch(fetchAllFrameCategories());
-    dispatch(fetchAllFrameType());
-    dispatch(fetchAllFrameGender());
-    dispatch(fetchAllFrame());
-  }, [dispatch]);
-
   const handleImageChange = (event, index, setFieldValue) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {

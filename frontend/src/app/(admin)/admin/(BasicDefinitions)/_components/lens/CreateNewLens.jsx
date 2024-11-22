@@ -10,17 +10,10 @@ import Input from "@/components/Ui/Input";
 import { ImageInput } from "@/components/Ui/ImageInput";
 import { createNewLens, fetchAllLens } from "@/redux/slices/lensSlice";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 export default function CreateNewLens() {
   const dispatch = useDispatch();
-  const searchParams = useSearchParams();
   const [resetImage, setResetImage] = useState(false);
-
-  useEffect(() => {
-    const currentPage = searchParams.get("page") || 1;
-    dispatch(fetchAllLens({ page: currentPage }));
-  }, []);
 
   const createNewLensHandler = (values, { resetForm }) => {
     dispatch(createNewLens(values));

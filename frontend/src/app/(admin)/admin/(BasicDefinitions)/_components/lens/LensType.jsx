@@ -11,9 +11,6 @@ import { LensTypelist } from "./listOfLensType";
 
 export default function LensType() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAllLensType());
-  }, []);
 
   const createNewLensTypeHandler = (values, { resetForm }) => {
     dispatch(createNewLensType(values));

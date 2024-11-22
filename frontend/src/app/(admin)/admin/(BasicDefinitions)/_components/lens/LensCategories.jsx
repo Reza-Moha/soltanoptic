@@ -15,9 +15,6 @@ import { LensCategoriesList } from "./ListOfLensCategories";
 
 export default function LensCategories() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAllLensCategories());
-  }, []);
 
   const createNewLensCategoriesHandler = (values, { resetForm }) => {
     dispatch(createNewLensCategoires(values));

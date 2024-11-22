@@ -20,10 +20,6 @@ export default function ReflactiveIndex() {
   const [characteristicsList, setCharacteristicsList] = useState([]);
   const [newCharacteristic, setNewCharacteristic] = useState("");
 
-  useEffect(() => {
-    dispatch(fetchAllRefractiveIndex());
-  }, []);
-
   const createNewRefractiveIndexHandler = (values, { resetForm }) => {
     const dataToSend = {
       ...values,

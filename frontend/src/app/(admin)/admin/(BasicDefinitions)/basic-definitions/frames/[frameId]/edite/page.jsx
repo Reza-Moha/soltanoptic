@@ -1,8 +1,12 @@
 import { getFrameByIdApi } from "@/services/admin/frame/frame.service";
+import setCookiesOnReq from "@/utils/setCookiesOnReq";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 async function editePage({ params: { frameId } }) {
-  const data = await getFrameByIdApi(frameId);
+  const cookie = cookies();
+  const options = setCookiesOnReq(cookie);
+  const data = await getFrameByIdApi(frameId, options);
   console.log(data);
 
   if (!data) {

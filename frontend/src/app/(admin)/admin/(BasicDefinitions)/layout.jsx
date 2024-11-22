@@ -1,4 +1,5 @@
 import AsideBasicDefinition from "./_components/asideBasicDefinition";
+import BasicPrividers from "./_components/BasicPrividers";
 
 export default function BasicDefinitionLayout({ children }) {
   return (
@@ -8,7 +9,7 @@ export default function BasicDefinitionLayout({ children }) {
           <AsideBasicDefinition />
         </aside>
         <div className="col-span-1 md:col-span-10 md:overflow-auto">
-          {children}
+          <BasicPrividers>{children}</BasicPrividers>
         </div>
       </div>
     </>

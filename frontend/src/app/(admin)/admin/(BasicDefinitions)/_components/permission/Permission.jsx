@@ -15,10 +15,6 @@ import {
 export default function Permission() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchPermissions());
-  }, [dispatch]);
-
   const createNewPermissionHandler = (values, { resetForm }) => {
     dispatch(createPermission(values));
     resetForm();

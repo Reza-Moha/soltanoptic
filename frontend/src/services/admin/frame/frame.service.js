@@ -50,9 +50,9 @@ export async function deleteFrameGenderByIdApi(id) {
     .delete(`/api/admin/frame/delete-gender/${id}`)
     .then(({ data }) => data);
 }
-export async function getFrameByIdApi(id) {
+export async function getFrameByIdApi(id, options) {
   return httpService
-    .get(`/api/admin/frame/get-frame/${id}`)
+    .get(`/api/admin/frame/get-frame/${id}`, options)
     .then(({ data }) => data);
 }
 export async function deleteFrameByIdApi(id) {
