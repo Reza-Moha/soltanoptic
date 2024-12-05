@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BasicWrapper = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const BasicWrapper = ({ title, children, open = false }) => {
+  const [isOpen, setIsOpen] = useState(open);
 
   const toggleOpen = () => setIsOpen(!isOpen);
 

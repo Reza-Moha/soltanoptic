@@ -16,7 +16,7 @@ module.exports = {
     ALL: `${process.env.ADMIN_ROLE}`,
   }),
   accessTokenCookieOptions: Object.freeze({
-    maxAge: 1000 * 60 * 20,
+    maxAge: 1000 * 60 * 60 * 24,
     httpOnly: true,
     signed: true,
     sameSite: "Lax",

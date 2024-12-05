@@ -14,7 +14,7 @@ app.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalConfig = error.config;
-    if (error.response.status === 401 && !originalConfig._retry) {
+    if (error.response?.status === 401 && !originalConfig._retry) {
       originalConfig._retry = true;
       try {
         const { data } = await axios.get(

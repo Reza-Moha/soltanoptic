@@ -1,14 +1,7 @@
 "use client";
+
 import { useDispatch } from "react-redux";
 import BasicWrapper from "../../BasicWrapper";
-import { useEffect, useState } from "react";
-import {
-  createNewFrame,
-  fetchAllFrame,
-  fetchAllFrameCategories,
-  fetchAllFrameGender,
-  fetchAllFrameType,
-} from "@/redux/slices/frame.slice";
 import { FieldArray, Form, Formik } from "formik";
 import { createNewFrameSchema } from "@/validators/admin";
 import Input from "@/components/Ui/Input";
@@ -17,8 +10,10 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import FileInput from "@/components/Ui/FileInput";
 import { BsTrash3, BsSunglasses } from "react-icons/bs";
 import NewFrameOptions from "../NewFrameOptions";
+import { createNewFrame, updateFrame } from "@/redux/slices/frame.slice";
+import { useState } from "react";
 
-const CreateNewFrame = () => {
+const FrameForm = ({ isEdit = false, initialData = null }) => {
   const dispatch = useDispatch();
   const [imagePreviews, setImagePreviews] = useState({});
 
@@ -26,8 +21,17 @@ const CreateNewFrame = () => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
-      setFieldValue(`colors[${index}].images`, files);
-      setImagePreviews((prev) => ({ ...prev, [index]: imageUrls }));
+      setFieldValue(
+        `colors[${index}].images`,
+        files.map((file, i) => ({
+          url: imageUrls[i],
+          file: file,
+        }))
+      );
+      setImagePreviews((prev) => ({
+        ...prev,
+        [index]: imageUrls,
+      }));
       return () => imageUrls.forEach(URL.revokeObjectURL);
     }
   };
@@ -41,11 +45,12 @@ const CreateNewFrame = () => {
     });
   };
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (key !== "colors") formData.append(key, value);
     });
+
     values.colors.forEach((color, index) => {
       formData.append(`colors[${index}][colorCode]`, color.colorCode);
       formData.append(`colors[${index}][count]`, color.count);
@@ -58,25 +63,43 @@ const CreateNewFrame = () => {
         formData.append(`images`, renamedFile);
       });
     });
-    dispatch(createNewFrame(formData));
+
+    if (isEdit) {
+      await dispatch(updateFrame(formData));
+    } else {
+      await dispatch(createNewFrame(formData));
+    }
+
     resetForm();
     setImagePreviews({});
   };
 
+  const handleRemoveImage = (colorIndex, imageIndex, setFieldValue) => {
+    setFieldValue(
+      `colors[${colorIndex}].images`,
+      values.colors[colorIndex].images.filter((_, idx) => idx !== imageIndex)
+    );
+  };
+
   return (
-    <BasicWrapper title="تعریف فریم جدید به انبار">
+    <BasicWrapper
+      open={isEdit}
+      title={isEdit ? "ویرایش فریم" : "تعریف فریم جدید"}
+    >
       <Formik
         validationSchema={createNewFrameSchema}
-        initialValues={{
-          name: "",
-          price: "",
-          frameCategory: "",
-          frameType: "",
-          frameGender: "",
-          serialNumber: "",
-          description: "",
-          colors: [{ colorCode: "#7fff00", count: 1, images: [] }],
-        }}
+        initialValues={
+          initialData || {
+            name: "",
+            price: "",
+            frameCategory: "",
+            frameType: "",
+            frameGender: "",
+            serialNumber: "",
+            description: "",
+            colors: [{ colorCode: "#7fff00", count: 1, images: [] }],
+          }
+        }
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors }) => (
@@ -146,18 +169,34 @@ const CreateNewFrame = () => {
                             handleImageChange(event, index, setFieldValue)
                           }
                         />
-                        {imagePreviews[index] && (
-                          <div className="flex space-x-2 mt-2 items-center justify-center">
-                            {imagePreviews[index].map((url, imgIndex) => (
+
+                        <div className="flex flex-wrap space-x-2 mt-2 items-center justify-center">
+                          {color.images.map((img, imgIndex) => (
+                            <div
+                              key={`img-${imgIndex}`}
+                              className="relative group"
+                            >
                               <img
-                                key={imgIndex}
-                                src={url}
-                                alt={`Preview ${index}-${imgIndex}`}
+                                src={img.url}
+                                alt={`Image ${imgIndex}`}
                                 className="w-20 h-20 object-cover rounded"
                               />
-                            ))}
-                          </div>
-                        )}
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleRemoveImage(
+                                    index,
+                                    imgIndex,
+                                    setFieldValue
+                                  )
+                                }
+                                className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                &times;
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                       <button
                         className="w-full h-5 flex items-center justify-center bg-rose-100 text-rose-700 hover:bg-rose-200 rounded transition-all ease-linear"
@@ -172,7 +211,9 @@ const CreateNewFrame = () => {
                     <button
                       className="rounded w-1/4 bg-slate-500 text-white py-2"
                       type="button"
-                      onClick={() => push({ colorCode: "#7fff00", images: [] })}
+                      onClick={() =>
+                        push({ colorCode: "#7fff00", count: 1, images: [] })
+                      }
                     >
                       اضافه کردن رنگ
                     </button>
@@ -180,10 +221,10 @@ const CreateNewFrame = () => {
                 </div>
               )}
             </FieldArray>
+
             <div className="md:col-span-2 px-10">
-              <SubmitBtn>ایجاد</SubmitBtn>
+              <SubmitBtn>{isEdit ? "ویرایش" : "ایجاد"}</SubmitBtn>
             </div>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
           </Form>
         )}
       </Formik>
@@ -191,4 +232,4 @@ const CreateNewFrame = () => {
   );
 };
 
-export default CreateNewFrame;
+export default FrameForm;
