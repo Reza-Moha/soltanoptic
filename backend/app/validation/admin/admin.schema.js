@@ -284,28 +284,27 @@ const createNewFrameSchema = Joi.object({
   description: Joi.string().allow(""),
   fileUploadPath: Joi.allow(),
   filename: Joi.string()
-    .regex(/(\.png|\.jpg|\.webp|\.jpeg)$/)
-    .error(CreateError.BadRequest("تصویر ارسال شده صحیح نمیباشد")),
+      .regex(/(\.png|\.jpg|\.webp|\.jpeg)$/)
+      .error(CreateError.BadRequest("تصویر ارسال شده صحیح نمیباشد")),
   colors: Joi.array()
-    .items(
-      Joi.object({
-        colorCode: Joi.string().required().messages({
-          "any.required": "رنگ الزامی است",
-        }),
-        count: Joi.number().greater(0).required().messages({
-          "number.base": "تعداد باید یک عدد باشد",
-          "number.greater": "تعداد فریم باید بیشتر از صفر باشد",
-          "any.required": "وارد کردن تعداد فریم الزامی است",
-        }),
-        images: Joi.array().items(Joi.string().required()).min(1).messages({
-          "array.min": "لطفا حداقل یک عکس انتخاب کنید",
-          "any.required": "انتخاب عکس الزامی است",
-        }),
-      })
-    )
-    .required(),
+      .items(
+          Joi.object({
+            colorCode: Joi.string().required().messages({
+              "any.required": "رنگ الزامی است",
+            }),
+            count: Joi.number().greater(0).required().messages({
+              "number.base": "تعداد باید یک عدد باشد",
+              "number.greater": "تعداد فریم باید بیشتر از صفر باشد",
+              "any.required": "وارد کردن تعداد فریم الزامی است",
+            }),
+            images: Joi.array().items(Joi.string().required()).min(1).messages({
+              "array.min": "لطفا حداقل یک عکس انتخاب کنید",
+              "any.required": "انتخاب عکس الزامی است",
+            }),
+          })
+      )
+      .required(),
 });
-
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,

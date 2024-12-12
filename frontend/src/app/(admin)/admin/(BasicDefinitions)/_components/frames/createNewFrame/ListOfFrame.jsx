@@ -40,8 +40,8 @@ export default function ListOfFrame() {
                   <td>{frame.name}</td>
                   <td>{toPersianDigits(frame.price || 0)}</td>
                   <td>{frame.serialNumber}</td>
-                  <td>{frame.FrameCategory?.title}</td>
-                  <td>{frame.FrameGender?.gender}</td>
+                  <td>{frame.FrameCategory?.title || ""}</td>
+                  <td>{frame.FrameGender?.gender || ""}</td>
                   <td className="grid grid-cols-1 lg:grid-cols-3 gap-1">
                     {frame?.FrameColors?.length > 0
                       ? frame.FrameColors.map((frameColor) => {

@@ -16,6 +16,7 @@ async function editePage({ params: { frameId } }) {
   const { frame } = data || {};
 
   const initialData = {
+    id: frame.id,
     name: frame.name,
     price: frame.price.replace(/,/g, ""),
     frameCategory: frame.FrameCategory.id,
@@ -27,8 +28,7 @@ async function editePage({ params: { frameId } }) {
       colorCode: color.colorCode,
       count: color.count,
       images: color.FrameImages.map((image) => ({
-        url: image.imageUrl,
-        file: null,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/${image.imageUrl}`,
       })),
     })),
   };
@@ -36,7 +36,6 @@ async function editePage({ params: { frameId } }) {
   return (
     <div className="h-screen">
       <FrameForm isEdit={true} initialData={initialData} />
-      <pre style={{ direction: "ltr" }}>{JSON.stringify(frame, null, 2)}</pre>
     </div>
   );
 }

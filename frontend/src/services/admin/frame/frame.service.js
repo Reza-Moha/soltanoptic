@@ -38,6 +38,11 @@ export async function createFrameGenderApi(data) {
     .post(`/api/admin/frame/create-gender`, data)
     .then(({ data }) => data);
 }
+export async function updateFrameApi(data) {
+  return httpService
+    .put(`/api/admin/frame/update-frame`, data)
+    .then(({ data }) => data);
+}
 
 export async function getAllFrameGenderApi() {
   return httpService

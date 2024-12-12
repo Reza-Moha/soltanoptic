@@ -29,9 +29,14 @@ router.get("/get-frame/:id", FrameController.getFrameById);
 router.post(
   "/create-frame",
   uploadFile.array("images"),
-  FrameController.createNewFrame
-);
 
+  FrameController.createNewFrame,
+);
+router.put(
+  "/update-frame",
+  uploadFile.array("images"),
+  FrameController.updateFrame,
+);
 router.get("/all-frame", FrameController.getAllFrame);
 module.exports = {
   frameRoutes: router,

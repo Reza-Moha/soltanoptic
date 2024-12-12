@@ -17,6 +17,8 @@ const { deleteFileInPublic } = require("../../../utils");
 const path = require("path");
 class FrameController extends Controller {
   async createNewFrame(req, res, next) {
+    console.log("req.body", req.body);
+    console.log("req.files", req.files);
     try {
       const {
         name,
@@ -30,6 +32,7 @@ class FrameController extends Controller {
         fileUploadPath,
       } = await createNewFrameSchema.validateAsync(req.body);
 
+      // Create the frame
       const frame = await FrameModel.create({
         name,
         price,
@@ -40,6 +43,101 @@ class FrameController extends Controller {
         FrameGenderId: frameGender,
       });
 
+      // Process colors and images
+      await Promise.all(
+        colors.map(async (color) => {
+          const createdColor = await FrameColor.create({
+            colorCode: color.colorCode,
+            count: parseInt(color.count),
+            FrameModelId: frame.id,
+          });
+
+          // Filter images based on colorCode
+          const colorFiles = req.files.filter((file) =>
+            file.originalname.includes(color.colorCode),
+          );
+
+          // Save images for the color
+          await Promise.all(
+            colorFiles.map(async (file) => {
+              const imageUrl = path
+                .join(fileUploadPath, file.filename)
+                .replace(/\\/g, "/");
+              await FrameImages.create({
+                imageUrl,
+                FrameColorId: createdColor.id,
+              });
+            }),
+          );
+        }),
+      );
+
+      return res.status(HttpStatus.CREATED).send({
+        statusCode: HttpStatus.CREATED,
+        message: "فریم با موفقیت به انبار اضافه شد",
+        newFrame: frame,
+      });
+    } catch (error) {
+      // Cleanup uploaded files if an error occurs
+      if (req.files) {
+        req.files.forEach((file) =>
+          deleteFileInPublic(path.join(req.body.fileUploadPath, file.filename)),
+        );
+      }
+      next(error);
+    }
+  }
+
+  async updateFrame(req, res, next) {
+    try {
+      const {
+        id,
+        name,
+        price,
+        frameCategory,
+        frameType,
+        frameGender,
+        serialNumber,
+        description,
+        colors,
+        fileUploadPath,
+      } = await createNewFrameSchema.validateAsync(req.body);
+
+      const frame = await FrameModel.findByPk(id);
+      if (!frame) {
+        return res.status(HttpStatus.NOT_FOUND).send({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: "فریم یافت نشد",
+        });
+      }
+
+      // حذف تمامی اطلاعات قبلی
+      const existingColors = await FrameColor.findAll({
+        where: { FrameModelId: frame.id },
+      });
+      for (const color of existingColors) {
+        const images = await FrameImages.findAll({
+          where: { FrameColorId: color.id },
+        });
+        for (const image of images) {
+          deleteFileInPublic(path.join(__dirname, "../public", image.imageUrl));
+          await image.destroy();
+        }
+        await color.destroy();
+      }
+
+      // به‌روزرسانی اطلاعات فریم
+      await frame.update({
+        name,
+        price,
+        serialNumber,
+        description,
+        FrameCategoryId: frameCategory,
+        FrameTypeId: frameType,
+        FrameGenderId: frameGender,
+      });
+
+      // اضافه کردن اطلاعات جدید
       for (const color of colors) {
         const createdColor = await FrameColor.create({
           colorCode: color.colorCode,
@@ -48,10 +146,10 @@ class FrameController extends Controller {
         });
 
         for (const file of req.files) {
-          const imageUrl = path
-            .join(fileUploadPath, file.filename)
-            .replace(/\\/g, "/");
           if (file.originalname.includes(color.colorCode)) {
+            const imageUrl = path
+              .join(fileUploadPath, file.filename)
+              .replace(/\\/g, "/");
             await FrameImages.create({
               imageUrl,
               FrameColorId: createdColor.id,
@@ -60,17 +158,12 @@ class FrameController extends Controller {
         }
       }
 
-      return res.status(HttpStatus.CREATED).send({
-        statusCode: HttpStatus.CREATED,
-        message: "فریم با موفقیت به انبار اضافه شد",
-        newFrame: frame,
+      return res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        message: "فریم با موفقیت به‌روزرسانی شد",
+        updatedFrame: frame,
       });
     } catch (error) {
-      if (req.files && req.files.length > 0) {
-        req.files.forEach((file) => {
-          deleteFileInPublic(req.body.fileUploadPath + "/" + file.filename);
-        });
-      }
       next(error);
     }
   }
@@ -85,15 +178,31 @@ class FrameController extends Controller {
       const frame = await FrameModel.findByPk(id, {
         include: [{ model: FrameColor, include: [FrameImages] }],
       });
+
       if (!frame) throw CreateError.NotFound("فریم با این مشخصات وجود ندارد");
 
+      // حذف فایل‌های تصاویر از پوشه عمومی
       for (const color of frame.FrameColors) {
         for (const image of color.FrameImages) {
-          deleteFileInPublic(image.imagePath);
+          if (!image.imageUrl) {
+            console.error(`Missing imageUrl for image:`, image);
+            continue; // عبور از حذف اگر مسیر فایل نامعتبر است
+          }
+
+          const fullPath = path.join(__dirname, "../public", image.imageUrl);
+          console.log("Deleting file:", fullPath);
+
+          try {
+            deleteFileInPublic(image.imageUrl); // استفاده از imageUrl
+          } catch (err) {
+            console.error(`Error deleting file: ${fullPath}`, err);
+          }
         }
       }
 
+      // حذف رکورد فریم از دیتابیس
       await frame.destroy();
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         message: "فریم با موفقیت حذف گردید",
@@ -102,6 +211,7 @@ class FrameController extends Controller {
       next(error);
     }
   }
+
   async getFrameById(req, res, next) {
     try {
       await idSchema.validateAsync(req.params);
@@ -139,6 +249,7 @@ class FrameController extends Controller {
       next(error);
     }
   }
+
   async getAllFrame(req, res, next) {
     try {
       const frames = await FrameModel.findAll({
@@ -180,7 +291,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameCategoty)
         throw CreateError.BadRequest(
-          "دسته بندی با این مشخصات قبلا ثبت شده است"
+          "دسته بندی با این مشخصات قبلا ثبت شده است",
         );
       const newFrameCategory = await FrameCategory.create({
         title,
@@ -188,7 +299,7 @@ class FrameController extends Controller {
       });
       if (!newFrameCategory)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید"
+          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -223,7 +334,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -250,7 +361,7 @@ class FrameController extends Controller {
       });
       if (!newFrameType)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید"
+          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -285,7 +396,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -306,7 +417,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameGender)
         throw CreateError.BadRequest(
-          "جنسیت فریم با این مشخصات قبلا ثبت شده است"
+          "جنسیت فریم با این مشخصات قبلا ثبت شده است",
         );
       const newFrameGender = await FrameGender.create({
         gender,
@@ -314,7 +425,7 @@ class FrameController extends Controller {
       });
       if (!newFrameGender)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید"
+          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -349,7 +460,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,

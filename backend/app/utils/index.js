@@ -94,12 +94,21 @@ function deleteInvalidPropertyInObject(data = {}, blackListFields = []) {
   });
 }
 
-function deleteFileInPublic(fileAddress) {
-  if (fileAddress) {
-    const pathFile = path.join(__dirname, "..", "public", fileAddress);
-    if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
+const deleteFileInPublic = (filePath) => {
+  if (!filePath || typeof filePath !== "string") {
+    console.warn(`Invalid filePath:`, filePath);
+    return;
   }
-}
+
+  const fullPath = path.join(__dirname, "../public", filePath);
+
+  if (fs.existsSync(fullPath)) {
+    fs.unlinkSync(fullPath);
+    console.log(`File deleted: ${fullPath}`);
+  } else {
+    console.warn(`File not found: ${fullPath}`);
+  }
+};
 
 function filterEmptyFieldsInDatabase(data) {
   return Object.fromEntries(

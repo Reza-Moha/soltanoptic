@@ -13,6 +13,7 @@ import {
   getAllFrameCategoryApi,
   getAllFrameGenderApi,
   getAllFrameTypeApi,
+  updateFrameApi,
 } from "@/services/admin/frame/frame.service";
 
 export const fetchAllFrame = createAsyncThunk(
@@ -26,6 +27,7 @@ export const fetchAllFrame = createAsyncThunk(
     }
   }
 );
+
 export const createNewFrame = createAsyncThunk(
   "frame/createNewFrame",
   async (values, { rejectWithValue }) => {
@@ -42,6 +44,24 @@ export const createNewFrame = createAsyncThunk(
     }
   }
 );
+
+export const updateFrame = createAsyncThunk(
+  "frame/updateFrame",
+  async (values, { rejectWithValue }) => {
+    try {
+      const updatedFrame = await updateFrameApi(values);
+      if (updatedFrame.statusCode === 200) {
+        toast.success(updatedFrame.message);
+        return updatedFrame.updatedFrame;
+      }
+    } catch (error) {
+      const data = error?.response?.data.errors;
+      toast.error(data.message);
+      return rejectWithValue(data);
+    }
+  }
+);
+
 export const deleteFrame = createAsyncThunk(
   "frame/deleteFrame",
   async (id, { rejectWithValue }) => {
@@ -56,6 +76,7 @@ export const deleteFrame = createAsyncThunk(
     }
   }
 );
+
 export const createNewFrameCategory = createAsyncThunk(
   "frame/createNewFrameCategory",
   async (values, { rejectWithValue }) => {
@@ -72,6 +93,7 @@ export const createNewFrameCategory = createAsyncThunk(
     }
   }
 );
+
 export const fetchAllFrameCategories = createAsyncThunk(
   "frame/fetchAllFrameCategories",
   async (_, { rejectWithValue }) => {
@@ -83,6 +105,7 @@ export const fetchAllFrameCategories = createAsyncThunk(
     }
   }
 );
+
 export const deleteFrameCategory = createAsyncThunk(
   "frame/deleteFrameCategory",
   async (id, { rejectWithValue }) => {
@@ -98,6 +121,7 @@ export const deleteFrameCategory = createAsyncThunk(
     }
   }
 );
+
 export const createNewFrameType = createAsyncThunk(
   "frame/createNewFrameType",
   async (values, { rejectWithValue }) => {
@@ -114,6 +138,7 @@ export const createNewFrameType = createAsyncThunk(
     }
   }
 );
+
 export const fetchAllFrameType = createAsyncThunk(
   "frame/fetchAllFrameType",
   async (_, { rejectWithValue }) => {
@@ -125,6 +150,7 @@ export const fetchAllFrameType = createAsyncThunk(
     }
   }
 );
+
 export const deleteFrameType = createAsyncThunk(
   "frame/deleteFrameType",
   async (id, { rejectWithValue }) => {
@@ -140,6 +166,7 @@ export const deleteFrameType = createAsyncThunk(
     }
   }
 );
+
 export const createNewFrameGender = createAsyncThunk(
   "frame/createNewFrameGender",
   async (values, { rejectWithValue }) => {
@@ -156,6 +183,7 @@ export const createNewFrameGender = createAsyncThunk(
     }
   }
 );
+
 export const fetchAllFrameGender = createAsyncThunk(
   "frame/fetchAllFrameGender",
   async (_, { rejectWithValue }) => {
@@ -167,6 +195,7 @@ export const fetchAllFrameGender = createAsyncThunk(
     }
   }
 );
+
 export const deleteFrameGender = createAsyncThunk(
   "frame/deleteFrameGender",
   async (id, { rejectWithValue }) => {
@@ -270,6 +299,14 @@ const frameSlice = createSlice({
         state.frameGender = state.frameGender.filter(
           (FGender) => FGender.id !== action.payload
         );
+      })
+      .addCase(updateFrame.fulfilled, (state, action) => {
+        const index = state.frameList.findIndex(
+          (frame) => frame.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.frameList[index] = action.payload;
+        }
       });
   },
 });

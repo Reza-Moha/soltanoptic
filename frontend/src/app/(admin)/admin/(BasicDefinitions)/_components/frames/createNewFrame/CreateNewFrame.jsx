@@ -12,6 +12,7 @@ import { BsTrash3, BsSunglasses } from "react-icons/bs";
 import NewFrameOptions from "../NewFrameOptions";
 import { createNewFrame, updateFrame } from "@/redux/slices/frame.slice";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const FrameForm = ({ isEdit = false, initialData = null }) => {
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
         `colors[${index}].images`,
         files.map((file, i) => ({
           url: imageUrls[i],
-          file: file,
-        }))
+          file,
+        })),
       );
       setImagePreviews((prev) => ({
         ...prev,
@@ -45,6 +46,13 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
     });
   };
 
+  const handleRemoveImage = (colorIndex, imageIndex, setFieldValue, values) => {
+    setFieldValue(
+      `colors[${colorIndex}].images`,
+      values.colors[colorIndex].images.filter((_, idx) => idx !== imageIndex),
+    );
+  };
+
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
@@ -55,12 +63,8 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
       formData.append(`colors[${index}][colorCode]`, color.colorCode);
       formData.append(`colors[${index}][count]`, color.count);
       color.images.forEach((image) => {
-        const renamedFile = new File(
-          [image],
-          `${color.colorCode}-${image.name}`,
-          { type: image.type }
-        );
-        formData.append(`images`, renamedFile);
+        console.log(image);
+        formData.append(`images`, image.file);
       });
     });
 
@@ -70,17 +74,9 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
       await dispatch(createNewFrame(formData));
     }
 
-    resetForm();
+    // resetForm();
     setImagePreviews({});
   };
-
-  const handleRemoveImage = (colorIndex, imageIndex, setFieldValue) => {
-    setFieldValue(
-      `colors[${colorIndex}].images`,
-      values.colors[colorIndex].images.filter((_, idx) => idx !== imageIndex)
-    );
-  };
-
   return (
     <BasicWrapper
       open={isEdit}
@@ -125,7 +121,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
                   {values.colors.map((color, index) => (
                     <div
                       key={index}
-                      className={`grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-white mb-4 border border-secondary-200 text-secondary-900`}
+                      className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-white mb-4 border border-secondary-200 text-secondary-900"
                       style={{ borderRight: `3px solid ${color.colorCode}` }}
                     >
                       <div className="md:col-span-11">
@@ -138,7 +134,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
                             onChange={(e) =>
                               setFieldValue(
                                 `colors[${index}].colorCode`,
-                                e.target.value
+                                e.target.value,
                               )
                             }
                           />
@@ -156,7 +152,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
                           onChange={(e) =>
                             setFieldValue(
                               `colors[${index}].count`,
-                              parseInt(e.target.value) || 0
+                              parseInt(e.target.value) || 0,
                             )
                           }
                         />
@@ -187,7 +183,8 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
                                   handleRemoveImage(
                                     index,
                                     imgIndex,
-                                    setFieldValue
+                                    setFieldValue,
+                                    values,
                                   )
                                 }
                                 className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
