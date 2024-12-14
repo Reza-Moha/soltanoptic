@@ -3,6 +3,7 @@ import setCookiesOnReq from "@/utils/setCookiesOnReq";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import FrameForm from "../../../../_components/frames/createNewFrame/CreateNewFrame";
+import { imageUrlToFile } from "@/utils";
 
 async function editePage({ params: { frameId } }) {
   const cookie = cookies();
@@ -28,7 +29,7 @@ async function editePage({ params: { frameId } }) {
       colorCode: color.colorCode,
       count: color.count,
       images: color.FrameImages.map((image) => ({
-        url: `${process.env.NEXT_PUBLIC_API_URL}/${image.imageUrl}`,
+        url: image.imageUrl,
       })),
     })),
   };
