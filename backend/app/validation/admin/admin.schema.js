@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const CreateError = require("http-errors");
-const { validateNationalId, isValidBankCardNumber} = require("../../utils");
+const { validateNationalId, isValidBankCardNumber } = require("../../utils");
 
 const updateAdminProfileSchema = Joi.object({
   phoneNumber: Joi.string()
@@ -308,54 +308,97 @@ const createNewFrameSchema = Joi.object({
 });
 
 const createNewBankSchema = Joi.object({
-  bankName: Joi.string()
-      .min(3)
-      .max(50)
-      .required()
-      .messages({
-        'string.min': 'نام بانک باید حداقل ۳ کاراکتر باشد',
-        'string.max': 'نام بانک نمی‌تواند بیش از ۵۰ کاراکتر باشد',
-        'any.required': 'لطفا نام بانک خود را وارد فرمائید',
-      }),
+  bankName: Joi.string().min(3).max(50).required().messages({
+    "string.min": "نام بانک باید حداقل ۳ کاراکتر باشد",
+    "string.max": "نام بانک نمی‌تواند بیش از ۵۰ کاراکتر باشد",
+    "any.required": "لطفا نام بانک خود را وارد فرمائید",
+  }),
 
   cartNumber: Joi.string()
-      .length(16)
-      .regex(/^\d+$/)
-      .custom((value, helpers) => {
-        if (!isValidBankCardNumber(value)) {
-          return helpers.error('any.invalid', { message: 'شماره کارت معتبر نیست' });
-        }
-        return value;
-      })
-      .required()
-      .messages({
-        'string.length': 'شماره کارت باید دقیقاً 16 رقم باشد',
-        'string.pattern.base': 'شماره کارت باید فقط شامل اعداد باشد',
-        'any.invalid': '{{#message}}',
-        'any.required': 'شماره کارت اجباری است',
-      }),
+    .length(16)
+    .regex(/^\d+$/)
+    .custom((value, helpers) => {
+      if (!isValidBankCardNumber(value)) {
+        return helpers.error("any.invalid", {
+          message: "شماره کارت معتبر نیست",
+        });
+      }
+      return value;
+    })
+    .required()
+    .messages({
+      "string.length": "شماره کارت باید دقیقاً 16 رقم باشد",
+      "string.pattern.base": "شماره کارت باید فقط شامل اعداد باشد",
+      "any.invalid": "{{#message}}",
+      "any.required": "شماره کارت اجباری است",
+    }),
 
-  bankAccountHolder: Joi.string()
-      .min(3)
-      .max(50)
-      .required()
-      .messages({
-        'string.min': 'نام صاحب حساب باید حداقل ۳ کاراکتر باشد',
-        'string.max': 'نام صاحب حساب نمی‌تواند بیش از ۵۰ کاراکتر باشد',
-        'any.required': 'لطفا نام صاحب حساب خود را وارد فرمائید',
-      }),
+  bankAccountHolder: Joi.string().min(3).max(50).required().messages({
+    "string.min": "نام صاحب حساب باید حداقل ۳ کاراکتر باشد",
+    "string.max": "نام صاحب حساب نمی‌تواند بیش از ۵۰ کاراکتر باشد",
+    "any.required": "لطفا نام صاحب حساب خود را وارد فرمائید",
+  }),
 
   shabaNumber: Joi.string()
-      .length(24)
-      .regex(/^IR[0-9]{22}$/)
-      .required()
-      .messages({
-        'string.length': 'شماره شبا باید دقیقاً 24 کاراکتر باشد',
-        'string.pattern.base': 'شماره شبا معتبر نیست. لطفاً یک شماره شبا صحیح وارد کنید.',
-        'any.required': 'شماره شبا اجباری است',
-      }),
+    .length(24)
+    .regex(/^IR[0-9]{22}$/)
+    .required()
+    .messages({
+      "string.length": "شماره شبا باید دقیقاً 24 کاراکتر باشد",
+      "string.pattern.base":
+        "شماره شبا معتبر نیست. لطفاً یک شماره شبا صحیح وارد کنید.",
+      "any.required": "شماره شبا اجباری است",
+    }),
 });
 
+const createNewInsuranceSchema = Joi.object({
+  insuranceName: Joi.string().min(2).max(50).required().messages({
+    "string.min": "نام بیمه باید حداقل 2 کاراکتر باشد",
+    "string.max": "نام بیمه نمی‌تواند بیش از ۵۰ کاراکتر باشد",
+    "any.required": "لطفا نام بیمه خود را وارد فرمائید",
+  }),
+  insuranceFranchise: Joi.number()
+    .integer()
+    .min(10)
+    .max(99)
+    .required()
+    .messages({
+      "number.base": "فرانشیز باید یک عدد معتبر باشد.",
+      "number.integer": "فرانشیز باید یک عدد صحیح باشد.",
+      "number.min": "فرانشیز نمی‌تواند کمتر از 10 باشد.",
+      "number.max": "فرانشیز نمی‌تواند بیشتر از 99 باشد.",
+      "any.required": "لطفا درصد فرانشیز بیمه را وارد فرمائید",
+    }),
+  documents: Joi.array()
+    .items(
+      Joi.string().min(3).required().messages({
+        "string.min": "عنوان مدارک نباید کم‌تر از سه کاراکتر باشد",
+        "any.required": "لطفا مدارک مورد نیاز برای بیمه را وارد فرمائید",
+      })
+    )
+    .min(1)
+    .messages({
+      "array.min": "حداقل باید یک ویژگی وارد شود",
+    }),
+  panelUserName: Joi.string().min(1).max(50).required().messages({
+    "string.min": "نام کاربری باید حداقل 1 کاراکتر باشد",
+    "string.max": "نام کاربری نمی‌تواند بیش از ۵۰ کاراکتر باشد",
+    "any.required": "لطفا نام کاربری پنل را وارد فرمائید",
+  }),
+  websiteLink: Joi.string().uri().required().messages({
+    "string.uri": "لطفاً یک لینک معتبر وارد کنید.",
+    "any.required": "لطفاً یک لینک وارد کنید.",
+  }),
+  panelPassword: Joi.string().min(2).max(50).required().messages({
+    "string.min": "رمز عبور پنل باید حداقل 2 کاراکتر باشد",
+    "string.max": "رمز عبور پنل نمی‌تواند بیش از ۵۰ کاراکتر باشد",
+    "any.required": "لطفا رمز عبور پنل خود را وارد فرمائید",
+  }),
+  description: Joi.string().min(2).max(200).messages({
+    "string.min": "توضیحات بیمه باید حداقل 2 کاراکتر باشد",
+    "string.max": "توضیحات بیمه نمی‌تواند بیش از 200 کاراکتر باشد",
+  }),
+});
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -371,5 +414,6 @@ module.exports = {
   createFrameCategorySchema,
   createFrameGenderSchema,
   createNewFrameSchema,
-  createNewBankSchema
+  createNewBankSchema,
+  createNewInsuranceSchema,
 };

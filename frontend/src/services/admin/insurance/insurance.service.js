@@ -5,11 +5,13 @@ export async function createNewInsuranceApi(data) {
     .post(`/api/admin/insurance/create`, data)
     .then(({ data }) => data);
 }
-export async function deleteBankById(id) {
+export async function deleteInsuranceById(id) {
   return httpService
-    .delete(`/api/admin/bank/delete/${id}`)
+    .delete(`/api/admin/insurance/delete/${id}`)
     .then(({ data }) => data);
 }
-export async function getAllBankApi() {
-  return httpService.get(`/api/admin/bank/get-all`).then(({ data }) => data);
+export async function getAllInsuranceApi() {
+  return httpService
+    .get(`/api/admin/insurance/get-all`)
+    .then(({ data }) => data);
 }

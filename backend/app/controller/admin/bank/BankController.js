@@ -1,9 +1,9 @@
-const Controller = require("../Controller");
+const Controller = require("../../Controller");
 const {
   createNewBankSchema,
   idSchema,
-} = require("../../validation/admin/admin.schema");
-const { BankModel } = require("../../models/Bank.model");
+} = require("../../../validation/admin/admin.schema");
+const { BankModel } = require("../../../models/Bank.model");
 const CreateError = require("http-errors");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 class BankController extends Controller {

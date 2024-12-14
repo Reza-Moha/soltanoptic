@@ -1,9 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import {
-  createNewRefractiveIndex,
-  fetchAllRefractiveIndex,
-} from "@/redux/slices/lensSlice";
+import { useState } from "react";
+import { createNewRefractiveIndex } from "@/redux/slices/lensSlice";
 import { createNewRefractiveIndexSchema } from "@/validators/admin";
 import BasicWrapper from "../BasicWrapper";
 import { Form, Formik, Field } from "formik";

@@ -15,12 +15,14 @@ import {
 import { fetchPermissions } from "@/redux/slices/permissionSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {fetchAllBanks} from "@/redux/slices/bankSlice";
+import { fetchAllBanks } from "@/redux/slices/bankSlice";
+import { fetchAllInsurance } from "@/redux/slices/insuranceSlice";
 
 export default function BasicPrividers({ children }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchAllInsurance());
     dispatch(fetchAllBanks());
     dispatch(fetchAllDoctors());
     dispatch(fetchAllLens({ page: 1 }));

@@ -1,20 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { createNewInsuranceApi } from "@/services/admin/insurance/insurance.service";
+import {
+  createNewInsuranceApi,
+  deleteInsuranceById,
+  getAllInsuranceApi,
+} from "@/services/admin/insurance/insurance.service";
 
-// export const fetchAllBanks = createAsyncThunk(
-//   "bank/fetchAllBank",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const data = await getAllBankApi();
-//       return data.allBanks;
-//     } catch (error) {
-//       const errors = error?.response?.data?.errors;
-//       toast.error(errors.message);
-//       return rejectWithValue(errors);
-//     }
-//   },
-// );
+export const fetchAllInsurance = createAsyncThunk(
+  "insurance/fetchAllInsurance",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getAllInsuranceApi();
+      return data.allInsurance;
+    } catch (error) {
+      const errors = error?.response?.data?.errors;
+      toast.error(errors.message);
+      return rejectWithValue(errors);
+    }
+  },
+);
 
 export const createNewInsurance = createAsyncThunk(
   "insurance/create",
@@ -30,20 +34,20 @@ export const createNewInsurance = createAsyncThunk(
     }
   },
 );
-// export const deleteBank = createAsyncThunk(
-//   "bank/delete",
-//   async (id, { rejectWithValue }) => {
-//     try {
-//       const data = await deleteBankById(id);
-//       toast.success(data.message);
-//       return id;
-//     } catch (error) {
-//       const errors = error?.response?.data?.errors;
-//       toast.error(errors.message);
-//       return rejectWithValue(errors);
-//     }
-//   },
-// );
+export const deleteInsurance = createAsyncThunk(
+  "insurance/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      const data = await deleteInsuranceById(id);
+      toast.success(data.message);
+      return id;
+    } catch (error) {
+      const errors = error?.response?.data?.errors;
+      toast.error(errors.message);
+      return rejectWithValue(errors);
+    }
+  },
+);
 
 const insuranceSlice = createSlice({
   name: "insurance",
@@ -55,17 +59,17 @@ const insuranceSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // .addCase(fetchAllBanks.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(fetchAllBanks.fulfilled, (state, action) => {
-      //   state.bankList = action.payload;
-      //   state.isLoading = false;
-      // })
-      // .addCase(fetchAllBanks.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.error = action.payload;
-      // })
+      .addCase(fetchAllInsurance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllInsurance.fulfilled, (state, action) => {
+        state.insuranceList = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchAllInsurance.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
       .addCase(createNewInsurance.pending, (state) => {
         state.isLoading = true;
@@ -77,12 +81,12 @@ const insuranceSlice = createSlice({
       .addCase(createNewInsurance.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteInsurance.fulfilled, (state, action) => {
+        state.insuranceList = state.insuranceList.filter(
+          (insurance) => insurance.id !== action.payload,
+        );
       });
-    // .addCase(deleteBank.fulfilled, (state, action) => {
-    //   state.bankList = state.bankList.filter(
-    //     (bank) => bank.BankId !== action.payload,
-    //   );
-    // });
   },
 });
 

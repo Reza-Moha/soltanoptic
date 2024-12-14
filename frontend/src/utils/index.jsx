@@ -78,7 +78,7 @@ export const BasicDefinitionsLinks = [
     title: "تعریف بیمه",
     className: "text-sm",
     svg: <CiMedicalClipboard size="20" />,
-    href: "insurance ",
+    href: "insurance",
   },
 ];
 

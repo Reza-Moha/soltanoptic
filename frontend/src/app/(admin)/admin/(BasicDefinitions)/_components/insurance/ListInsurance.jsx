@@ -2,46 +2,63 @@ import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import Table from "@/components/Ui/Table";
 import { useSelector } from "react-redux";
-import { deleteBank } from "@/redux/slices/bankSlice";
+import { toPersianDigits } from "@/utils";
+import { deleteInsurance } from "@/redux/slices/insuranceSlice";
 
-export default function InsuranceList() {
+export function InsuranceList() {
   const dispatch = useDispatch();
 
   const { insuranceList, isLoading } = useSelector(
-    (state) => state.insuranceSlice,
+    (state) => state.insuranceSlice
   );
 
-  const handleDeleteBank = (id) => {
-    dispatch(deleteBank(id));
+  const handleDeleteInsurance = (id) => {
+    dispatch(deleteInsurance(id));
   };
 
   return (
-    <>
+    <div className="border-t border-secondary-500">
       {isLoading ? (
         <div className="spinner"></div>
       ) : (
         <Table>
           <Table.Header>
-            <th>عنوان</th>
-            <th>نام صاحب حساب</th>
-            <th>شماره کارت</th>
-            <th>شماره شباء</th>
+            <th>نام بیمه</th>
+            <th>فرانشیز</th>
+            <th>نام کاربری</th>
+            <th>رمز عبور</th>
+            <th>لینک وب سایت</th>
+            <th>مدارک</th>
+            <th>توضیحات</th>
             <th>عملیات</th>
           </Table.Header>
           <Table.Body>
             {insuranceList?.length > 0 ? (
               insuranceList.map((insurance) => (
-                <motion.tr key={insurance.InsuranceId}>
-                  <td>{insurance.bankName}</td>
-                  <td>{insurance.bankAccountHolder}</td>
-                  <td>{insurance.cartNumber}</td>
-                  <td>{insurance.shabaNumber}</td>
-                  <td className="flex items-center gap-x-4">
+                <motion.tr key={insurance.id}>
+                  <td className="">{insurance.insuranceName}</td>
+                  <td className="">{insurance.insuranceFranchise}</td>
+                  <td className="">{insurance.panelUserName}</td>
+                  <td className="">{insurance.panelPassword}</td>
+                  <td className="">{insurance.websiteLink}</td>
+
+                  <td className="font-bold text-sm">
+                    {insurance.documents.length > 0
+                      ? insurance.documents.map((item, index) => (
+                          <h3
+                            key={index}
+                            className="text-xs mb-1.5 border-r-2 border-indigo-400 pr-1"
+                          >
+                            {toPersianDigits(item || 0)}
+                          </h3>
+                        ))
+                      : null}
+                  </td>
+                  <td className="">{insurance.description}</td>
+                  <td>
                     <button
-                      className="text-rose-500"
-                      onClick={() =>
-                        handleDeleteInsurance(insurance.InsuranceId)
-                      }
+                      className="text-rose-500 hover:bg-rose-100 rounded-full p-1 transition-all ease-in-out duration-300"
+                      onClick={() => handleDeleteInsurance(insurance.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -62,13 +79,13 @@ export default function InsuranceList() {
             ) : (
               <Table.Row>
                 <td colSpan="3" className="text-center">
-                  بیمه برای نمایش وجود ندارد.
+                  بیمه یافت نشد.
                 </td>
               </Table.Row>
             )}
           </Table.Body>
         </Table>
       )}
-    </>
+    </div>
   );
 }
