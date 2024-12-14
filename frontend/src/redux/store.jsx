@@ -6,6 +6,8 @@ import employeeSlice from "./slices/employee.slice";
 import doctorsSlice from "./slices/doctors.slice";
 import lensSlice from "./slices/lensSlice";
 import frameSlice from "./slices/frame.slice";
+import bankSlice from "./slices/bankSlice";
+import insuranceSlice from "./slices/insuranceSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -15,5 +17,7 @@ export const store = configureStore({
     doctorsSlice,
     lensSlice,
     frameSlice,
+    bankSlice,
+    insuranceSlice,
   },
 });

@@ -15,11 +15,13 @@ import {
 import { fetchPermissions } from "@/redux/slices/permissionSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import {fetchAllBanks} from "@/redux/slices/bankSlice";
 
 export default function BasicPrividers({ children }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchAllBanks());
     dispatch(fetchAllDoctors());
     dispatch(fetchAllLens({ page: 1 }));
     dispatch(fetchAllLensCategories());

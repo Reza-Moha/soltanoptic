@@ -31,7 +31,7 @@ DoctorsModel.init(
     timestamps: true,
   }
 );
-DoctorsModel.sync({ force: true });
+
 module.exports = {
   DoctorsModel,
 };

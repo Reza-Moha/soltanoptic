@@ -40,7 +40,7 @@ class LensController extends Controller {
       });
       if (exsistLens)
         throw CreateError.BadRequest("عدسی با این مشخصات قبلا ثبت شده است");
-      LensModel.sync({ alter: true });
+      await LensModel.sync({alter: true});
       const createdNewLens = await LensModel.create({
         lensImage,
         lensName,

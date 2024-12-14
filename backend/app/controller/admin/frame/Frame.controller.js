@@ -17,8 +17,6 @@ const { deleteFileInPublic } = require("../../../utils");
 const path = require("path");
 class FrameController extends Controller {
   async createNewFrame(req, res, next) {
-    console.log("req.body", req.body);
-    console.log("req.files", req.files);
     try {
       const {
         name,
@@ -32,7 +30,6 @@ class FrameController extends Controller {
         fileUploadPath,
       } = await createNewFrameSchema.validateAsync(req.body);
 
-      // Create the frame
       const frame = await FrameModel.create({
         name,
         price,
@@ -43,7 +40,6 @@ class FrameController extends Controller {
         FrameGenderId: frameGender,
       });
 
-      // Process colors and images
       await Promise.all(
         colors.map(async (color) => {
           const createdColor = await FrameColor.create({
@@ -52,12 +48,12 @@ class FrameController extends Controller {
             FrameModelId: frame.id,
           });
 
-          // Filter images based on colorCode
-          const colorFiles = req.files.filter((file) =>
-            file.originalname.includes(color.colorCode),
+          const colorFiles = req.files.filter(
+            (file) =>
+              file.originalname.split("-")[0].toLowerCase() ===
+              color.colorCode.replace("#", "").toLowerCase()
           );
 
-          // Save images for the color
           await Promise.all(
             colorFiles.map(async (file) => {
               const imageUrl = path
@@ -67,21 +63,37 @@ class FrameController extends Controller {
                 imageUrl,
                 FrameColorId: createdColor.id,
               });
-            }),
+            })
           );
-        }),
+        })
       );
-
+      const newFrame = await FrameModel.findOne({
+        where: { id: frame.id },
+        include: [
+          { model: FrameCategory, as: "FrameCategory" },
+          { model: FrameType, as: "FrameType" },
+          { model: FrameGender, as: "FrameGender" },
+          {
+            model: FrameColor,
+            as: "FrameColors",
+            include: [
+              {
+                model: FrameImages,
+                as: "FrameImages",
+              },
+            ],
+          },
+        ],
+      });
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "فریم با موفقیت به انبار اضافه شد",
-        newFrame: frame,
+        newFrame,
       });
     } catch (error) {
-      // Cleanup uploaded files if an error occurs
       if (req.files) {
         req.files.forEach((file) =>
-          deleteFileInPublic(path.join(req.body.fileUploadPath, file.filename)),
+          deleteFileInPublic(path.join(req.body.fileUploadPath, file.filename))
         );
       }
       next(error);
@@ -111,7 +123,6 @@ class FrameController extends Controller {
         });
       }
 
-      // حذف تمامی اطلاعات قبلی
       const existingColors = await FrameColor.findAll({
         where: { FrameModelId: frame.id },
       });
@@ -120,13 +131,12 @@ class FrameController extends Controller {
           where: { FrameColorId: color.id },
         });
         for (const image of images) {
-          deleteFileInPublic(path.join(__dirname, "../public", image.imageUrl));
+          deleteFileInPublic(path.join(image.imageUrl));
           await image.destroy();
         }
         await color.destroy();
       }
 
-      // به‌روزرسانی اطلاعات فریم
       await frame.update({
         name,
         price,
@@ -137,7 +147,6 @@ class FrameController extends Controller {
         FrameGenderId: frameGender,
       });
 
-      // اضافه کردن اطلاعات جدید
       for (const color of colors) {
         const createdColor = await FrameColor.create({
           colorCode: color.colorCode,
@@ -146,7 +155,10 @@ class FrameController extends Controller {
         });
 
         for (const file of req.files) {
-          if (file.originalname.includes(color.colorCode)) {
+          if (
+            file.originalname.split("-")[0].toLowerCase() ===
+            color.colorCode.replace("#", "").toLowerCase()
+          ) {
             const imageUrl = path
               .join(fileUploadPath, file.filename)
               .replace(/\\/g, "/");
@@ -157,11 +169,28 @@ class FrameController extends Controller {
           }
         }
       }
-
+      const updatedFrame = await FrameModel.findOne({
+        where: { id: frame.id },
+        include: [
+          { model: FrameCategory, as: "FrameCategory" },
+          { model: FrameType, as: "FrameType" },
+          { model: FrameGender, as: "FrameGender" },
+          {
+            model: FrameColor,
+            as: "FrameColors",
+            include: [
+              {
+                model: FrameImages,
+                as: "FrameImages",
+              },
+            ],
+          },
+        ],
+      });
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         message: "فریم با موفقیت به‌روزرسانی شد",
-        updatedFrame: frame,
+        updatedFrame,
       });
     } catch (error) {
       next(error);
@@ -291,7 +320,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameCategoty)
         throw CreateError.BadRequest(
-          "دسته بندی با این مشخصات قبلا ثبت شده است",
+          "دسته بندی با این مشخصات قبلا ثبت شده است"
         );
       const newFrameCategory = await FrameCategory.create({
         title,
@@ -299,7 +328,7 @@ class FrameController extends Controller {
       });
       if (!newFrameCategory)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید",
+          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -334,7 +363,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید",
+          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -361,7 +390,7 @@ class FrameController extends Controller {
       });
       if (!newFrameType)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید",
+          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -396,7 +425,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
+          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -417,7 +446,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameGender)
         throw CreateError.BadRequest(
-          "جنسیت فریم با این مشخصات قبلا ثبت شده است",
+          "جنسیت فریم با این مشخصات قبلا ثبت شده است"
         );
       const newFrameGender = await FrameGender.create({
         gender,
@@ -425,7 +454,7 @@ class FrameController extends Controller {
       });
       if (!newFrameGender)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید",
+          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -460,7 +489,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
+          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,

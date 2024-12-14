@@ -21,71 +21,57 @@ function createRoute(req) {
     "uploads",
     year,
     month,
-    day,
+    day
   );
 
   req.body.fileUploadPath = path.join("uploads", year, month, day); // Relative path for client
   try {
     fs.mkdirSync(directory, { recursive: true });
   } catch (err) {
-    console.error("Error creating upload directory:", err.message);
     throw createError.InternalServerError("Failed to create upload directory");
   }
-  console.log("directory", directory);
+
   return directory;
 }
 
-/**
- * Multer storage configuration
- */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
       if (file?.originalname) {
         const filePath = createRoute(req);
-        console.log("Destination Path:", req);
-        console.log("filePath", filePath);
         return cb(null, filePath);
       }
       cb(createError.BadRequest("Invalid file data"));
     } catch (err) {
-      console.error("Error in destination:", err);
       cb(err);
     }
   },
   filename: (req, file, cb) => {
     try {
       if (file.originalname) {
-        console.log("Original Filename:", file.originalname);
         const ext = path.extname(file.originalname).toLowerCase();
-        const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-        req.body.filename = fileName; // Store filename in the request body for further use
+        const fileName = `${Date.now()}-${Math.round(
+          Math.random() * 1e9
+        )}${ext}`;
+        req.body.filename = fileName;
         return cb(null, fileName);
       }
     } catch (error) {
-      console.error("Error in filename:", error);
       cb(createError.BadRequest("Invalid file name", error));
     }
   },
 });
 
-/**
- * File filter for images
- */
 function fileFilter(req, file, cb) {
-  console.log("Uploaded file:", file);
   const ext = path.extname(file.originalname).toLowerCase();
   const allowedExtensions = [".jpg", ".jpeg", ".png"];
   if (allowedExtensions.includes(ext)) {
     return cb(null, true);
   }
-  console.error("Invalid file format:", ext);
+
   return cb(createError.NotAcceptable("فرمت ارسال شده تصویر صحیح نمیباشد"));
 }
 
-/**
- * File filter for videos
- */
 function videoFilter(req, file, cb) {
   const ext = path.extname(file.originalname).toLowerCase();
   const allowedExtensions = [".mp4", ".mpg", ".mov", ".avi", ".mkv"];
@@ -95,11 +81,9 @@ function videoFilter(req, file, cb) {
   return cb(createError.NotAcceptable("فرمت ارسال شده ویدیو صحیح نمیباشد"));
 }
 
-// Define size limits
 const pictureMaxSize = 10 * 1024 * 1024; // 10MB
 const videoMaxSize = 300 * 1024 * 1024; // 300MB
 
-// Multer configurations for file uploads
 const uploadFile = multer({
   storage,
   fileFilter,

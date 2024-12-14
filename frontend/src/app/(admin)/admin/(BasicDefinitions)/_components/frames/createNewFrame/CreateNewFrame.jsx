@@ -10,9 +10,10 @@ import NewFrameOptions from "../NewFrameOptions";
 import { createNewFrame, updateFrame } from "@/redux/slices/frame.slice";
 import ColorFieldArray from "@/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/ColorFieldArray";
 import { imageUrlToFile } from "@/utils";
-
+import { useRouter } from "next/navigation";
 const FrameForm = ({ isEdit = false, initialData = null }) => {
   const dispatch = useDispatch();
+  const router = useRouter()
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
 
@@ -52,6 +53,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
     }
 
     resetForm();
+    router.back()
   };
   return (
     <BasicWrapper

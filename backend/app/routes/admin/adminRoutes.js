@@ -8,6 +8,7 @@ const { doctorsRoutes } = require("./doctors/doctorsRoutes");
 const { frameRoutes } = require("./frames/frameRoutes");
 const { lensRoutes } = require("./lens/lensRoutes");
 const { RBACRoutes } = require("./RBAC/RBACRoutes");
+const {bankRoutes} = require("./bank/bankRoutes");
 
 router.patch(
   "/admin-profile-update",
@@ -35,6 +36,7 @@ router.use("/doctors", doctorsRoutes);
 router.use("/RBAC", RBACRoutes);
 router.use("/lens", lensRoutes);
 router.use("/frame", frameRoutes);
+router.use("/bank", bankRoutes);
 
 module.exports = {
   AdminRoutes: router,

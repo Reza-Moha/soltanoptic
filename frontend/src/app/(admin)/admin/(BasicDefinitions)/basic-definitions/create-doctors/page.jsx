@@ -6,8 +6,7 @@ import { createNewDoctorSchema } from "@/validators/admin";
 import { Form, Formik } from "formik";
 import { DoctorsList } from "../../_components/doctors/doctorsList";
 import { useDispatch } from "react-redux";
-import { createNewDoctor, fetchAllDoctors } from "@/redux/slices/doctors.slice";
-import { useEffect } from "react";
+import { createNewDoctor } from "@/redux/slices/doctors.slice";
 
 export default function Doctors() {
   const dispatch = useDispatch();

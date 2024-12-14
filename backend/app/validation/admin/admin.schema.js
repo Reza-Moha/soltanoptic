@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const CreateError = require("http-errors");
-const { validateNationalId } = require("../../utils");
+const { validateNationalId, isValidBankCardNumber} = require("../../utils");
 
 const updateAdminProfileSchema = Joi.object({
   phoneNumber: Joi.string()
@@ -260,6 +260,7 @@ const createFrameGenderSchema = Joi.object({
 });
 
 const createNewFrameSchema = Joi.object({
+  id: Joi.string().trim().guid({ version: "uuidv4" }).allow(),
   name: Joi.string().required().messages({
     "any.required": "لطفا نام فریم را وارد فرمائید",
   }),
@@ -284,27 +285,77 @@ const createNewFrameSchema = Joi.object({
   description: Joi.string().allow(""),
   fileUploadPath: Joi.allow(),
   filename: Joi.string()
-      .regex(/(\.png|\.jpg|\.webp|\.jpeg)$/)
-      .error(CreateError.BadRequest("تصویر ارسال شده صحیح نمیباشد")),
+    .regex(/(\.png|\.jpg|\.webp|\.jpeg)$/)
+    .error(CreateError.BadRequest("تصویر ارسال شده صحیح نمیباشد")),
   colors: Joi.array()
-      .items(
-          Joi.object({
-            colorCode: Joi.string().required().messages({
-              "any.required": "رنگ الزامی است",
-            }),
-            count: Joi.number().greater(0).required().messages({
-              "number.base": "تعداد باید یک عدد باشد",
-              "number.greater": "تعداد فریم باید بیشتر از صفر باشد",
-              "any.required": "وارد کردن تعداد فریم الزامی است",
-            }),
-            images: Joi.array().items(Joi.string().required()).min(1).messages({
-              "array.min": "لطفا حداقل یک عکس انتخاب کنید",
-              "any.required": "انتخاب عکس الزامی است",
-            }),
-          })
-      )
-      .required(),
+    .items(
+      Joi.object({
+        colorCode: Joi.string().required().messages({
+          "any.required": "رنگ الزامی است",
+        }),
+        count: Joi.number().greater(0).required().messages({
+          "number.base": "تعداد باید یک عدد باشد",
+          "number.greater": "تعداد فریم باید بیشتر از صفر باشد",
+          "any.required": "وارد کردن تعداد فریم الزامی است",
+        }),
+        images: Joi.array().items(Joi.string().required()).min(1).messages({
+          "array.min": "لطفا حداقل یک عکس انتخاب کنید",
+          "any.required": "انتخاب عکس الزامی است",
+        }),
+      })
+    )
+    .required(),
 });
+
+const createNewBankSchema = Joi.object({
+  bankName: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .messages({
+        'string.min': 'نام بانک باید حداقل ۳ کاراکتر باشد',
+        'string.max': 'نام بانک نمی‌تواند بیش از ۵۰ کاراکتر باشد',
+        'any.required': 'لطفا نام بانک خود را وارد فرمائید',
+      }),
+
+  cartNumber: Joi.string()
+      .length(16)
+      .regex(/^\d+$/)
+      .custom((value, helpers) => {
+        if (!isValidBankCardNumber(value)) {
+          return helpers.error('any.invalid', { message: 'شماره کارت معتبر نیست' });
+        }
+        return value;
+      })
+      .required()
+      .messages({
+        'string.length': 'شماره کارت باید دقیقاً 16 رقم باشد',
+        'string.pattern.base': 'شماره کارت باید فقط شامل اعداد باشد',
+        'any.invalid': '{{#message}}',
+        'any.required': 'شماره کارت اجباری است',
+      }),
+
+  bankAccountHolder: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .messages({
+        'string.min': 'نام صاحب حساب باید حداقل ۳ کاراکتر باشد',
+        'string.max': 'نام صاحب حساب نمی‌تواند بیش از ۵۰ کاراکتر باشد',
+        'any.required': 'لطفا نام صاحب حساب خود را وارد فرمائید',
+      }),
+
+  shabaNumber: Joi.string()
+      .length(24)
+      .regex(/^IR[0-9]{22}$/)
+      .required()
+      .messages({
+        'string.length': 'شماره شبا باید دقیقاً 24 کاراکتر باشد',
+        'string.pattern.base': 'شماره شبا معتبر نیست. لطفاً یک شماره شبا صحیح وارد کنید.',
+        'any.required': 'شماره شبا اجباری است',
+      }),
+});
+
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -320,4 +371,5 @@ module.exports = {
   createFrameCategorySchema,
   createFrameGenderSchema,
   createNewFrameSchema,
+  createNewBankSchema
 };

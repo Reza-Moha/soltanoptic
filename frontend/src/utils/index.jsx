@@ -1,6 +1,7 @@
 import { FaUserDoctor } from "react-icons/fa6";
 import { GiMicroscopeLens } from "react-icons/gi";
 import { BsEyeglasses } from "react-icons/bs";
+import { CiBank, CiMedicalClipboard } from "react-icons/ci";
 
 export const toPersianDigits = (number) => {
   const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
@@ -65,6 +66,20 @@ export const BasicDefinitionsLinks = [
     svg: <BsEyeglasses size="20" />,
     href: "frames",
   },
+  {
+    id: 6,
+    title: "تعریف بانک",
+    className: "text-sm",
+    svg: <CiBank size="20" />,
+    href: "bank",
+  },
+  {
+    id: 7,
+    title: "تعریف بیمه",
+    className: "text-sm",
+    svg: <CiMedicalClipboard size="20" />,
+    href: "insurance ",
+  },
 ];
 
 export const validateNationalId = (code) => {
@@ -124,4 +139,19 @@ export const imageUrlToFile = async (imgUrl) => {
   }
 
   return new File([blob], getFilename(imgUrl), { type: blob.type });
+};
+
+export const isValidBankCardNumber = (cardNumber) => {
+  let sum = 0;
+  let shouldDouble = false;
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber[i]);
+    if (shouldDouble) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+    sum += digit;
+    shouldDouble = !shouldDouble;
+  }
+  return sum % 10 === 0;
 };
