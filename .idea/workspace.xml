@@ -5,43 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/app/controller/admin/insurance/Insurance.controller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/app/models/Incurance.model.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/app/models/Insurance.model.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/app/routes/admin/insurance/InsuranceRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/ListInsurance.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/BgAdminDashboard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehBold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehRegular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehThin.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Bold.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Light.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Medium.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_UltraLight.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/video/BgAdminDashboard.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/bank/BankController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/bank/BankController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179105483-267439511.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179105494-60352679.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179105500-635724773.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179241566-916387234.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179241574-23486174.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179241584-861521386.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734179241591-773801936.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734182019894-862943312.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734182019903-78212011.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734182019911-620065133.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734182019917-461733816.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184397302-286455111.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184397309-610055403.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184397317-240775932.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184397321-159750287.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184397328-227758668.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184809335-662914950.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/uploads/2024/12/14/1734184953530-171802848.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/jsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/jsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicPrividers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicPrividers.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/CreateInsurance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/CreateInsurance.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/RefractiveIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/RefractiveIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/insuranceSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/insuranceSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/insurance/insurance.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/insurance/insurance.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/next.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Light.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_UltraLight.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +47,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Reza-Moha"
+  }
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Reza-Moha/soltanoptic.git&quot;,
@@ -77,27 +71,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.14.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.14.15&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/MFGS/Desktop/soltanoptic&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;web-ide.project.structure&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.1.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "23.4.0",
+    "javascript.nodejs.core.library.typings.version": "22.10.2",
+    "last_opened_file_path": "C:/Users/MFGS/Desktop/soltanoptic",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "terminal",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -114,13 +108,15 @@
       <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\redux\slices" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\assets" />
+      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\public" />
       <recent name="C:\Users\MFGS\Desktop\soltanoptic\backend\app\controller\admin" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17011.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
       </set>
     </attachedChunks>
   </component>
@@ -145,6 +141,7 @@
       <workItem from="1734202703970" duration="174000" />
       <workItem from="1734202888497" duration="444000" />
       <workItem from="1734205177971" duration="5601000" />
+      <workItem from="1734275911862" duration="1456000" />
     </task>
     <servers />
   </component>

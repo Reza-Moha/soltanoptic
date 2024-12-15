@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { RegisterSchema } from "@/validators/auth";
 import classNames from "classnames";
-import logo from "@/assets/image/logoBlcak.svg";
 import { useState } from "react";
 import Button from "@/components/Ui/Button";
 import { getOtpApi } from "@/services/auth/auth.service";
@@ -21,9 +20,10 @@ export default function Login() {
           <Link href="/">
             <Image
               className="w-20 h-14 mx-auto rounded-xl mb-5"
-              src={logo}
+              src="/image/logoBlcak.svg"
               alt="logo"
               priority={true}
+              
             />
           </Link>
           <div className="text-3xl font-kalame mb-2">ورود | ثبت نام</div>

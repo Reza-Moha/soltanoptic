@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"],"@/utils/*": ["./src/utils/*"],
+      "@/*": ["./src/*"],
+      "@/utils/*": ["./src/utils/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/components/*": ["./src/components/*"],
       "@/constants/*": ["./src/constants/*"],
@@ -11,7 +12,8 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/public/*": ["./public/*"],
       "@/styles/*": ["./src/styles/*"],
-      "@/providers/*": ["./src/providers/*"]
+      "@/providers/*": ["./src/providers/*"],
+      "@/assets/*": ["./src/assets/*"]
     }
   }
 }
