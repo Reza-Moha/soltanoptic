@@ -1,7 +1,6 @@
 "use client";
 import { fetchAllDoctors } from "@/redux/slices/doctors.slice";
 import {
-  fetchAllFrame,
   fetchAllFrameCategories,
   fetchAllFrameGender,
   fetchAllFrameType,
@@ -33,7 +32,6 @@ export default function BasicPrividers({ children }) {
     dispatch(fetchAllFrameCategories());
     dispatch(fetchAllFrameType());
     dispatch(fetchAllFrameGender());
-    dispatch(fetchAllFrame());
   }, [dispatch]);
   return children;
 }

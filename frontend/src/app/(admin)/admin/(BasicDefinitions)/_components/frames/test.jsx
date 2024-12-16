@@ -17,17 +17,20 @@ import {
   fetchAllFrameGender,
   fetchAllFrameType,
 } from "@/redux/slices/frame.slice";
+import Image from "next/image";
 
 // ImagePreview component
 const ImagePreview = ({ imagePreviews, index }) =>
   imagePreviews[index] && (
     <div className="flex space-x-2 mt-2 items-center justify-center">
       {imagePreviews[index].map((url, imgIndex) => (
-        <img
+        <Image
           key={imgIndex}
           src={url}
+          width={80}
+          height={80}
           alt={`Preview ${index}-${imgIndex}`}
-          className="w-20 h-20 object-cover rounded"
+          className="object-cover rounded"
         />
       ))}
     </div>

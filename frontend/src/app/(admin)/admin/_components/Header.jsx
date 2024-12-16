@@ -9,6 +9,7 @@ import DateTime from "@/components/Ui/DataTime";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { usePathname } from "next/navigation";
 
+
 export default function AdminHeader() {
   const { user } = useSelector((state) => state.auth);
   const currentPath = usePathname();
@@ -20,7 +21,7 @@ export default function AdminHeader() {
     <>
       <header className="sticky h-16 bg-slate-900 text-secondary-50 font-iranSans">
         <div className="h-full flex items-center justify-between px-5">
-          <div className="flex-1">
+          <div className="hidden md:block">
             <div className="flex items-center justify-start">
               <div
                 className={`flex items-center gap-1 justify-center p-1 rounded transition-all ease-in-out duration-300 ${
@@ -64,16 +65,27 @@ export default function AdminHeader() {
               </div>
             </div>
           </div>
+          <div className="flex-1">
+           
+              <Image
+                className="mx-auto"
+                src="/image/logoWhite.svg"
+                width={70}
+                height={70}
+                alt="لوگو سلطان اپتیک "
+              />
+           
+          </div>
           <div>
             <DateTime />
           </div>
-          <Link href="/admin/me" className="flex items-center gap-3 rounded-lg">
+          <Link href="/admin/me" className="hidden md:flex items-center gap-3 rounded-lg">
             <div className="inline-flex items-center">
               {user?.profileImage ? (
-                <div className="rounded-full border-2 border-secondary-500 overflow-hidden select-none w-12 h-12">
+                <div className="rounded-full border-2 border-secondary-500 overflow-hidden select-none">
                   <Image
-                    width="44"
-                    height="44"
+                    width={48}
+                    height={48}
                     className="object-cover rounded-full"
                     src={`${process.env.NEXT_PUBLIC_API_URL}/${user.profileImage}`}
                     alt={`${user?.fullName}`}

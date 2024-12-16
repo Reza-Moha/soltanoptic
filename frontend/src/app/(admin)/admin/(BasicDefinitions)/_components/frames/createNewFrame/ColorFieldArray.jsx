@@ -3,6 +3,7 @@ import Input from "@/components/Ui/Input";
 import FileInput from "@/components/Ui/FileInput";
 import { BsTrash3, BsSunglasses } from "react-icons/bs";
 import useFrameImage from "@/hooks/useFrameImage";
+import Image from "next/image";
 
 const ColorFieldArray = ({ isEdite, values, setFieldValue }) => {
   const { handleImageChange, handleRemoveColor, handleRemoveImage } =
@@ -27,7 +28,7 @@ const ColorFieldArray = ({ isEdite, values, setFieldValue }) => {
                     onChange={(e) =>
                       setFieldValue(
                         `colors[${index}].colorCode`,
-                        e.target.value,
+                        e.target.value
                       )
                     }
                   />
@@ -42,7 +43,7 @@ const ColorFieldArray = ({ isEdite, values, setFieldValue }) => {
                   onChange={(e) =>
                     setFieldValue(
                       `colors[${index}].count`,
-                      parseInt(e.target.value) || 0,
+                      parseInt(e.target.value) || 0
                     )
                   }
                 />
@@ -59,14 +60,16 @@ const ColorFieldArray = ({ isEdite, values, setFieldValue }) => {
                 <div className="flex flex-wrap space-x-2 mt-2 items-center justify-center">
                   {color.images.map((img, imgIndex) => (
                     <div key={`img-${imgIndex}`} className="relative group">
-                      <img
+                      <Image
+                        width={80}
+                        height={80}
                         src={
                           isEdite && img.url.startsWith("uploads")
                             ? `${process.env.NEXT_PUBLIC_API_URL}/${img.url}`
                             : img.url
                         }
                         alt={`Image ${imgIndex}`}
-                        className="w-20 h-20 object-cover rounded"
+                        className="object-cover rounded"
                       />
                       <button
                         type="button"

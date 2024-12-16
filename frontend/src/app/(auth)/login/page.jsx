@@ -19,11 +19,12 @@ export default function Login() {
         <div className="w-full">
           <Link href="/">
             <Image
-              className="w-20 h-14 mx-auto rounded-xl mb-5"
+              className="mx-auto rounded-xl mb-5"
               src="/image/logoBlcak.svg"
               alt="logo"
               priority={true}
-              
+              width={80}
+              height={56}
             />
           </Link>
           <div className="text-3xl font-kalame mb-2">ورود | ثبت نام</div>

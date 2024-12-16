@@ -74,8 +74,8 @@ export default function EditEmployeeModal({ employee, show, onClose }) {
                         alt={employee?.fullName || "پیش‌نمایش تصویر"}
                         src={previewImage}
                         className="rounded-full object-cover"
-                        width="112"
-                        height="112"
+                        width={112}
+                        height={112}
                         priority
                       />
                     </div>

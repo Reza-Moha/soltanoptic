@@ -113,7 +113,7 @@
     @apply ml-4 text-sm;
   }
   .backdropBox {
-    @apply rounded-xl bg-white/30 backdrop-blur-sm shadow-lg backdrop-brightness-150 border border-white/20 p-2;
+    @apply rounded-xl bg-white/10 backdrop-blur-sm shadow-lg backdrop-brightness-150 border border-white/20 p-2
   }
 }
 

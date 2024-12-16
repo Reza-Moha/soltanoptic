@@ -51,7 +51,7 @@ class FrameController extends Controller {
           const colorFiles = req.files.filter(
             (file) =>
               file.originalname.split("-")[0].toLowerCase() ===
-              color.colorCode.replace("#", "").toLowerCase()
+              color.colorCode.replace("#", "").toLowerCase(),
           );
 
           await Promise.all(
@@ -63,9 +63,9 @@ class FrameController extends Controller {
                 imageUrl,
                 FrameColorId: createdColor.id,
               });
-            })
+            }),
           );
-        })
+        }),
       );
       const newFrame = await FrameModel.findOne({
         where: { id: frame.id },
@@ -93,7 +93,7 @@ class FrameController extends Controller {
     } catch (error) {
       if (req.files) {
         req.files.forEach((file) =>
-          deleteFileInPublic(path.join(req.body.fileUploadPath, file.filename))
+          deleteFileInPublic(path.join(req.body.fileUploadPath, file.filename)),
         );
       }
       next(error);
@@ -210,26 +210,24 @@ class FrameController extends Controller {
 
       if (!frame) throw CreateError.NotFound("فریم با این مشخصات وجود ندارد");
 
-      // حذف فایل‌های تصاویر از پوشه عمومی
       for (const color of frame.FrameColors) {
         for (const image of color.FrameImages) {
           if (!image.imageUrl) {
             console.error(`Missing imageUrl for image:`, image);
-            continue; // عبور از حذف اگر مسیر فایل نامعتبر است
+            continue;
           }
 
           const fullPath = path.join(__dirname, "../public", image.imageUrl);
           console.log("Deleting file:", fullPath);
 
           try {
-            deleteFileInPublic(image.imageUrl); // استفاده از imageUrl
+            deleteFileInPublic(image.imageUrl);
           } catch (err) {
             console.error(`Error deleting file: ${fullPath}`, err);
           }
         }
       }
 
-      // حذف رکورد فریم از دیتابیس
       await frame.destroy();
 
       return res.status(HttpStatus.OK).send({
@@ -301,9 +299,51 @@ class FrameController extends Controller {
         },
       });
 
+      let totalInventoryValue = 0;
+      let totalColorCount = 0;
+      let frameTypeCount = {};
+      let genderCount = {};
+
+      frames.forEach((frame) => {
+        const colorCount = frame.FrameColors.length;
+        totalColorCount += colorCount;
+
+        const frameType = frame.FrameType.title;
+        if (!frameTypeCount[frameType]) {
+          frameTypeCount[frameType] = 0;
+        }
+        frameTypeCount[frameType] += 1;
+
+        const gender = frame.FrameGender.gender;
+        if (!genderCount[gender]) {
+          genderCount[gender] = 0;
+        }
+        genderCount[gender] += 1;
+
+        frame.FrameColors.forEach((color) => {
+          const framePrice = parseInt(frame.price);
+          const colorQuantity = color.count;
+          const colorValue = framePrice * colorQuantity;
+          totalInventoryValue += colorValue;
+        });
+      });
+
+      const frameTypeArray = Object.keys(frameTypeCount).map((type) => ({
+        frameType: type,
+        count: frameTypeCount[type],
+      }));
+
+      const genderArray = Object.keys(genderCount).map((gender) => ({
+        gender: gender,
+        count: genderCount[gender],
+      }));
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         frames,
+        totalInventoryValue,
+        totalColorCount,
+        frameTypeArray,
+        genderArray,
       });
     } catch (error) {
       next(error);
@@ -320,7 +360,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameCategoty)
         throw CreateError.BadRequest(
-          "دسته بندی با این مشخصات قبلا ثبت شده است"
+          "دسته بندی با این مشخصات قبلا ثبت شده است",
         );
       const newFrameCategory = await FrameCategory.create({
         title,
@@ -328,7 +368,7 @@ class FrameController extends Controller {
       });
       if (!newFrameCategory)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید"
+          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -363,7 +403,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -390,7 +430,7 @@ class FrameController extends Controller {
       });
       if (!newFrameType)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید"
+          "خطا در ایجاد نوع فریم لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -425,7 +465,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف نوع فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -446,7 +486,7 @@ class FrameController extends Controller {
       });
       if (exsitFrameGender)
         throw CreateError.BadRequest(
-          "جنسیت فریم با این مشخصات قبلا ثبت شده است"
+          "جنسیت فریم با این مشخصات قبلا ثبت شده است",
         );
       const newFrameGender = await FrameGender.create({
         gender,
@@ -454,7 +494,7 @@ class FrameController extends Controller {
       });
       if (!newFrameGender)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید"
+          "خطا در ایجاد جنسیت فریم لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -489,7 +529,7 @@ class FrameController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف جنسیت فریم موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,

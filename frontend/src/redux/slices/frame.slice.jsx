@@ -21,11 +21,11 @@ export const fetchAllFrame = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await getAllFrameApi();
-      return data.frames;
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createNewFrame = createAsyncThunk(
@@ -42,7 +42,7 @@ export const createNewFrame = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const updateFrame = createAsyncThunk(
@@ -59,7 +59,7 @@ export const updateFrame = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const deleteFrame = createAsyncThunk(
@@ -74,7 +74,7 @@ export const deleteFrame = createAsyncThunk(
       toast.error(errors.message);
       return rejectWithValue(errors);
     }
-  }
+  },
 );
 
 export const createNewFrameCategory = createAsyncThunk(
@@ -91,7 +91,7 @@ export const createNewFrameCategory = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllFrameCategories = createAsyncThunk(
@@ -103,7 +103,7 @@ export const fetchAllFrameCategories = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteFrameCategory = createAsyncThunk(
@@ -119,7 +119,7 @@ export const deleteFrameCategory = createAsyncThunk(
       toast.error(errors.message);
       return rejectWithValue(errors);
     }
-  }
+  },
 );
 
 export const createNewFrameType = createAsyncThunk(
@@ -136,7 +136,7 @@ export const createNewFrameType = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllFrameType = createAsyncThunk(
@@ -148,7 +148,7 @@ export const fetchAllFrameType = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteFrameType = createAsyncThunk(
@@ -164,7 +164,7 @@ export const deleteFrameType = createAsyncThunk(
       toast.error(errors.message);
       return rejectWithValue(errors);
     }
-  }
+  },
 );
 
 export const createNewFrameGender = createAsyncThunk(
@@ -181,7 +181,7 @@ export const createNewFrameGender = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllFrameGender = createAsyncThunk(
@@ -193,7 +193,7 @@ export const fetchAllFrameGender = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteFrameGender = createAsyncThunk(
@@ -209,7 +209,7 @@ export const deleteFrameGender = createAsyncThunk(
       toast.error(errors.message);
       return rejectWithValue(errors);
     }
-  }
+  },
 );
 
 const frameSlice = createSlice({
@@ -219,6 +219,10 @@ const frameSlice = createSlice({
     frameCategory: [],
     frameType: [],
     frameGender: [],
+    totalInventoryValue: "",
+    totalColorCount: 0,
+    genderArray: [],
+    frameTypeArray: [],
     isLoading: false,
     error: null,
   },
@@ -242,7 +246,11 @@ const frameSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllFrame.fulfilled, (state, action) => {
-        state.frameList = action.payload;
+        state.frameList = action.payload.frames;
+        state.totalInventoryValue = action.payload.totalInventoryValue;
+        state.totalColorCount = action.payload.totalColorCount;
+        state.frameTypeArray = action.payload.frameTypeArray;
+        state.genderArray = action.payload.genderArray;
         state.isLoading = false;
       })
       .addCase(fetchAllFrame.rejected, (state, action) => {
@@ -251,12 +259,12 @@ const frameSlice = createSlice({
       })
       .addCase(deleteFrame.fulfilled, (state, action) => {
         state.frameList = state.frameList.filter(
-          (frame) => frame.id !== action.payload
+          (frame) => frame.id !== action.payload,
         );
       })
       .addCase(deleteFrameCategory.fulfilled, (state, action) => {
         state.frameCategory = state.frameCategory.filter(
-          (FCategory) => FCategory.id !== action.payload
+          (FCategory) => FCategory.id !== action.payload,
         );
       })
       .addCase(createNewFrameType.fulfilled, (state, action) => {
@@ -278,7 +286,7 @@ const frameSlice = createSlice({
       })
       .addCase(deleteFrameType.fulfilled, (state, action) => {
         state.frameType = state.frameType.filter(
-          (FType) => FType.id !== action.payload
+          (FType) => FType.id !== action.payload,
         );
       })
       .addCase(createNewFrameGender.fulfilled, (state, action) => {
@@ -297,12 +305,12 @@ const frameSlice = createSlice({
       })
       .addCase(deleteFrameGender.fulfilled, (state, action) => {
         state.frameGender = state.frameGender.filter(
-          (FGender) => FGender.id !== action.payload
+          (FGender) => FGender.id !== action.payload,
         );
       })
       .addCase(updateFrame.fulfilled, (state, action) => {
         const index = state.frameList.findIndex(
-          (frame) => frame.id === action.payload.id
+          (frame) => frame.id === action.payload.id,
         );
         if (index !== -1) {
           state.frameList[index] = action.payload;

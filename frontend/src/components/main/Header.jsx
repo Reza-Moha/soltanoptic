@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-
 import { toPersianDigits } from "@/utils";
 import DropDownMenu from "@/components/Ui/DropDownMenu";
 import { useSelector } from "react-redux";
@@ -21,7 +20,7 @@ export default function Header() {
                 <Link href="/" className="flex items-center ml-10">
                   <Image
                     priority="false"
-                    src="/image/logowhite.svg"
+                    src="/image/logoWhite.svg"
                     alt="logo"
                     width={60}
                     height={60}

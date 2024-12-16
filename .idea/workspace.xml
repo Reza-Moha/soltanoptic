@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/BgAdminDashboard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehBold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehRegular.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/Kalame/KalamehThin.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Bold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Light.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Medium.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_UltraLight.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/assets/video/BgAdminDashboard.mp4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/jsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/jsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/next.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Bold.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Light.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_Medium.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/fonts/iranSans/IRANSansWeb_UltraLight.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
-    </list>
+    <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,12 +21,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Reza-Moha"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Reza-Moha&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Reza-Moha/soltanoptic.git&quot;,
@@ -71,27 +45,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "23.4.0",
-    "javascript.nodejs.core.library.typings.version": "22.10.2",
-    "last_opened_file_path": "C:/Users/MFGS/Desktop/soltanoptic",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;23.4.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.10.2&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/MFGS/Desktop/soltanoptic&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -142,6 +116,7 @@
       <workItem from="1734202888497" duration="444000" />
       <workItem from="1734205177971" duration="5601000" />
       <workItem from="1734275911862" duration="1456000" />
+      <workItem from="1734280823731" duration="122000" />
     </task>
     <servers />
   </component>

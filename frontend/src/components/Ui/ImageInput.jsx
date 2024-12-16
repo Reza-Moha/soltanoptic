@@ -46,8 +46,8 @@ export const ImageInput = ({
               alt=""
               src={previewImage}
               className="rounded-full object-cover"
-              width="112"
-              height="112"
+              width={112}
+              height={112}
               priority
             />
           </div>

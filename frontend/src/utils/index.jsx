@@ -133,7 +133,7 @@ export const imageUrlToFile = async (imgUrl) => {
   }
   const blob = await response.blob();
 
-  // بررسی نوع فایل
+
   if (!blob.type.startsWith("image/")) {
     throw new Error(`Invalid file type: ${blob.type}`);
   }
