@@ -14,12 +14,12 @@ export const TotalColorCount = () => {
         <TbKeyframeAlignHorizontal size={20} />
         <p>تعداد کل فریم موجود انبار:</p>
       </div>
-      {isLoading || totalColorCount <= 0 ? (
+      {isLoading || totalColorCount < 0 ? (
         <div className="spinner-mini"></div>
       ) : (
-        <span>
+        <span className={`${totalColorCount === 0 ? "text-rose-500" : ""}`}>
           {toPersianDigits(totalColorCount)}
-          <span className="mr-0.5"> عدد</span>
+          <span className="mr-0.5 text-xs"> عدد</span>
         </span>
       )}
     </div>

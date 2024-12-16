@@ -222,6 +222,7 @@ const lensSlice = createSlice({
     refractiveIndexList: [],
     lensType: [],
     lensCategories: [],
+    totalLenses:"",
     isLoading: false,
     error: null,
   },

@@ -10,7 +10,7 @@ export const GenderArray = () => {
           تعداد فریم بر اساس جنسیت
         </div>
       </div>
-      {isLoading || genderArray <= 0 ? (
+      {isLoading || genderArray < 0 ? (
         <div className="spinner-mini"></div>
       ) : (
         <div className="grid grid-cols-4 gap-3 p-1">
@@ -28,7 +28,7 @@ export const GenderArray = () => {
                   </div>
                 );
               })
-            : "هنوز نوعی اضافه نشده است"}
+              : <div className="col-span-4 w-full text-red-500 font-bold text-xs">فریمی در انبار موجود نیست</div>}
         </div>
       )}
     </div>

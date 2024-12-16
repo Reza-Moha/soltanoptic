@@ -6,13 +6,14 @@ export const TotalInventoryValue = () => {
   const { totalInventoryValue, isLoading } = useSelector(
     (state) => state.frameSlice,
   );
+    console.log(totalInventoryValue)
   return (
     <div className="flex items-center justify-between gap-2 mb-2">
       <div className="inline-flex items-center justify-center gap-x-1">
         <TbKeyframeAlignHorizontalFilled size={20} />
         <p className="text-sm">ارزش کل فریم های انبار:</p>
       </div>
-      {isLoading || totalInventoryValue <= 0 ? (
+      {isLoading || totalInventoryValue < 0 ? (
         <div className="spinner-mini"></div>
       ) : (
         <span>
@@ -21,7 +22,7 @@ export const TotalInventoryValue = () => {
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
           )}
-          <span className="mr-0.5"> تومان</span>
+          <span className="mr-0.5 text-xs"> تومان</span>
         </span>
       )}
     </div>

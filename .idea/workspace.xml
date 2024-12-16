@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="" />
+    <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,6 +127,7 @@
       <workItem from="1734205177971" duration="5601000" />
       <workItem from="1734275911862" duration="1456000" />
       <workItem from="1734280823731" duration="122000" />
+      <workItem from="1734351062850" duration="6839000" />
     </task>
     <servers />
   </component>
@@ -133,6 +144,18 @@
           <url>file://$PROJECT_DIR$/frontend/src/redux/slices/frame.slice.jsx</url>
           <line>30</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx</url>
+          <line>32</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx</url>
+          <line>30</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

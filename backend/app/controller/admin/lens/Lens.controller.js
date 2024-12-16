@@ -91,15 +91,12 @@ class LensController extends Controller {
       const offset = (page - 1) * limit;
 
       const whereCondition = search
-        ? {
+          ? {
             lensName: {
-              [Sequelize.Op.like]: Sequelize.fn(
-                "LOWER",
-                `%${search.toLowerCase()}%`
-              ),
+              [Sequelize.Op.like]: `%${search.toLowerCase()}%`,
             },
           }
-        : {};
+          : {};
 
       const includeCondition = [
         {
@@ -113,6 +110,7 @@ class LensController extends Controller {
         },
       ];
 
+      // Main query for pagination and data retrieval
       const allLens = await LensModel.findAndCountAll({
         where: whereCondition,
         limit,
@@ -128,6 +126,10 @@ class LensController extends Controller {
         },
       });
 
+      // Aggregate queries for statistics
+      const totalLenses = await LensModel.count({ where: whereCondition });
+      const totalInventoryValue = await LensModel.sum("price", { where: whereCondition });
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         allLens: allLens.rows,
@@ -136,6 +138,10 @@ class LensController extends Controller {
           totalPages: Math.ceil(allLens.count / limit),
           totalItems: allLens.count,
           size,
+        },
+        statistics: {
+          totalLenses,
+          totalInventoryValue,
         },
       });
     } catch (error) {

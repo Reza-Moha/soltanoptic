@@ -12,7 +12,7 @@ export const FrameTypeArray = () => {
           تعداد فریم بر اساس آلیاژ ساخت
         </div>
       </div>
-      {isLoading || frameTypeArray <= 0 ? (
+      {isLoading || frameTypeArray < 0 ? (
         <div className="spinner-mini"></div>
       ) : (
         <div className="grid grid-cols-4 gap-3 p-1">
@@ -21,7 +21,7 @@ export const FrameTypeArray = () => {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col items-center justify-center gap-2 rounded-lg text-slate-900 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-200 via-slate-600 to-indigo-200"
+                    className="w-full flex flex-col items-center justify-center gap-2 rounded-lg text-slate-900 bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-200 via-slate-600 to-indigo-200"
                   >
                     <span className="text-sm font-bold">{item.frameType}</span>
                     <span className="text-base">
@@ -30,7 +30,7 @@ export const FrameTypeArray = () => {
                   </div>
                 );
               })
-            : "هنوز نوعی اضافه نشده است"}
+            : <div className="col-span-4 w-full text-red-500 text-xs">فریمی در انبار موجود نیست</div>}
         </div>
       )}
     </div>
