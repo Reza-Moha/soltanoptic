@@ -13,6 +13,7 @@ const Controller = require("../Controller");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
 const CreateError = require("http-errors");
 const { Op } = require("sequelize");
+const { Roles } = require("../../models/Roles.model");
 class EmployeeController extends Controller {
   async createNewEmployee(req, res, next) {
     try {
@@ -46,7 +47,7 @@ class EmployeeController extends Controller {
         nationalId,
         jobTitle,
         description,
-        role: process.env.USER_ROLE,
+        role: process.env.EMPLOYEE_ROLE,
       });
       if (!createNewEmployee)
         throw CreateError.InternalServerError(
@@ -56,6 +57,17 @@ class EmployeeController extends Controller {
         where: { nationalId: createNewEmployee.nationalId },
         attributes: { exclude: ["otp", "createdAt", "updatedAt"] },
       });
+      const [updatedRowsCount] = await Roles.update(
+        {
+          UserId: newEmployee.id,
+        },
+        {
+          where: { roleId: jobTitle },
+          returning: true,
+        }
+      );
+      if (updatedRowsCount === 0)
+        throw CreateError.InternalServerError(" عملیات ویرایش انجام نشد");
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "همکار جدید با موفقیت ثبت گردید",
@@ -72,7 +84,7 @@ class EmployeeController extends Controller {
   async getAllEmployee(req, res, next) {
     try {
       const allEmployee = await UserModel.findAll({
-        where: { role: process.env.USER_ROLE },
+        where: { role: process.env.EMPLOYEE_ROLE },
         attributes: { exclude: ["otp", "createdAt", "updatedAt", "role"] },
       });
       if (!allEmployee) throw CreateError.NotFound("همکاری یافت نشد");
@@ -84,21 +96,36 @@ class EmployeeController extends Controller {
       next(error);
     }
   }
-
   async deleteEmployeeById(req, res, next) {
     try {
       await idSchema.validateAsync(req.params);
       const { id } = req.params;
+
       if (!id) throw CreateError.BadRequest("شناسه نامعتبر است");
+
       const user = await UserModel.findByPk(id);
       if (!user) throw CreateError.NotFound("همکار با این مشخصات وجود ندارد");
-      deleteFileInPublic(user.profileImage);
-      await UserModel.destroy({ where: { id } });
+
+   
+
+      if (user.profileImage) {
+      
+        deleteFileInPublic(user.profileImage);
+      }
+
+      const deletedRows = await UserModel.destroy({ where: { id } });
+     
+
+      if (deletedRows === 0) {
+        throw CreateError.NotFound("هیچ رکوردی برای حذف یافت نشد");
+      }
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         message: "همکار با موفقیت حذف شد",
       });
     } catch (error) {
+      console.error("Error occurred:", error);
       next(error);
     }
   }

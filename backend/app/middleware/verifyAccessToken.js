@@ -3,7 +3,6 @@ const JWT = require("jsonwebtoken");
 const { UserModel } = require("../models/User.model");
 const cookieParser = require("cookie-parser");
 const { filterEmptyFieldsInDatabase } = require("../utils");
-const { RolePermissionsModel } = require("../models/RolePermissions.model");
 const { Roles } = require("../models/Roles.model");
 const { Permissions } = require("../models/Permissions.model");
 
