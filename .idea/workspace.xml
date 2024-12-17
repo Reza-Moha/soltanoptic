@@ -4,78 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="">
+    <list default="true" id="3bb1a3f8-c911-4465-9aad-909a6236c052" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="JavaScript File" />
-        <option value="JSX File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Reza-Moha&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Reza-Moha/soltanoptic.git&quot;,
-    &quot;accountId&quot;: &quot;5bd4b07e-dfbb-442a-8f18-0a14b08d7018&quot;
-  }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2m4agjx1BRQPsNBtPrdtRwbN5Ts" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2qKOg1b6wUPibZUBe9eTXIzaTJu" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;23.4.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.10.2&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/MFGS/Desktop/soltanoptic&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -85,79 +48,27 @@
       </map>
     </option>
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\services\admin" />
-      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\app\(admin)\admin\(BasicDefinitions)\_components\insurance" />
-      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\redux\slices" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\src\assets" />
-      <recent name="C:\Users\Reza\Desktop\soltanoptic\frontend\public" />
-      <recent name="C:\Users\MFGS\Desktop\soltanoptic\backend\app\controller\admin" />
-    </key>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17011.90" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c0ad2bc8-7d67-4e4e-aeaf-080014dffe0f" name="Changes" comment="" />
+      <changelist id="3bb1a3f8-c911-4465-9aad-909a6236c052" name="Changes" comment="" />
       <created>1718309113276</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1718309113276</updated>
       <workItem from="1718309114339" duration="280000" />
-      <workItem from="1726338420542" duration="2000" />
-      <workItem from="1733772329900" duration="1039000" />
-      <workItem from="1733773680621" duration="3096000" />
-      <workItem from="1733852564132" duration="3470000" />
-      <workItem from="1734028409847" duration="2169000" />
-      <workItem from="1734031036402" duration="3440000" />
-      <workItem from="1734180674602" duration="269000" />
-      <workItem from="1734180966279" duration="13615000" />
-      <workItem from="1734202105187" duration="541000" />
-      <workItem from="1734202703970" duration="174000" />
-      <workItem from="1734202888497" duration="444000" />
-      <workItem from="1734205177971" duration="5601000" />
-      <workItem from="1734275911862" duration="1456000" />
-      <workItem from="1734280823731" duration="122000" />
-      <workItem from="1734351062850" duration="6839000" />
+      <workItem from="1734407920055" duration="641000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/redux/slices/frame.slice.jsx</url>
-          <line>30</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx</url>
-          <line>32</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx</url>
-          <line>30</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

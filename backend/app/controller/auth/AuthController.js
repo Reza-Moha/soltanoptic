@@ -7,6 +7,7 @@ const {
   SignAccessToken,
   SignRefreshToken,
   VerifyRefreshToken,
+  sendSms,
 } = require("../../utils");
 const CreateError = require("http-errors");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
@@ -29,6 +30,7 @@ class AuthController extends Controller {
       const result = await this.saveUser(phoneNumber, code);
       if (!result) throw CreateError.Unauthorized("ورود شما انجام نشد");
       console.log(code);
+      //  await sendSms(phoneNumber, code)
       return res.status(HttpStatus.OK).send({
         data: {
           statusCode: HttpStatus.OK,

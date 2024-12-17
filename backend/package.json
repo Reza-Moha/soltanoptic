@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "auto-bind": "4",
+    "axios": "^1.7.9",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

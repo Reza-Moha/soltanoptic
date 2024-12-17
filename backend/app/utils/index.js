@@ -1,9 +1,10 @@
+require("dotenv").config()
 const JWT = require("jsonwebtoken");
 const { UserModel } = require("../models/User.model");
 const CreateError = require("http-errors");
 const path = require("path");
 const fs = require("fs");
-
+const axios = require("axios");
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -154,6 +155,21 @@ function isValidBankCardNumber (cardNumber)  {
 
   return sum % 10 === 0;
 }
+
+async function sendSms( RecNumber, code ) {
+  const accessHash = process.env.SMS_ACCESS_HASH
+  const phoneNumber = process.env.SMS_PHONENUMBER
+  const patternId = process.env.SMS_PATTERN_ID;
+  try {
+    const response = await axios.get(
+      `http://smspanel.trez.ir/SendPatternWithUrl.ashx?AccessHash=${accessHash}&PhoneNumber=${phoneNumber}&PatternId=${patternId}&RecNumber=${RecNumber}&Smsclass=1&token1=${code}`
+    );
+    return { success: true, message: response.data.Message };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
 module.exports = {
   randomNumberGenerator,
   SignAccessToken,
@@ -163,5 +179,6 @@ module.exports = {
   deleteFileInPublic,
   filterEmptyFieldsInDatabase,
   validateNationalId,
-  isValidBankCardNumber
+  isValidBankCardNumber,
+  sendSms,
 };
