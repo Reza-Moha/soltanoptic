@@ -140,6 +140,23 @@ class AuthController extends Controller {
       next(error);
     }
   }
+
+  async logout(req, res, next) {
+    try {
+
+      res.clearCookie("accessToken", { path: "/", httpOnly: true, secure: true });
+      res.clearCookie("refreshToken", { path: "/", httpOnly: true, secure: true });
+
+      return res.status(HttpStatus.OK).json({
+        data: {
+          statusCode: HttpStatus.OK,
+          message: "خروج از حساب کاربری با موفقیت انجام شد",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = {

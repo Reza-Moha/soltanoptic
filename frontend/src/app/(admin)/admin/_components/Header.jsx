@@ -3,19 +3,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
 import { EditeUserSection } from "@/app/(admin)/admin/_components/Loadings";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toPersianDigits } from "@/utils";
 import DateTime from "@/components/Ui/DataTime";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { usePathname } from "next/navigation";
-
+import { usePathname, useRouter } from "next/navigation";
+import { TbLogout2 } from "react-icons/tb";
+import { logOutUser } from "@/redux/slices/authSlice";
 
 export default function AdminHeader() {
   const { user } = useSelector((state) => state.auth);
   const currentPath = usePathname();
-
+  const dispatch = useDispatch();
+  const router = useRouter();
   const isActiveLink = (href) =>
     currentPath === href || currentPath.startsWith(href);
+
+  const logOutUserHandler = () => {
+    dispatch(logOutUser());
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -66,20 +74,21 @@ export default function AdminHeader() {
             </div>
           </div>
           <div className="flex-1">
-           
-              <Image
-                className="mx-auto"
-                src="/image/logoWhite.svg"
-                width={70}
-                height={70}
-                alt="لوگو سلطان اپتیک "
-              />
-           
+            <Image
+              className="mx-auto"
+              src="/image/logoWhite.svg"
+              width={70}
+              height={70}
+              alt="لوگو سلطان اپتیک "
+            />
           </div>
           <div>
-            <DateTime />
+            <DateTime textColor="text-slate-100 border border-white/20 bg-white/30" />
           </div>
-          <Link href="/admin/me" className="hidden md:flex items-center gap-3 rounded-lg">
+          <Link
+            href="/admin/me"
+            className="hidden md:flex items-center gap-3 rounded-lg"
+          >
             <div className="inline-flex items-center">
               {user?.profileImage ? (
                 <div className="rounded-full border-2 border-secondary-500 overflow-hidden select-none">
@@ -132,6 +141,11 @@ export default function AdminHeader() {
               />
             </svg>
           </Link>
+          <TbLogout2
+            className="mr-2 hover:scale-105 hover:bg-red-200 hover:text-red-500 rounded-full cursor-pointer"
+            size={19}
+            onClick={logOutUserHandler}
+          />
         </div>
       </header>
     </>

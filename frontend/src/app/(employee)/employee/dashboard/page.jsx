@@ -1,7 +1,22 @@
-export defualt function Dashboard(){
-    return(
-        <>
-employee Dashboard
-        </>
-    )
+export default function EmployeePage() {
+  return (
+    <>
+      <div className="h-screen w-[95%]">
+        <div className="h-[80%] grid grid-cols-6 grid-rows-3 gap-4">
+          <div className="col-span-2 row-span-2 backdropBox">1</div>
+          <div className="col-span-2 row-span-2 col-start-3 backdropBox">4</div>
+          <div className="col-span-2 row-span-2 col-start-5 backdropBox">5</div>
+          <div className="col-span-2 col-start-5 row-start-3 backdropBox">
+            6
+          </div>
+          <div className="col-span-2 col-start-3 row-start-3 backdropBox">
+            7
+          </div>
+          <div className="col-span-2 col-start-1 row-start-3 backdropBox">
+            8
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

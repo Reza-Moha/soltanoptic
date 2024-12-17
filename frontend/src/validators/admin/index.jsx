@@ -16,13 +16,14 @@ export const updateAdminProfileSchema = Yup.object().shape({
     .test(
       "fileSize",
       "حجم فایل نباید بیشتر از ۵ مگابایت باشد",
-      (value) => !value || (value && value.size <= 5000000)
+      (value) => !value || (value && value.size <= 5000000),
     )
     .test(
       "fileFormat",
       "فرمت فایل معتبر نیست. فرمت‌های مجاز: jpg, jpeg, png",
       (value) =>
-        !value || ["image/jpg", "image/jpeg", "image/png"].includes(value?.type)
+        !value ||
+        ["image/jpg", "image/jpeg", "image/png"].includes(value?.type),
     ),
 });
 
@@ -45,7 +46,7 @@ export const createNewEmployeeSchema = Yup.object().shape({
     .test(
       "validateNationalCode",
       "کد ملی وارد شده معتبر نیست",
-      validateNationalId
+      validateNationalId,
     ),
   profileImage: Yup.mixed()
     .nullable()
@@ -61,7 +62,7 @@ export const createNewEmployeeSchema = Yup.object().shape({
           return /\.(jpg|jpeg|png)$/.test(value);
         }
         return false;
-      }
+      },
     ),
 });
 
@@ -101,13 +102,13 @@ export const createNewRefractiveIndexSchema = Yup.object().shape({
     .test(
       "is-decimal",
       "عدد وارد شده باید حداکثر دارای دو رقم اعشار باشد.",
-      (value) => value !== undefined && /^\d+(\.\d{1,2})?$/.test(value)
+      (value) => value !== undefined && /^\d+(\.\d{1,2})?$/.test(value),
     ),
   characteristics: Yup.array()
     .of(
       Yup.string()
         .required("لطفا ویژگی را وارد فرمائید")
-        .min(3, "ویژگی نباید کم‌تر از سه کاراکتر باشد")
+        .min(3, "ویژگی نباید کم‌تر از سه کاراکتر باشد"),
     )
     .min(1, "حداقل باید یک ویژگی وارد شود"),
 });
@@ -141,7 +142,7 @@ export const createNewLensCategoriesSchema = Yup.object().shape({
           return /\.(jpg|jpeg|png)$/.test(value);
         }
         return false;
-      }
+      },
     ),
 });
 
@@ -167,14 +168,14 @@ export const createNewLensSchema = Yup.object().shape({
           return ["image/jpg", "image/jpeg", "image/png"].includes(value.type); // بررسی فرمت فایل
         }
         return true;
-      }
+      },
     )
     .nullable(),
   LensCategoryId: Yup.string()
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required(),
 
@@ -182,14 +183,14 @@ export const createNewLensSchema = Yup.object().shape({
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required(),
   LensTypeId: Yup.string()
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required(),
 });
@@ -199,14 +200,14 @@ export const pricingLensSchema = Yup.object().shape({
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required(),
   LensId: Yup.string()
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required(),
   group: Yup.string().matches(/^\d+\/\d+$/, "گروه باید به فرمت 2/2 باشد."),
@@ -218,7 +219,7 @@ export const pricingLensSchema = Yup.object().shape({
       if (!value) return true; // Allow empty values
       const numberValue = parseFloat(value.replace(/,/g, ""));
       return !isNaN(numberValue) && numberValue > 0;
-    }
+    },
   ),
 });
 
@@ -243,21 +244,21 @@ export const createNewFrameSchema = Yup.object().shape({
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required("لطفا یکی از دسته بندی های فریم را انتخاب کنید"),
   frameType: Yup.string()
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required("لطفا یکی از نوع فریم را انتخاب کنید"),
   frameGender: Yup.string()
     .trim()
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
-      "فرمت UUID معتبر نیست"
+      "فرمت UUID معتبر نیست",
     )
     .required("لطفا جنسیت فریم را مشخصی کنید"),
   name: Yup.string().required("لطفا نام فریم را وارد فرمائید"),
@@ -276,7 +277,7 @@ export const createNewFrameSchema = Yup.object().shape({
       colorCode: Yup.string().required("لطفا یک رنگ را برای فریم انتخاب کنید"),
       count: Yup.number().required("لطفا تعداد فریم را وارد فرمائید"),
       images: Yup.mixed().required("حداقل یک عکس از فریم را باید آپلود کنید"),
-    })
+    }),
   ),
 });
 
@@ -302,7 +303,7 @@ export const createNewBankSchema = Yup.object().shape({
     .length(24, "شماره شبا باید دقیقاً 24 کاراکتر باشد")
     .matches(
       /^IR[0-9]{22}$/,
-      "شماره شبا معتبر نیست. لطفاً یک شماره شبا صحیح وارد کنید."
+      "شماره شبا معتبر نیست. لطفاً یک شماره شبا صحیح وارد کنید.",
     ),
 });
 
@@ -321,7 +322,7 @@ export const createNewInsuranceSchema = Yup.object().shape({
     .of(
       Yup.string()
         .min(3, "عنوان مدارک نباید کم‌تر از سه کاراکتر باشد")
-        .required("لطفا مدارک مورد نیاز برای بیمه را وارد فرمائید")
+        .required("لطفا مدارک مورد نیاز برای بیمه را وارد فرمائید"),
     )
     .min(1, "حداقل باید یک ویژگی وارد شود"),
   panelUserName: Yup.string()
@@ -339,3 +340,5 @@ export const createNewInsuranceSchema = Yup.object().shape({
     .min(2, "توضیحات بیمه باید حداقل 2 کاراکتر باشد")
     .max(200, "توضیحات بیمه نمی‌تواند بیش از 200 کاراکتر باشد"),
 });
+
+export const createNewPurchaseInvoiceSchema = Yup.object().shape({});

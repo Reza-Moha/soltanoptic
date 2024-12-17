@@ -1,17 +1,11 @@
 "use client";
-import Image from 'next/image';
+import Image from "next/image";
 
-
-
-export default function BgAdminDashboard() {
-
-
-
-
+export default function BgDashboard({ id = "bgDashboard" }) {
   return (
     <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-0">
       <video
-
+        id={id}
         src="/video/bgAdmin.mp4"
         autoPlay
         loop

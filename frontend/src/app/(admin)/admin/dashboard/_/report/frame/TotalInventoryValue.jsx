@@ -6,7 +6,6 @@ export const TotalInventoryValue = () => {
   const { totalInventoryValue, isLoading } = useSelector(
     (state) => state.frameSlice,
   );
-    console.log(totalInventoryValue)
   return (
     <div className="flex items-center justify-between gap-2 mb-2">
       <div className="inline-flex items-center justify-center gap-x-1">

@@ -1,4 +1,4 @@
-import BgAdminDashboard from "./_/BgAdminDashboard";
+import BgDashboard from "@/components/Ui/BgDashboard";
 import FrameReport from "./_/report/frame/FrameReport";
 import { AdminDashboardWrapper } from "@/app/(admin)/admin/dashboard/_/AdminDashboardWrapper";
 import { LensReport } from "@/app/(admin)/admin/dashboard/_/report/lens/LensReport";
@@ -6,7 +6,7 @@ import { LensReport } from "@/app/(admin)/admin/dashboard/_/report/lens/LensRepo
 export default function AdminDashboard() {
   return (
     <AdminDashboardWrapper>
-      <BgAdminDashboard />
+      <BgDashboard />
 
       <div className="w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-4 !z-50 p-8">
         <div className="col-span-1 lg:col-span-4 row-span-2 backdropBox">1</div>

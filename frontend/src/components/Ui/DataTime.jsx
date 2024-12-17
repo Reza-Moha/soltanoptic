@@ -4,7 +4,7 @@ import { toPersianDigits } from "@/utils";
 import { useEffect, useState } from "react";
 import { FaClock } from "react-icons/fa";
 
-const DateTime = () => {
+const DateTime = ({ className, textColor }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [currentTime, setCurrentTime] = useState("");
 
@@ -35,12 +35,14 @@ const DateTime = () => {
   }, []);
 
   return (
-    <div className="font-iranSans text-slate-200 flex items-center justify-between rounded-xl bg-white/30 backdrop-blur-sm shadow-lg backdrop-brightness-150 border border-white/20 p-2 ml-2">
+    <div
+      className={`select-none pointer-events-none font-iranSans flex items-center justify-between rounded-xl  backdrop-blur-sm shadow-lg backdrop-brightness-150  p-2 ml-2 ${textColor}`}
+    >
       <p className="text-xs font-bold ml-2 flex-1">{currentDate}</p>
       <div className="flex items-center space-x-2">
-        <FaClock className="ml-4 text-slate-100" />
+        <FaClock className={`ml-4 ${textColor}`} />
         <p
-          className="text-md  w-[50px] text-center"
+          className="text-md w-[50px] text-center"
           style={{ direction: "ltr" }}
         >
           {currentTime}
