@@ -96,6 +96,7 @@ class EmployeeController extends Controller {
       next(error);
     }
   }
+  
   async deleteEmployeeById(req, res, next) {
     try {
       await idSchema.validateAsync(req.params);

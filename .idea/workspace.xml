@@ -5,200 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bb1a3f8-c911-4465-9aad-909a6236c052" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/constants/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/constants/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/Controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/Controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/Admin.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/Admin.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/RBAC/Perimission.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/RBAC/Perimission.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/RBAC/Role.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/RBAC/Role.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/bank/BankController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/bank/BankController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/doctors/Doctors.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/doctors/Doctors.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/frame/Frame.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/frame/Frame.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/insurance/Insurance.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/insurance/Insurance.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/auth/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/auth/AuthController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/InputInvoice.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app/controller/employee/Employee.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/employee/Employee.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/controller/user/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/user/UserController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/libs/DBConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/libs/DBConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/middleware/permissions.guard.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/middleware/permissions.guard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/middleware/stringToArray.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/middleware/stringToArray.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/middleware/verifyAccessToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/middleware/verifyAccessToken.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Associations.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Associations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Bank.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Bank.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Doctors.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Doctors.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Insurance.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Insurance.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Permissions.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Permissions.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/RolePermissions.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/RolePermissions.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/Roles.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/Roles.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/User.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/User.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/FramCategory.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/FramCategory.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/Frame.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/Frame.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/FrameColor.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/FrameColor.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/FrameGender.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/FrameGender.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/FrameImage.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/FrameImage.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/frame/FrameType.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/frame/FrameType.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/lens/Lens.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/lens/Lens.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/lens/LensCategory.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/lens/LensCategory.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/lens/LensGroup.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/lens/LensGroup.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/lens/LensType.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/lens/LensType.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/models/lens/RefractiveIndex.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/models/lens/RefractiveIndex.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/RBAC/RBACRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/RBAC/RBACRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/doctors/doctorsRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/doctors/doctorsRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/frames/frameRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/frames/frameRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/insurance/InsuranceRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/insurance/InsuranceRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/lens/lensRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/lens/lensRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/auth/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/auth/authRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routes/user/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/user/userRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/utils/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/utils/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/utils/multer.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/utils/multer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/validation/auth/auth.schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/validation/auth/auth.schema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.env.local" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/components.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/components.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/jsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/jsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/next.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/postcss.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/postcss.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/image/logoBlcak.svg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/image/logoBlcak.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/image/logoWhite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/image/logoWhite.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicPrividers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicPrividers.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/BasicWrapper.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/asideBasicDefinition.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/asideBasicDefinition.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/bank/BankList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/bank/BankList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/bank/Createbank.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/bank/Createbank.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/doctors/EditeDoctorsModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/doctors/EditeDoctorsModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/doctors/doctorsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/doctors/doctorsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/EditEmployeeModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/EditEmployeeModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/ListOfEmployee.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/ListOfEmployee.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/createForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/employee/createForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameCategories.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameCategories.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameGender.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameGender.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameType.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/CreateFrameType.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameCategories.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameCategories.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameGender.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameGender.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameType.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/ListOfFrameType.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/NewFrameOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/NewFrameOptions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/ColorFieldArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/ColorFieldArray.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/CreateNewFrame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/CreateNewFrame.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/ListOfFrame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/ListOfFrame.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/test.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/test.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/CreateInsurance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/CreateInsurance.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/ListInsurance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/insurance/ListInsurance.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/CreateNewLens.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/CreateNewLens.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensCategories.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensCategories.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensListTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensListTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensPricing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensPricing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensType.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/LensType.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfLens.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfLens.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfLensCategories.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfLensCategories.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfRefractiveIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ListOfRefractiveIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/RefractiveIndex.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/RefractiveIndex.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ShowPricingLensModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/ShowPricingLensModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/listOfLensType.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/lens/listOfLensType.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/EditePermissionModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/EditePermissionModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/Permission.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/Permission.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/PermissionsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/permission/PermissionsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/EditeRoleModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/EditeRoleModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/Role.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/Role.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/RoleLists.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/role/RoleLists.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/bank/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/bank/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-doctors/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-doctors/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-lens/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-lens/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-new-employee/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-new-employee/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-permissions/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/create-permissions/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/[frameId]/edite/not-found.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/[frameId]/edite/not-found.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/[frameId]/edite/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/[frameId]/edite/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/frames/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/insurance/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/insurance/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/basic-definitions/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/AdminProvider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/AdminProvider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/Loadings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/_components/Loadings.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/AdminDashboardWrapper.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/BgAdminDashboard.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameReport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameReport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/FrameTypeArray.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/GenderArray.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalColorCount.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/frame/TotalInventoryValue.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/_/report/lens/LensReport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/dashboard/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/me/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/me/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(auth)/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(auth)/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(auth)/login/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/dashboard/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(user)/user/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(user)/user/dashboard/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(user)/user/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(user)/user/page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Button.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Button.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/DataTime.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/DataTime.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/DropDownButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/DropDownButton.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/DropDownMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/DropDownMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/FileInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/FileInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/ImageInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/ImageInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Input.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Input.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Modal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Pagination.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Pagination.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/PriceInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/PriceInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/SelectInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/SelectInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/SubmitBtn.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/SubmitBtn.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Table.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Table.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/main/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/tools/OtpForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tools/OtpForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/tools/OtpTimer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tools/OtpTimer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/tools/Provider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tools/Provider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/tools/Roles.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tools/Roles.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/constants/LocalFonts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useFrameImage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useFrameImage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/lib/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/middleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/authSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/authSlice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/bankSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/bankSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/doctors.slice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/doctors.slice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/employee.slice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/employee.slice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/frame.slice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/frame.slice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/insuranceSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/insuranceSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/lensSlice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/permissionSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/permissionSlice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/rolesSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/rolesSlice.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/redux/store.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/store.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/admin.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/admin.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/bank/bank.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/bank/bank.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/doctor/doctor.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/doctor/doctor.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/employee/employee.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/employee/employee.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/frame/frame.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/frame/frame.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/insurance/insurance.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/insurance/insurance.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/lens/lens.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/lens/lens.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/admin/permission/permission.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/admin/permission/permission.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/auth/auth.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/auth/auth.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/http.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/http.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/user/user.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/user/user.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/authMiddleware.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/authMiddleware.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/setCookiesOnReq.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/setCookiesOnReq.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/validators/auth/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/validators/auth/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/SidbarNavs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/SidbarNavs.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchaseInvoice/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -212,20 +37,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -253,6 +79,7 @@
       <workItem from="1718309114339" duration="280000" />
       <workItem from="1734407920055" duration="641000" />
       <workItem from="1734459167243" duration="187000" />
+      <workItem from="1734459662323" duration="4090000" />
     </task>
     <servers />
   </component>

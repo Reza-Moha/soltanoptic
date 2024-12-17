@@ -21,7 +21,7 @@ const sidebarNavs = [
     id: 2,
     title: "ثبت قبض",
     icon: <DocumentTextIcon className="w-5 h-5" />,
-    href: "/employee/purchaseInvoice",
+    href: "/employee/purchase-invoice",
   },
   {
     id: 3,
