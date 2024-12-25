@@ -8,6 +8,7 @@ const {
   SignRefreshToken,
   VerifyRefreshToken,
   sendSms,
+  getRolePermissions,
 } = require("../../utils");
 const CreateError = require("http-errors");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
@@ -57,7 +58,9 @@ class AuthController extends Controller {
       const now = new Date().getTime();
       if (+user.otp.expiresIn < now)
         throw CreateError.Unauthorized("کد شما منقضی شده است");
-      const accessToken = await SignAccessToken(user.id);
+      const permissions = getRolePermissions(user.role);
+      console.log("check otp permissions ", permissions);
+      const accessToken = await SignAccessToken(user.id, { permissions });
       const refreshToken = await SignRefreshToken(user.id);
       res.cookie("accessToken", accessToken, accessTokenCookieOptions);
       res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
@@ -65,6 +68,7 @@ class AuthController extends Controller {
         data: {
           statusCode: HttpStatus.OK,
           user,
+          permissions,
           message: "احراز هویت شما با موفقیت انجام شد",
         },
       });
@@ -121,7 +125,7 @@ class AuthController extends Controller {
       }
       const token = cookieParser.signedCookie(
         result,
-        process.env.COOKIE_PARSER_SECRET_KEY
+        process.env.COOKIE_PARSER_SECRET_KEY,
       );
       const phoneNumber = await VerifyRefreshToken(token);
       const user = await UserModel.findOne({
@@ -129,7 +133,8 @@ class AuthController extends Controller {
         attributes: { exclude: ["otp", "createdAt", "updatedAt"] },
       });
       if (!user) throw CreateError.Unauthorized("کاربر یافت نشد");
-      const accessToken = await SignAccessToken(user.id);
+      const permissions = getRolePermissions(user.role);
+      const accessToken = await SignAccessToken(user.id, { permissions });
       res.cookie("accessToken", accessToken, accessTokenCookieOptions);
       return res.status(HttpStatus.OK).json({
         StatusCode: HttpStatus.OK,
@@ -143,10 +148,16 @@ class AuthController extends Controller {
 
   async logout(req, res, next) {
     try {
-
-      res.clearCookie("accessToken", { path: "/", httpOnly: true, secure: true });
-      res.clearCookie("refreshToken", { path: "/", httpOnly: true, secure: true });
-
+      res.clearCookie("accessToken", {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+      });
+      res.clearCookie("refreshToken", {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+      });
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,

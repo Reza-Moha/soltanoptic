@@ -17,13 +17,8 @@ export default function RootLayout({ children }) {
         </aside>
         <div className="col-span-12 lg:col-span-9 xl:col-span-10 h-screen flex flex-col">
           <EmployeeHeader />
-          <main className="bg-secondary-100 rounded-tr-3xl flex-1 overflow-y-auto">
-            <div className="cols-span-10 w-full h-screen overflow-x-hidden  bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-              <EmployeeDashboardWrapper>
-                <BgDashboard id="employeeDashboard" />
-                <div className="w-full h-full z-50 absolute">{children}</div>
-              </EmployeeDashboardWrapper>
-            </div>
+          <main className="bg-secondary-100 rounded-tr-3xl p-4 md:p-6 lg:p-10 flex-1 overflow-y-auto">
+            <EmployeeDashboardWrapper>{children}</EmployeeDashboardWrapper>
           </main>
         </div>
       </div>

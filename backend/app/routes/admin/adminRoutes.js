@@ -10,25 +10,38 @@ const { lensRoutes } = require("./lens/lensRoutes");
 const { RBACRoutes } = require("./RBAC/RBACRoutes");
 const { bankRoutes } = require("./bank/bankRoutes");
 const { insuranceRoutes } = require("./insurance/InsuranceRoutes");
+const { checkPermission } = require("../../middleware/permissions.guard");
+const { PERMISSIONS } = require("../../constants");
 
 router.patch(
   "/admin-profile-update",
   uploadFile.single("profileImage"),
+  checkPermission(PERMISSIONS.ADMIN),
   AdminController.updateAdminProfile,
 );
 
 router.post(
   "/create-new-employee",
   uploadFile.single("profileImage"),
+  checkPermission(PERMISSIONS.ADMIN),
   EmployeeController.createNewEmployee,
 );
 
-router.get("/get-all-employee", EmployeeController.getAllEmployee);
+router.get(
+  "/get-all-employee",
+  checkPermission(PERMISSIONS.ADMIN),
+  EmployeeController.getAllEmployee,
+);
 
-router.delete("/delete-employee/:id", EmployeeController.deleteEmployeeById);
+router.delete(
+  "/delete-employee/:id",
+  checkPermission(PERMISSIONS.ADMIN),
+  EmployeeController.deleteEmployeeById,
+);
 
 router.patch(
   "/update-employee/:id",
+  checkPermission(PERMISSIONS.ADMIN),
   uploadFile.single("profileImage"),
   EmployeeController.updateEmployee,
 );

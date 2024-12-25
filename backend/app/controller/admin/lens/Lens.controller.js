@@ -40,7 +40,7 @@ class LensController extends Controller {
       });
       if (exsistLens)
         throw CreateError.BadRequest("عدسی با این مشخصات قبلا ثبت شده است");
-      await LensModel.sync({alter: true});
+      await LensModel.sync({ alter: true });
       const createdNewLens = await LensModel.create({
         lensImage,
         lensName,
@@ -51,7 +51,7 @@ class LensController extends Controller {
       });
       if (!createdNewLens)
         throw CreateError.InternalServerError(
-          "در ایجاد عدسی جدید با خطا روبرو شد لظفا دوباره امتحان کنید"
+          "در ایجاد عدسی جدید با خطا روبرو شد لظفا دوباره امتحان کنید",
         );
       const newLensWithRelations = await LensModel.findByPk(createdNewLens.id, {
         include: [
@@ -91,12 +91,12 @@ class LensController extends Controller {
       const offset = (page - 1) * limit;
 
       const whereCondition = search
-          ? {
+        ? {
             lensName: {
               [Sequelize.Op.like]: `%${search.toLowerCase()}%`,
             },
           }
-          : {};
+        : {};
 
       const includeCondition = [
         {
@@ -110,7 +110,6 @@ class LensController extends Controller {
         },
       ];
 
-      // Main query for pagination and data retrieval
       const allLens = await LensModel.findAndCountAll({
         where: whereCondition,
         limit,
@@ -126,10 +125,6 @@ class LensController extends Controller {
         },
       });
 
-      // Aggregate queries for statistics
-      const totalLenses = await LensModel.count({ where: whereCondition });
-      const totalInventoryValue = await LensModel.sum("price", { where: whereCondition });
-
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         allLens: allLens.rows,
@@ -138,10 +133,6 @@ class LensController extends Controller {
           totalPages: Math.ceil(allLens.count / limit),
           totalItems: allLens.count,
           size,
-        },
-        statistics: {
-          totalLenses,
-          totalInventoryValue,
         },
       });
     } catch (error) {
@@ -159,7 +150,7 @@ class LensController extends Controller {
       const deleteCount = await lens.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف عدسی با خظا مواجه شد لطفا دوباره امتحان کنید"
+          "حذف عدسی با خظا مواجه شد لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -179,7 +170,7 @@ class LensController extends Controller {
       });
       if (!newPricingLens)
         throw CreateError.InternalServerError(
-          "قیمت گذاری عدسی با مشکل مواجه شد لظفا دوباره امتحان کنید"
+          "قیمت گذاری عدسی با مشکل مواجه شد لظفا دوباره امتحان کنید",
         );
       const [updatedRowCount, updatedRows] = await LensModel.update(
         {
@@ -191,7 +182,7 @@ class LensController extends Controller {
             id: LensId,
           },
           returning: true,
-        }
+        },
       );
 
       if (updatedRowCount === 0) {
@@ -216,7 +207,7 @@ class LensController extends Controller {
       });
       if (exsitReflactiveIndex)
         throw CreateError.BadRequest(
-          "ضریب شکست با این مشخصات قبلا ثبت شده است"
+          "ضریب شکست با این مشخصات قبلا ثبت شده است",
         );
       const newIndex = await RefractiveIndex.create({
         index,
@@ -224,7 +215,7 @@ class LensController extends Controller {
       });
       if (!newIndex)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد ضریب شکست لطفا دوباره امتحان کنید"
+          "خطا در ایجاد ضریب شکست لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -259,7 +250,7 @@ class LensController extends Controller {
       const deletedCount = await RefractiveIndex.destroy({ where: { id } });
       if (deletedCount === 0)
         throw CreateError.InternalServerError(
-          "خطا در حذف ضریب شکست لطفا دوباره امتحان کنید"
+          "خطا در حذف ضریب شکست لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -286,7 +277,7 @@ class LensController extends Controller {
       });
       if (!newLensType)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد نوع عدسی لطفا دوباره امتحان کنید"
+          "خطا در ایجاد نوع عدسی لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -321,7 +312,7 @@ class LensController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف نوع عدسی با مشکل مواجه شد لظفا دوباره امتحان کنید "
+          "حذف نوع عدسی با مشکل مواجه شد لظفا دوباره امتحان کنید ",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -342,7 +333,7 @@ class LensController extends Controller {
       });
       if (exsitLensCategoty)
         throw CreateError.BadRequest(
-          "دسته بندی با این مشخصات قبلا ثبت شده است"
+          "دسته بندی با این مشخصات قبلا ثبت شده است",
         );
       const newLensCategory = await LensCategory.create({
         lensName,
@@ -350,7 +341,7 @@ class LensController extends Controller {
       });
       if (!newLensCategory)
         throw CreateError.InternalServerError(
-          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید"
+          "خطا در ایجاد دسته بندی لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
@@ -376,7 +367,7 @@ class LensController extends Controller {
       const deleteCount = await result.destroy({ where: { id } });
       if (deleteCount === 0)
         throw CreateError.InternalServerError(
-          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید"
+          "حذف دسته بندی موفقیت آمیز نبود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,

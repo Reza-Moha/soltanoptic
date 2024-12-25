@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { checkOtpApi, logOutApi } from "@/services/auth/auth.service";
 import { getUserProfileApi } from "@/services/user/user.service";
+import toast from "react-hot-toast";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -31,6 +32,9 @@ export const logOutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await logOutApi();
+      if (data.statusCode === 200) {
+        toast.success(data.message);
+      }
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

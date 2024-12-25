@@ -17,7 +17,9 @@ const { Roles } = require("../../models/Roles.model");
 class EmployeeController extends Controller {
   async createNewEmployee(req, res, next) {
     try {
+      // اعتبارسنجی ورودی‌ها
       await createNewEmployeeSchema.validateAsync(req.body);
+
       const {
         fileUploadPath,
         filename,
@@ -28,18 +30,29 @@ class EmployeeController extends Controller {
         jobTitle,
         description,
       } = req.body;
-      const image = path.join(fileUploadPath, filename).replace(/\\/g, "/");
+
+      // مدیریت تصویر پروفایل
+      const image =
+        fileUploadPath && filename
+          ? path.join(fileUploadPath, filename).replace(/\\/g, "/")
+          : null;
+
+      // حذف مقادیر نامعتبر از ورودی
       deleteInvalidPropertyInObject(req.body, BlackListFields);
+
+      // بررسی وجود کاربر با شماره تلفن و کد ملی
       const existingUser = await UserModel.findOne({
         where: {
-          [Op.and]: [{ phoneNumber }, { nationalId }],
+          [Op.or]: [{ phoneNumber }, { nationalId }],
         },
       });
 
-      if (existingUser)
-        throw CreateError.BadRequest("همکاری با این مشخصات قبلا ثبت شده است");
+      if (existingUser) {
+        throw CreateError.BadRequest("همکاری با این مشخصات قبلاً ثبت شده است");
+      }
 
-      const createNewEmployee = await UserModel.create({
+      // ایجاد کاربر جدید
+      const newEmployee = await UserModel.create({
         profileImage: image,
         phoneNumber,
         fullName,
@@ -47,36 +60,46 @@ class EmployeeController extends Controller {
         nationalId,
         jobTitle,
         description,
-        role: process.env.EMPLOYEE_ROLE,
+        role: process.env.EMPLOYEE_ROLE, // بررسی کنید که این مقدار به درستی تنظیم شده باشد
       });
-      if (!createNewEmployee)
+
+      if (!newEmployee) {
         throw CreateError.InternalServerError(
-          "ایجاد همکار جدید با خطا مواجه شد لطفا دوباره تلاش فرمائید"
+          "ایجاد همکار جدید با خطا مواجه شد لطفاً دوباره تلاش کنید",
         );
-      const newEmployee = await UserModel.findOne({
-        where: { nationalId: createNewEmployee.nationalId },
-        attributes: { exclude: ["otp", "createdAt", "updatedAt"] },
-      });
+      }
+
+      // ارتباط نقش با کاربر
       const [updatedRowsCount] = await Roles.update(
+        { UserId: newEmployee.id },
         {
-          UserId: newEmployee.id,
-        },
-        {
-          where: { roleId: jobTitle },
+          where: { roleId: jobTitle }, // فرض می‌شود که `jobTitle` با `roleId` هم‌خوانی دارد
           returning: true,
-        }
+        },
       );
-      if (updatedRowsCount === 0)
-        throw CreateError.InternalServerError(" عملیات ویرایش انجام نشد");
+
+      if (updatedRowsCount === 0) {
+        throw CreateError.InternalServerError("عملیات ویرایش نقش انجام نشد");
+      }
+
+      // بازگرداندن نتیجه به کاربر
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "همکار جدید با موفقیت ثبت گردید",
-        newEmployee,
+        newEmployee: await UserModel.findOne({
+          where: { id: newEmployee.id },
+          attributes: { exclude: ["otp", "createdAt", "updatedAt"] },
+        }),
       });
     } catch (error) {
-      const { fileUploadPath, filename } = req.body;
-      const image = path.join(fileUploadPath, filename).replace(/\\/g, "/");
-      deleteFileInPublic(image);
+      // حذف فایل در صورت خطا (اگر وجود داشته باشد)
+      if (req.body.fileUploadPath && req.body.filename) {
+        const image = path
+          .join(req.body.fileUploadPath, req.body.filename)
+          .replace(/\\/g, "/");
+        deleteFileInPublic(image);
+      }
+
       next(error);
     }
   }
@@ -96,7 +119,7 @@ class EmployeeController extends Controller {
       next(error);
     }
   }
-  
+
   async deleteEmployeeById(req, res, next) {
     try {
       await idSchema.validateAsync(req.params);
@@ -107,15 +130,11 @@ class EmployeeController extends Controller {
       const user = await UserModel.findByPk(id);
       if (!user) throw CreateError.NotFound("همکار با این مشخصات وجود ندارد");
 
-   
-
       if (user.profileImage) {
-      
         deleteFileInPublic(user.profileImage);
       }
 
       const deletedRows = await UserModel.destroy({ where: { id } });
-     
 
       if (deletedRows === 0) {
         throw CreateError.NotFound("هیچ رکوردی برای حذف یافت نشد");
@@ -165,7 +184,7 @@ class EmployeeController extends Controller {
         {
           where: { id },
           returning: true,
-        }
+        },
       );
       if (updatedRowsCount === 0)
         throw CreateError.InternalServerError(" عملیات ویرایش انجام نشد");

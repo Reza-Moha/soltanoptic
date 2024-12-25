@@ -1,19 +1,26 @@
-import PurchaseInvoiceInput from "@/app/(employee)/employee/purchase-invoice/_components/InputInvoice";
+import Input from "@/components/Ui/Input";
+import { Field } from "formik";
+import SelectInput from "@/components/Ui/SelectInput";
+import { InsuranceCategoryOptions } from "@/app/(employee)/employee/purchase-invoice/_components/InsuranceCategoryOptions";
 
 export const PersonalInformation = () => {
   return (
     <>
-      <PurchaseInvoiceInput
+      <Input
         label="نام و نام خانوادگی"
-        name="customerName"
+        name="fullName"
         type="text"
+        bg="bg-white"
       />
-      <PurchaseInvoiceInput
+      <Input
         label="شماره موبایل"
         name="phoneNumber"
         type="text"
+        bg="bg-white"
       />
-      <PurchaseInvoiceInput label="کد ملی" name="nationalId" type="text" />
+      <div className="col-span-1">
+        <InsuranceCategoryOptions />
+      </div>
     </>
   );
 };

@@ -7,7 +7,7 @@ export default function Avatar({ user }) {
       {user ? (
         <Image
           src={`${process.env.NEXT_PUBLIC_API_URL}/${user?.profileImage}`}
-          alt={user.fullName}
+          alt={user.phoneNumber || "user"}
           width="44"
           height="44"
           className="w-12 h-12 !rounded-full object-cover"

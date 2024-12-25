@@ -5,13 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bb1a3f8-c911-4465-9aad-909a6236c052" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/InputInvoice.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/app/routes/api/apiRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/EmployeeDashboardWrapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/InsuranceCategoryOptions.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/constants/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/constants/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/admin/lens/Lens.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/controller/auth/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/auth/AuthController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app/controller/employee/Employee.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/controller/employee/Employee.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/SidbarNavs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/SidbarNavs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchaseInvoice/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/middleware/permissions.guard.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/middleware/permissions.guard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/adminRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/insurance/InsuranceRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/insurance/InsuranceRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/utils/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/utils/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/validation/admin/admin.schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env.local" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/EployeeDashboardWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/EployeeDashboardWrapper.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/Sidbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/Sidbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/dashboard/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/InputInvoice.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(user)/user/dashboard/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(user)/user/dashboard/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Avatar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Avatar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/Input.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/Input.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/tools/Roles.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tools/Roles.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/middleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/redux/slices/authSlice.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/slices/authSlice.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/redux/store.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/redux/store.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +47,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -39,16 +65,21 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "20.14.0",
+    "javascript.nodejs.core.library.typings.version": "20.14.15",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.1.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -79,7 +110,16 @@
       <workItem from="1718309114339" duration="280000" />
       <workItem from="1734407920055" duration="641000" />
       <workItem from="1734459167243" duration="187000" />
-      <workItem from="1734459662323" duration="4090000" />
+      <workItem from="1734459662323" duration="4131000" />
+      <workItem from="1734470063865" duration="4410000" />
+      <workItem from="1734484975747" duration="2940000" />
+      <workItem from="1734543871700" duration="912000" />
+      <workItem from="1734602834278" duration="3305000" />
+      <workItem from="1734675686626" duration="4808000" />
+      <workItem from="1734695819223" duration="1079000" />
+      <workItem from="1734724959446" duration="1980000" />
+      <workItem from="1735088468647" duration="2432000" />
+      <workItem from="1735091290659" duration="1680000" />
     </task>
     <servers />
   </component>

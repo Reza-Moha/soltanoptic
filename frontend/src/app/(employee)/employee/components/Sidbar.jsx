@@ -5,11 +5,14 @@ import { logOutUser } from "@/redux/slices/authSlice";
 import SideBarNavs from "@/app/(employee)/employee/components/SidbarNavs";
 import DataTime from "@/components/Ui/DataTime";
 import { TbLogout2 } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 function EmployeeSideBar() {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const logoutHandler = async () => {
     await dispatch(logOutUser());
+    router.push("/");
   };
 
   return (

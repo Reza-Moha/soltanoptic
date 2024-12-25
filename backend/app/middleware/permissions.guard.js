@@ -1,17 +1,28 @@
 const CreateError = require("http-errors");
 const { Permissions } = require("../models/Permissions.model");
 const { Roles } = require("../models/Roles.model");
-const { PERMISSIONS } = require("../constants/index");
+const { ROLES } = require("../constants");
 
 function checkPermission(requiredPermissions = []) {
   return async function (req, res, next) {
     try {
-      const allPermissions = requiredPermissions.flat(2);
+      const allPermissions = Array.isArray(requiredPermissions)
+        ? requiredPermissions
+        : [requiredPermissions];
 
       const user = req.user;
 
+      console.log("All permissions required:", allPermissions);
+
+      if (user.role === Number(ROLES.ADMIN)) {
+        return next();
+      }
+
       const role = await Roles.findOne({
         where: { title: user.role },
+        attributes: {
+          exclude: ["userId"],
+        },
         include: [
           {
             model: Permissions,
@@ -23,23 +34,23 @@ function checkPermission(requiredPermissions = []) {
         ],
       });
 
-      if (!role && +user.role !== +PERMISSIONS.ALL) {
-        throw CreateError.NotFound("نقش یافت نشد");
+      if (!role) {
+        throw CreateError.NotFound("Role not found");
       }
 
-      const userPermissions = user?.Role?.permissions.map((item) => item.title);
+      const userPermissions = role.permissions.map((item) => item.title);
 
-      if (userPermissions) {
-        const hasPermission = allPermissions.every((permission) => {
-          userPermissions.includes(permission);
-        });
-        if (allPermissions.length === 0 || hasPermission) return next();
+      const hasPermission = allPermissions.some((permission) =>
+        userPermissions.includes(permission),
+      );
+
+      if (allPermissions.length > 0 && hasPermission) {
+        return next();
       }
 
-      if (+user.role === +PERMISSIONS.ALL) return next();
-
-      throw CreateError.Forbidden("شما به این قسمت دسترسی ندارید");
+      throw CreateError.Forbidden("You do not have access to this section");
     } catch (error) {
+      console.error("Error in checkPermission middleware:", error);
       next(error);
     }
   };

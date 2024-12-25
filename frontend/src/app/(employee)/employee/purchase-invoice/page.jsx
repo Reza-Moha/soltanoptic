@@ -4,7 +4,6 @@ import { Formik, Form } from "formik";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
-import PurchaseInvoiceInput from "@/app/(employee)/employee/purchase-invoice/_components/InputInvoice";
 
 export default function CreateBank() {
   const dispatch = useDispatch();
@@ -26,12 +25,7 @@ export default function CreateBank() {
     >
       {({ handleSubmit }) => (
         <Form onSubmit={handleSubmit}>
-          <div className="h-screen md:w-[95%] grid grid-cols-1 md:grid-cols-5 gap-4 backdropBox p-5">
-            <PurchaseInvoiceInput
-              label="شماره قبض"
-              name="invoiceNumber"
-              type="text"
-            />
+          <div className="h-screen grid grid-cols-1 md:grid-cols-5 gap-4 p-5">
             <PersonalInformation />
 
             <SubmitBtn>ایجاد</SubmitBtn>

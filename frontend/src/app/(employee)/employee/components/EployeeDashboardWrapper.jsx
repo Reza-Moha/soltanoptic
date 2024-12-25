@@ -2,14 +2,12 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserProfile } from "@/redux/slices/authSlice";
+import { fetchAllInsurance } from "@/redux/slices/insuranceSlice";
 export const EmployeeDashboardWrapper = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserProfile());
+    dispatch(fetchAllInsurance());
   }, [dispatch]);
-  return (
-    <section className="h-screen relative p-4 md:p-6 lg:p-10 font-iranSans text-slate-100">
-      {children}
-    </section>
-  );
+  return <div className="xl:max-w-screen-xl">{children}</div>;
 };

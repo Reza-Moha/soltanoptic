@@ -7,7 +7,7 @@ export default function Input({ label, bg, ...props }) {
 
   return (
     <div className="mb-4 font-iranSans p-2 relative">
-      <label className="block text-secondary-600 text-sm font-bold mb-2">
+      <label className="block text-secondary-700 text-sm font-bold mb-2">
         {label}
       </label>
       <input

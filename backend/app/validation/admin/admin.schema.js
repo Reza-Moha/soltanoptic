@@ -44,9 +44,9 @@ const idSchema = Joi.object({
 });
 
 const createNewRoleSchema = Joi.object({
-  title: Joi.number().min(100000).max(999999).required().messages({
-    "number.min": "عنوان نقش باید حداقل ۶ رقم باشد",
-    "number.max": "عنوان نقش نباید بیش از ۶ رقم باشد",
+  title: Joi.string().min(6).max(10).required().messages({
+    "string.min": "عنوان نقش باید حداقل ۶ کاراکتر باشد",
+    "string.max": "عنوان نقش نباید بیش از ۱۰ کاراکتر باشد",
     "any.required": "عنوان نقش الزامی است",
   }),
   description: Joi.string().min(3).max(100).allow("").messages({
@@ -115,7 +115,7 @@ const createNewEmployeeSchema = Joi.object({
           .valid("image/jpg", "image/jpeg", "image/png")
           .optional(),
       }),
-      Joi.string()
+      Joi.string(),
     )
     .optional()
     .messages({
@@ -155,7 +155,7 @@ const createNewLensCategorySchema = Joi.object({
           .valid("image/jpg", "image/jpeg", "image/png")
           .optional(),
       }),
-      Joi.string()
+      Joi.string(),
     )
     .optional()
     .messages({
@@ -175,7 +175,7 @@ const createNewRefractiveIndexSchema = Joi.object({
       Joi.string().min(3).required().messages({
         "string.empty": "لطفا ویژگی را وارد فرمائید",
         "string.min": "ویژگی نباید کم‌تر از سه کاراکتر باشد.",
-      })
+      }),
     )
     .min(1)
     .messages({
@@ -211,7 +211,7 @@ const createNewLensSchema = Joi.object({
           .valid("image/jpg", "image/jpeg", "image/png")
           .optional(),
       }),
-      Joi.string()
+      Joi.string(),
     )
     .optional()
     .messages({
@@ -302,7 +302,7 @@ const createNewFrameSchema = Joi.object({
           "array.min": "لطفا حداقل یک عکس انتخاب کنید",
           "any.required": "انتخاب عکس الزامی است",
         }),
-      })
+      }),
     )
     .required(),
 });
@@ -374,7 +374,7 @@ const createNewInsuranceSchema = Joi.object({
       Joi.string().min(3).required().messages({
         "string.min": "عنوان مدارک نباید کم‌تر از سه کاراکتر باشد",
         "any.required": "لطفا مدارک مورد نیاز برای بیمه را وارد فرمائید",
-      })
+      }),
     )
     .min(1)
     .messages({

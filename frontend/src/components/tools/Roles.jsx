@@ -12,12 +12,12 @@ const roleToPath = Object.freeze(
         }
         return acc;
       }, {})
-    : {}
+    : {},
 );
 
 const ConditionalLink = () => {
   const { user } = useSelector((state) => state.auth);
-  const href = roleToPath[user.role] || "/default-dashboard";
+  const href = roleToPath[user.role] || "/user/dashboard";
 
   return (
     <Link

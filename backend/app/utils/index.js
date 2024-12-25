@@ -1,10 +1,11 @@
-require("dotenv").config()
+require("dotenv").config();
 const JWT = require("jsonwebtoken");
 const { UserModel } = require("../models/User.model");
 const CreateError = require("http-errors");
 const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
+const { PERMISSIONS } = require("../constants");
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -15,9 +16,10 @@ const randomNumberGenerator = () => {
 
 function SignAccessToken(userId) {
   return new Promise(async (resolve, reject) => {
-    const user = await UserModel.findByPk(userId);
+    const { phoneNumber, permissions } = await UserModel.findByPk(userId);
     const payload = {
-      phoneNumber: user.phoneNumber,
+      phoneNumber,
+      permissions,
     };
     const options = {
       expiresIn: "20m",
@@ -29,16 +31,17 @@ function SignAccessToken(userId) {
       (err, token) => {
         if (err) reject(CreateError.InternalServerError("خطای سروری"));
         resolve(token);
-      }
+      },
     );
   });
 }
 
 function SignRefreshToken(userId) {
   return new Promise(async (resolve, reject) => {
-    const user = await UserModel.findByPk(userId);
+    const { phoneNumber, permissions } = await UserModel.findByPk(userId);
     const payload = {
-      phoneNumber: user.phoneNumber,
+      phoneNumber,
+      permissions,
     };
     const options = {
       expiresIn: "30d",
@@ -50,7 +53,7 @@ function SignRefreshToken(userId) {
       async (err, token) => {
         if (err) reject(CreateError.InternalServerError("خطای سروری"));
         resolve(token);
-      }
+      },
     );
   });
 }
@@ -64,7 +67,7 @@ function VerifyRefreshToken(token) {
         try {
           if (err)
             return reject(
-              CreateError.Unauthorized("وارد حساب کاربری خود شوید")
+              CreateError.Unauthorized("وارد حساب کاربری خود شوید"),
             );
           const { phoneNumber } = payload || {};
           const user = await UserModel.findOne({
@@ -78,7 +81,7 @@ function VerifyRefreshToken(token) {
         } catch (e) {
           return reject(CreateError.Unauthorized("حساب کاربری یافت نشد"));
         }
-      }
+      },
     );
   });
 }
@@ -114,8 +117,8 @@ const deleteFileInPublic = (filePath) => {
 function filterEmptyFieldsInDatabase(data) {
   return Object.fromEntries(
     Object.entries(data).filter(
-      ([key, value]) => value !== null && value !== undefined && value !== ""
-    )
+      ([key, value]) => value !== null && value !== undefined && value !== "",
+    ),
   );
 }
 
@@ -137,7 +140,7 @@ function validateNationalId(code) {
     (remainder >= 2 && controlDigit === 11 - remainder)
   );
 }
-function isValidBankCardNumber (cardNumber)  {
+function isValidBankCardNumber(cardNumber) {
   let sum = 0;
   let shouldDouble = false;
 
@@ -156,19 +159,22 @@ function isValidBankCardNumber (cardNumber)  {
   return sum % 10 === 0;
 }
 
-async function sendSms( RecNumber, code ) {
-  const accessHash = process.env.SMS_ACCESS_HASH
-  const phoneNumber = process.env.SMS_PHONENUMBER
+async function sendSms(RecNumber, code) {
+  const accessHash = process.env.SMS_ACCESS_HASH;
+  const phoneNumber = process.env.SMS_PHONENUMBER;
   const patternId = process.env.SMS_PATTERN_ID;
   try {
     const response = await axios.get(
-      `http://smspanel.trez.ir/SendPatternWithUrl.ashx?AccessHash=${accessHash}&PhoneNumber=${phoneNumber}&PatternId=${patternId}&RecNumber=${RecNumber}&Smsclass=1&token1=${code}`
+      `http://smspanel.trez.ir/SendPatternWithUrl.ashx?AccessHash=${accessHash}&PhoneNumber=${phoneNumber}&PatternId=${patternId}&RecNumber=${RecNumber}&Smsclass=1&token1=${code}`,
     );
     return { success: true, message: response.data.Message };
   } catch (error) {
     return { success: false, message: error.message };
   }
 }
+const getRolePermissions = (role) => {
+  return PERMISSIONS[role] || [];
+};
 
 module.exports = {
   randomNumberGenerator,
@@ -181,4 +187,5 @@ module.exports = {
   validateNationalId,
   isValidBankCardNumber,
   sendSms,
+  getRolePermissions,
 };

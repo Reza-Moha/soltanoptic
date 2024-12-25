@@ -3,15 +3,10 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllInsurance } from "@/redux/slices/insuranceSlice";
 
-export default function UserDashboard() {
+export const EmployeeDashboardWrapper = ({ children }) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchAllInsurance());
   }, []);
-  return (
-    <>
-      <h1>User DashBoard</h1>
-    </>
-  );
-}
+  return <div className="xl:max-w-screen-xl">{children}</div>;
+};
