@@ -1,7 +1,6 @@
 import EmployeeHeader from "@/app/(employee)/employee/components/Header";
 import EmployeeSideBar from "@/app/(employee)/employee/components/Sidbar";
 import { EmployeeDashboardWrapper } from "@/app/(employee)/employee/components/EployeeDashboardWrapper";
-import BgDashboard from "@/components/Ui/BgDashboard";
 
 export const metadata = {
   title: "داشبورد",

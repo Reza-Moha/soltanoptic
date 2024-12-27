@@ -115,6 +115,9 @@
   .backdropBox {
     @apply rounded-xl bg-white/10 backdrop-blur-sm shadow-lg backdrop-brightness-150 border border-white/20 p-2
   }
+  .medicalPrescriptionInput{
+    @apply   bg-white w-full h-full m-0 p-0 outline-0 py-1 text-center rounded-xl text-secondary-900 border border-secondary-200  hover:border-primary-500 focus:border-primary-500 focus:bg-secondary-0 transition-all duration-300 ease-out focus:shadow-lg focus:shadow-primary-200 dark:focus:shadow-secondary-200
+  }
 }
 
 * {
@@ -262,4 +265,8 @@ table td {
 
 .react-select__control:focus.dark {
   box-shadow: 0 0 10px rgba(31, 41, 55, 0.5) !important;
+}
+.verticalText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
