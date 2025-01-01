@@ -341,4 +341,25 @@ export const createNewInsuranceSchema = Yup.object().shape({
     .max(200, "توضیحات بیمه نمی‌تواند بیش از 200 کاراکتر باشد"),
 });
 
-export const createNewPurchaseInvoiceSchema = Yup.object().shape({});
+export const createNewPurchaseInvoiceSchema = Yup.object().shape({
+    invoiceNumber: Yup.string().required("شماره فاکتور الزامی است"),
+    fullName: Yup.string().required("نام کامل الزامی است"),
+    phoneNumber: Yup.string().required("شماره تماس الزامی است"),
+    nationalId: Yup.string().required("کد ملی الزامی است"),
+    prescriptions: Yup.array().of(
+        Yup.object().shape({
+            FarOdAx: Yup.string(),
+            FarOdCyl: Yup.string(),
+            FarOdSph: Yup.string(),
+            FarOsAx: Yup.string(),
+            FarOsCyl: Yup.string(),
+            FarOsSph: Yup.string(),
+            pd: Yup.string(),
+            typeOfGlasses: Yup.string(),
+            typeOfFrame: Yup.string(),
+            lensPrice: Yup.string(),
+            framePrice: Yup.string(),
+        })
+    ),
+    insuranceName: Yup.string().required("نام بیمه الزامی است"),
+});

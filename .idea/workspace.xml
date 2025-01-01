@@ -5,13 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3bb1a3f8-c911-4465-9aad-909a6236c052" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/ChoseTypeOfFrameModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/ColorSelectionModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/FrameList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/PersonalInformation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/RBAC/RBACRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/RBAC/RBACRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/bank/bankRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/doctors/doctorsRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/doctors/doctorsRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/frames/frameRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/frames/frameRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routes/admin/lens/lensRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routes/admin/lens/lensRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/CreateNewFrame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(admin)/admin/(BasicDefinitions)/_components/frames/createNewFrame/CreateNewFrame.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/EployeeDashboardWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/components/EployeeDashboardWrapper.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/(employee)/employee/purchase-invoice/page.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Ui/SelectInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Ui/SelectInput.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/validators/admin/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +37,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Reza-Moha&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Reza-Moha/soltanoptic.git&quot;,
+    &quot;accountId&quot;: &quot;5bd4b07e-dfbb-442a-8f18-0a14b08d7018&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 8
@@ -43,18 +63,19 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.14.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.14.15&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;23.4.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.10.2&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\MFGS\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.1.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Reza\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2024.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -70,7 +91,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17011.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
       </set>
     </attachedChunks>
   </component>
@@ -98,6 +119,10 @@
       <workItem from="1735286245324" duration="6559000" />
       <workItem from="1735308067526" duration="1308000" />
       <workItem from="1735319547264" duration="2265000" />
+      <workItem from="1735370951977" duration="22911000" />
+      <workItem from="1735564785887" duration="7358000" />
+      <workItem from="1735717819770" duration="2541000" />
+      <workItem from="1735737191416" duration="5492000" />
     </task>
     <servers />
   </component>

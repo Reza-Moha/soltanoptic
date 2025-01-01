@@ -1,16 +1,15 @@
 const {
   BankController,
 } = require("../../../controller/admin/bank/BankController");
-const {
-  DoctorsController,
-} = require("../../../controller/admin/doctors/Doctors.controller");
+const {checkPermission} = require("../../../middleware/permissions.guard");
+const {PERMISSIONS} = require("../../../constants");
 const router = require("express").Router();
 
-router.post("/create", BankController.createNewBank);
+router.post("/create",checkPermission(PERMISSIONS.ADMIN), BankController.createNewBank);
 
-router.get("/get-all", BankController.getAllBanks);
+router.get("/get-all",checkPermission(PERMISSIONS.ADMIN), BankController.getAllBanks);
 
-router.delete("/delete/:id", BankController.deleteBankById);
+router.delete("/delete/:id",checkPermission(PERMISSIONS.ADMIN), BankController.deleteBankById);
 module.exports = {
   bankRoutes: router,
 };

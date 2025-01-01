@@ -53,7 +53,6 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
     }
 
     resetForm();
-    router.back()
   };
   return (
     <BasicWrapper

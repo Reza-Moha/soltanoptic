@@ -41,6 +41,7 @@ const SelectInput = ({
         isDisabled={isDisabled}
         isLoading={isLoading}
         placeholder={placeholder}
+        instanceId={placeholder}
         value={value}
         onChange={handleChange}
         options={options}

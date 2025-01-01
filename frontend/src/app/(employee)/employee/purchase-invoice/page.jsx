@@ -5,24 +5,51 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
 import { MedicalPrescription } from "@/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseTypeOfFrameModal";
 import { FaRegTrashCan } from "react-icons/fa6";
-export default function CreateBank() {
-  const dispatch = useDispatch();
-
+import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/FrameList";
+export default function CreatePurchaseInvoice() {
   const createNewPurchaseInvoiceHandler = (values) => {
-    console.log(values);
+    console.log("values", values);
   };
 
   const initialValues = {
+    invoiceNumber: "",
     fullName: "",
     phoneNumber: "",
-    prescriptions: [],
+    nationalId: "",
+    prescriptions: [
+      {
+        label: "فریم دور",
+        FarOdAx: "",
+        FarOdCyl: "",
+        FarOdSph: "",
+        FarOsAx: "",
+        FarOsCyl: "",
+        FarOsSph: "",
+        pd: "",
+        typeOfGlasses: "",
+        typeOfFrame: "",
+        lensPrice: "",
+        framePrice: "",
+      },
+    ],
+    insuranceName: "",
   };
 
   const [showPopup, setShowPopup] = useState(false);
+  const [showFrameModal, setShowFrameModal] = useState(false);
+  const [selectedFrames, setSelectedFrames] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(null);
+
+  const handleFrameSelect = useCallback((frame, index) => {
+    setSelectedFrames((prev) => {
+      const updatedFrames = [...prev];
+      updatedFrames[index] = frame;
+      return updatedFrames;
+    });
+  }, []);
 
   return (
     <Formik
@@ -41,16 +68,32 @@ export default function CreateBank() {
                   {values.prescriptions.map((prescription, index) => (
                     <div key={index} className="mb-5">
                       <MedicalPrescription
+                        selectedFrames={selectedFrames[index]}
+                        setShowFrameModal={setShowFrameModal}
                         label={prescription.label || `فریم ${index + 1}`}
                         fieldPrefix={`prescriptions.${index}`}
                       />
                       <button
                         type="button"
                         className="bg-rose-200 text-rose-600 px-4 py-2 rounded mt-2 hover:bg-rose-300 hover:text-rose-700 transition-all ease-linear duration-300"
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => {
+                          const updatedFrames = [...selectedFrames];
+                          updatedFrames.splice(index, 1);
+                          setSelectedFrames(updatedFrames);
+                          arrayHelpers.remove(index);
+                        }}
                       >
                         <FaRegTrashCan />
                       </button>
+                      {showFrameModal && (
+                        <ChoseFrame
+                          values={values}
+                          setShowFrameModal={setShowFrameModal}
+                          onFrameSelect={(frame) =>
+                            handleFrameSelect(frame, index)
+                          }
+                        />
+                      )}
                     </div>
                   ))}
                   <div className="w-full flex items-center justify-center">
