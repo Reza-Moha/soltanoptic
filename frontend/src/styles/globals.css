@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    &,
+    &.light-mode {
+      --background-app-rgb: 249, 250, 251;
+      --color-primary-900: 74, 109, 255;
+      --color-primary-800: 92, 124, 255;
+      --color-primary-700: 110, 138, 255;
+      --color-primary-600: 128, 153, 255;
+      --color-primary-500: 146, 167, 255;
+      --color-primary-400: 164, 182, 255;
+      --color-primary-300: 183, 197, 255;
+      --color-primary-200: 201, 211, 255;
+      --color-primary-100: 219, 226, 255;
+      --color-primary-50: 228, 233, 255;
+      --color-secondary-900: 17, 24, 39;
+      --color-secondary-800: 31, 41, 55;
+      --color-secondary-700: 55, 65, 81;
+      --color-secondary-600: 75, 85, 99;
+      --color-secondary-500: 107, 114, 128;
+      --color-secondary-400: 156, 163, 175;
+      --color-secondary-300: 209, 213, 219;
+      --color-secondary-200: 229, 231, 235;
+      --color-secondary-100: 243, 244, 246;
+      --color-secondary-50: 249, 250, 251;
+      --color-secondary-0: 255, 255, 255;
+      --color-success: 0, 192, 115;
+      --color-warning: 255, 153, 0;
+      --color-error: 255, 71, 87;
+      --color-red-500: 239, 68, 68;
+      --color-red-300: 252, 165, 165;
+    }
+    &.dark-mode {
+      --background-app-rgb: 20, 20, 20;
+      --color-secondary-900: 249, 250, 251;
+      --color-secondary-800: 243, 244, 246;
+      --color-secondary-700: 229, 231, 235;
+      --color-secondary-600: 209, 213, 219;
+      --color-secondary-500: 156, 163, 175;
+      --color-secondary-400: 107, 114, 128;
+      --color-secondary-300: 75, 85, 99;
+      --color-secondary-200: 55, 65, 81;
+      --color-secondary-100: 31, 41, 55;
+      --color-secondary-50: 17, 24, 39;
+      --color-secondary-0: 24, 33, 47;
+      --backdrop-color: 0, 0, 0;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+@layer components {
+  .textField__input {
+    @apply w-full py-3 px-4 rounded-xl text-secondary-900 border border-secondary-200  hover:border-primary-500 focus:border-primary-500 focus:bg-secondary-0 transition-all duration-300 ease-out focus:shadow-lg focus:shadow-primary-200 dark:focus:shadow-secondary-200;
+  }
+
+  .spinner {
+    margin: 3.2rem auto 1.6rem;
+    width: 60px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid rgb(var(--color-primary-900));
+    border-right-color: rgb(var(--color-primary-200));
+    animation: rotate 1s infinite linear;
+  }
+  .react-select__control {
+    @apply border-gray-300 rounded-lg shadow-sm;
+  }
+
+  .react-select__multi-value {
+    @apply bg-blue-500 text-white;
+  }
+
+  .react-select__multi-value__remove {
+    @apply text-white hover:bg-blue-700;
+  }
+
+  .spinner-mini {
+    margin: 0;
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgb(var(--color-primary-200));
+    border-right-color: transparent;
+    animation: rotate 1s infinite linear;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  .btn--primary {
+    @apply bg-primary-900 hover:bg-primary-700 text-primary-100;
+  }
+  .btn--secondary {
+    @apply bg-secondary-600 text-secondary-100;
+  }
+  .btn--outline {
+    @apply border border-secondary-300 text-secondary-400;
+  }
+  .btn--danger {
+    @apply border border-rose-700 text-rose-700;
+  }
+  .adminHeaderBTN {
+    @apply ml-4 text-sm;
+  }
+  .backdropBox {
+    @apply rounded-xl bg-white/10 backdrop-blur-sm shadow-lg backdrop-brightness-150 border border-white/20 p-2
+  }
+  .medicalPrescriptionInput{
+    @apply   bg-white overflow-hidden text-ellipsis whitespace-nowrap w-full box-border h-full m-0 p-0 outline-0 py-1 text-center rounded-xl text-secondary-900 border border-secondary-200  hover:border-primary-500 focus:border-primary-500 focus:bg-secondary-0 transition-all duration-300 ease-out focus:shadow-lg focus:shadow-primary-200 dark:focus:shadow-secondary-200
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.animate-popup {
+  animation: fadeIn 0.5s ease-out, zoomIn 0.5s ease-out;
+}
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  /* border: none; */
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-kalame);
+  min-height: 100vh;
+  user-select: none;
+  background-color: rgb(var(--background-app-rgb));
+}
+
+button {
+  cursor: pointer;
+  outline: none;
+}
+button:disabled {
+  cursor: not-allowed;
+  background-color: rgb(var(--color-secondary-300), 0.5);
+  color: rgb(var(--color-secondary-700), 0.5);
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* inupt number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+/* TABLE */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+table .title-row {
+  background-color: rgb(var(--color-secondary-100));
+}
+
+table td,
+table th {
+  border-bottom: 1px solid rgb(var(--color-secondary-200));
+  text-align: right;
+  white-space: nowrap;
+}
+
+table th {
+  padding: 0.6rem 1rem;
+  color: rgb(var(--color-secondary-600));
+  font-size: 0.9rem;
+}
+a {
+  display: block;
+}
+table td {
+  font-size: 0.85rem;
+  padding: 1rem 1rem;
+  color: rgb(var(--color-secondary-600));
+}
+.muirtl {
+  position: relative;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-iranSans);
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+  width: 100px;
+  height: 100px;
+}
+.otpInput {
+  width: 40px;
+  height: 50px;
+  font-size: 25px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px !important;
+  margin: 2px;
+  border: 2px solid #55525c;
+  background: #0b1230 !important;
+  font-weight: bold;
+  outline: none;
+  color: white;
+  transition: all 0.1s;
+  font-family: var(--font-iranSans);
+}
+.otpInput:focus {
+  border: 2px solid #27ffa9 !important;
+  box-shadow: 0 0 2px 2px #27ffd76a !important;
+}
+.otpContainer {
+  direction: ltr !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(177, 182, 190);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(28, 39, 63);
+  border-radius: 5px !important;
+}
+.react-select__control {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  transition: all 0.3s ease-out !important;
+}
+
+.react-select__control:hover {
+  border-color: #3b82f6 !important;
+}
+
+.react-select__control:focus {
+  border-color: #3b82f6 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
+}
+
+.react-select__control:focus.dark {
+  box-shadow: 0 0 10px rgba(31, 41, 55, 0.5) !important;
+}
+.verticalText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
