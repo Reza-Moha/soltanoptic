@@ -21,8 +21,8 @@ export const MedicalPrescription = memo(
     arrayHelpers,
     index,
     selectedLens,
-    lensPrice,
     setFieldValue,
+    tabIndices
   }) => {
     const [lensValues, setLensValues] = useState({
       odSph: "",
@@ -66,15 +66,15 @@ export const MedicalPrescription = memo(
     }, [lensValues, selectedLens, fieldPrefix, setFieldValue]);
 
     const renderInput = (field, tabIndex) => (
-      <FastField
-        name={`${fieldPrefix}.${field}`}
-        value={lensValues[field]}
-        className="medicalPrescriptionInput"
-        tabIndex={tabIndex}
-        onChange={(e) => handleChange(field, e.target.value)}
-        onBlur={(e) => handleBlur(field, e.target.value)}
-      />
-    );
+  <FastField
+    name={`${fieldPrefix}.${field}`}
+    value={lensValues[field]}
+    className="medicalPrescriptionInput"
+    tabIndex={tabIndex}
+    onChange={(e) => handleChange(field, e.target.value)}
+    onBlur={(e) => handleBlur(field, e.target.value)}
+  />
+);
     return (
       <div className="w-full h-full flex items-center justify-center gap-2">
         <div className="flex-1">
@@ -231,35 +231,35 @@ export const MedicalPrescription = memo(
               AX
             </div>
             <div className="col-start-3 row-start-2">
-              {renderInput("odSph", 1)}
+              {renderInput("odSph", tabIndices.odSph)}
             </div>
             <div className="col-start-4 row-start-2">
-              {renderInput("odCyl", 2)}
+              {renderInput("odCyl", tabIndices.odCyl)}
             </div>
             <div className="col-start-5 row-start-2">
               <FastField
-                tabIndex={3}
-                name={`${fieldPrefix}.OdAx`}
+                tabIndex={tabIndices.odAx}
+                name={`${fieldPrefix}.odAx`}
                 className="medicalPrescriptionInput"
               />
             </div>
             <div className="col-start-5 row-start-3">
               <FastField
-                name={`${fieldPrefix}.OsAx`}
-                tabIndex={6}
+                name={`${fieldPrefix}.osAx`}
+                tabIndex={tabIndices.osAx}
                 className="medicalPrescriptionInput"
               />
             </div>
             <div className="col-start-4 row-start-3">
-              {renderInput("osCyl", 4)}
+              {renderInput("osCyl", tabIndices.osCyl)}
             </div>
             <div className="col-start-3 row-start-3">
-              {renderInput("osSph", 3)}
+              {renderInput("osSph", tabIndices.osSph)}
             </div>
             <div className="row-span-2 col-start-6 row-start-2">
               <FastField
                 name={`${fieldPrefix}.pd`}
-                tabIndex={7}
+                tabIndex={tabIndices.pd}
                 className="medicalPrescriptionInput w-1/2 h-1/2"
                 placeholder="PD"
               />
