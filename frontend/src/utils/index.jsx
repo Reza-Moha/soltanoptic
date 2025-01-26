@@ -155,29 +155,15 @@ export const isValidBankCardNumber = (cardNumber) => {
   return sum % 10 === 0;
 };
 
-// export const ensureNegativeValue = (value) => {
-//   if (!value) return "";
-//   let trimmedValue = value.trim();
-//
-//
-//   const hasSign = /^[+-]/.test(trimmedValue);
-//   const sign = hasSign ? trimmedValue[0] : "-";
-//
-//   trimmedValue = trimmedValue.replace(/^[+-]/, "");
-//   if (isNaN(trimmedValue)) return value;
-//
-//   const number = parseFloat(trimmedValue).toFixed(2);
-//   return `${sign}${number}`;
-// };
 export const ensureNegativeValue = (value) => {
-  if (!value) return "0"; // اگر خالی باشد، مقدار 0 بازگشت داده می‌شود.
+  if (!value) return "0";
   let trimmedValue = value.toString().trim();
 
   const hasSign = /^[+-]/.test(trimmedValue);
-  const sign = hasSign ? trimmedValue[0] : "-"; // اطمینان از اعمال علامت منفی
+  const sign = hasSign ? trimmedValue[0] : "-";
 
-  trimmedValue = trimmedValue.replace(/^[+-]/, ""); // حذف علامت‌های موجود
-  if (isNaN(trimmedValue)) return "0"; // اگر عدد نباشد، مقدار 0 بازگشت داده می‌شود.
+  trimmedValue = trimmedValue.replace(/^[+-]/, "");
+  if (isNaN(trimmedValue)) return "0";
 
   const number = parseFloat(trimmedValue).toFixed(2);
   return `${sign}${number}`;
@@ -193,7 +179,6 @@ export const calculateLensPriceForEye = (pricing, sph, cyl) => {
   const groupSph = customRoundToGroup(sph);
   const groupCyl = customRoundToGroup(cyl);
   const group = `${groupSph}/${groupCyl}`;
-  console.log("Generated group:", group);
 
   let matchedGroup = pricing.find((item) => item.group === group);
   if (!matchedGroup) {
@@ -213,16 +198,8 @@ export const calculateTotalLensPrice = (
   osSph,
   osCyl,
 ) => {
-  console.log("utils pricing", pricing);
-  console.log("utils odSph", odSph);
-  console.log("utils odCyl", odCyl);
-  console.log("utils osSph", osSph);
-  console.log("utils osCyl", osCyl);
-
   const priceForRightEye = calculateLensPriceForEye(pricing, odSph, odCyl);
   const priceForLeftEye = calculateLensPriceForEye(pricing, osSph, osCyl);
-  console.log("utils priceForRightEye", priceForRightEye);
-  console.log("utils priceForLeftEye", priceForLeftEye);
-
-  return priceForRightEye + priceForLeftEye;
+  const result = priceForRightEye + priceForLeftEye;
+  return toPersianDigits(result.toLocaleString("ar-EG"));
 };

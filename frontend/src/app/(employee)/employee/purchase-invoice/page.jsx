@@ -4,10 +4,13 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
 import { MedicalPrescription } from "@/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription";
-import { useState, useCallback } from "react";
+import {useState, useCallback, useEffect} from "react";
 import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/FrameList";
 import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
+import {
+  PaymentInformation
+} from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
 
 export default function CreatePurchaseInvoice() {
   const initialValues = {
@@ -31,6 +34,11 @@ export default function CreatePurchaseInvoice() {
       },
     ],
     insuranceName: "",
+    InsuranceAmount: 0,
+    deposit: 0,
+    discount: 0,
+    billBalance: 0,
+    SumTotalInvoice: 0,
   };
 
   const [showPopup, setShowPopup] = useState(false);
@@ -50,7 +58,10 @@ export default function CreatePurchaseInvoice() {
     setFieldValue(`prescriptions.${index}.lens`, lens);
   }, []);
 
-  return (
+
+
+
+    return (
     <Formik
       initialValues={initialValues}
       onSubmit={createNewPurchaseInvoiceHandler}
@@ -68,7 +79,7 @@ export default function CreatePurchaseInvoice() {
                         const baseTabIndex = index * 10; 
 
                         return (
-                            <div key={index} className="mb-5 h-full">
+                            <div key={index} className="mb-5 h-full border-b border-secondary-300">
                               <MedicalPrescription
                                   label={prescription.label || `فریم ${index + 1}`}
                                   fieldPrefix={`prescriptions.${index}`}
@@ -123,6 +134,7 @@ export default function CreatePurchaseInvoice() {
                 </div>
               )}
             />
+            <PaymentInformation values={values} setFieldValue={setFieldValue} />
             <SubmitBtn>ایجاد</SubmitBtn>
           </div>
           {showPopup && (

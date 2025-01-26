@@ -39,7 +39,6 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
       ...frame,
       FrameColors: [color],
     });
-    console.log("color 43", color);
     setSelectedColor(color);
     setShowPopup(true);
   };

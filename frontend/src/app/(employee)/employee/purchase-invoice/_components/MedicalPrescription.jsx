@@ -22,7 +22,7 @@ export const MedicalPrescription = memo(
     index,
     selectedLens,
     setFieldValue,
-    tabIndices
+    tabIndices,
   }) => {
     const [lensValues, setLensValues] = useState({
       odSph: "",
@@ -49,9 +49,11 @@ export const MedicalPrescription = memo(
     );
 
     useEffect(() => {
+      // اطمینان از اینکه selectedLens و pricing آن وجود دارند
       if (!selectedLens?.LensGroup?.pricing) return;
 
       const pricing = selectedLens.LensGroup.pricing;
+
       const newLensPrice = calculateTotalLensPrice(
         pricing,
         parseFloat(lensValues.odSph || 0),
@@ -59,22 +61,19 @@ export const MedicalPrescription = memo(
         parseFloat(lensValues.osSph || 0),
         parseFloat(lensValues.osCyl || 0),
       );
-      setFieldValue(
-        `${fieldPrefix}.lensPrice`,
-        toPersianDigits(newLensPrice.toLocaleString("ar-EG")),
-      );
+      setFieldValue(`${fieldPrefix}.lensPrice`, newLensPrice);
     }, [lensValues, selectedLens, fieldPrefix, setFieldValue]);
 
     const renderInput = (field, tabIndex) => (
-  <FastField
-    name={`${fieldPrefix}.${field}`}
-    value={lensValues[field]}
-    className="medicalPrescriptionInput"
-    tabIndex={tabIndex}
-    onChange={(e) => handleChange(field, e.target.value)}
-    onBlur={(e) => handleBlur(field, e.target.value)}
-  />
-);
+      <FastField
+        name={`${fieldPrefix}.${field}`}
+        value={lensValues[field]}
+        className="medicalPrescriptionInput"
+        tabIndex={tabIndex}
+        onChange={(e) => handleChange(field, e.target.value)}
+        onBlur={(e) => handleBlur(field, e.target.value)}
+      />
+    );
     return (
       <div className="w-full h-full flex items-center justify-center gap-2">
         <div className="flex-1">
