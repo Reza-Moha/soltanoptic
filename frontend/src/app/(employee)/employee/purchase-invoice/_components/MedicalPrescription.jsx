@@ -49,7 +49,6 @@ export const MedicalPrescription = memo(
     );
 
     useEffect(() => {
-      // اطمینان از اینکه selectedLens و pricing آن وجود دارند
       if (!selectedLens?.LensGroup?.pricing) return;
 
       const pricing = selectedLens.LensGroup.pricing;

@@ -201,5 +201,27 @@ export const calculateTotalLensPrice = (
   const priceForRightEye = calculateLensPriceForEye(pricing, odSph, odCyl);
   const priceForLeftEye = calculateLensPriceForEye(pricing, osSph, osCyl);
   const result = priceForRightEye + priceForLeftEye;
-  return toPersianDigits(result.toLocaleString("ar-EG"));
+  return toPersianDigits(result.toLocaleString("en-US"));
+};
+export const convertFarsiToEnglish = (farsiNumber) => {
+  const digitMap = {
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۴": "4",
+    "۵": "5",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9",
+  };
+
+  let englishNumber = "";
+  for (const ch of farsiNumber || "") {
+    if (ch !== ",") {
+      englishNumber += digitMap[ch] || ch;
+    }
+  }
+  return parseFloat(englishNumber) || 0;
 };
