@@ -11,9 +11,12 @@ class BankController extends Controller {
     try {
       const { bankName, bankAccountHolder, shabaNumber, cartNumber } =
         await createNewBankSchema.validateAsync(req.body);
-      const existCartNumber = await BankModel.findOne({ cartNumber });
+      const existCartNumber = await BankModel.findOne({
+        where: { cartNumber },
+      });
       if (existCartNumber)
         throw CreateError.BadRequest("شماره کارت وارد شده تکراری است");
+
       const createdBank = await BankModel.create({
         bankName,
         bankAccountHolder,

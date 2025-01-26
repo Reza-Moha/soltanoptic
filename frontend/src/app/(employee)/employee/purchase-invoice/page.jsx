@@ -9,6 +9,7 @@ import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoic
 import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/FrameList";
 import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
 import { PaymentInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
+import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentMethods/PaymentMethods";
 
 export default function CreatePurchaseInvoice() {
   const initialValues = {
@@ -38,6 +39,8 @@ export default function CreatePurchaseInvoice() {
     discount: 0,
     billBalance: 0,
     SumTotalInvoice: 0,
+    description: "",
+    paymentToAccount: "",
   };
 
   const [showPopup, setShowPopup] = useState(false);
@@ -63,7 +66,7 @@ export default function CreatePurchaseInvoice() {
       onSubmit={createNewPurchaseInvoiceHandler}
       validationSchema={createNewPurchaseInvoiceSchema}
     >
-      {({ handleSubmit, values, setFieldValue }) => (
+      {({ handleSubmit, values, setFieldValue, errors }) => (
         <Form onSubmit={handleSubmit}>
           <div className="h-screen">
             <PersonalInformation />
@@ -134,6 +137,7 @@ export default function CreatePurchaseInvoice() {
               )}
             />
             <PaymentInformation values={values} setFieldValue={setFieldValue} />
+            <PaymentMethods values={values} setFieldValue={setFieldValue} />
             <SubmitBtn>ایجاد</SubmitBtn>
           </div>
           {showPopup && (

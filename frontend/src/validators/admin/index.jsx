@@ -128,7 +128,7 @@ export const createNewLensCategoriesSchema = Yup.object().shape({
     .trim()
     .required("لطفا نوع عدسی را وارد فرمائید")
     .min(3, "عنوان نباید کم تر از سه کارکتر باشد"),
-    lensCategoryImage: Yup.mixed()
+  lensCategoryImage: Yup.mixed()
     .nullable()
     .test(
       "fileFormat",
@@ -342,24 +342,31 @@ export const createNewInsuranceSchema = Yup.object().shape({
 });
 
 export const createNewPurchaseInvoiceSchema = Yup.object().shape({
-    invoiceNumber: Yup.string().required("شماره فاکتور الزامی است"),
-    fullName: Yup.string().required("نام کامل الزامی است"),
-    phoneNumber: Yup.string().required("شماره تماس الزامی است"),
-    nationalId: Yup.string().required("کد ملی الزامی است"),
-    prescriptions: Yup.array().of(
-        Yup.object().shape({
-            FarOdAx: Yup.string(),
-            FarOdCyl: Yup.string(),
-            FarOdSph: Yup.string(),
-            FarOsAx: Yup.string(),
-            FarOsCyl: Yup.string(),
-            FarOsSph: Yup.string(),
-            pd: Yup.string(),
-            typeOfGlasses: Yup.string(),
-            typeOfFrame: Yup.string(),
-            lensPrice: Yup.string(),
-            framePrice: Yup.string(),
-        })
-    ),
-    insuranceName: Yup.string().required("نام بیمه الزامی است"),
+  invoiceNumber: Yup.string().required("شماره فاکتور الزامی است"),
+  fullName: Yup.string().required("نام کامل الزامی است"),
+  phoneNumber: Yup.string()
+    .required("شماره تماس الزامی است")
+    .matches(/^[0-9]+$/, "شماره تماس باید فقط شامل اعداد باشد"),
+  description: Yup.string(),
+  nationalId: Yup.string().matches(/^[0-9]{10}$/, "کد ملی باید 10 رقم باشد"),
+  prescriptions: Yup.array().of(
+    Yup.object().shape({
+      odAx: Yup.string(),
+      odCyl: Yup.string(),
+      odSph: Yup.string(),
+      osAx: Yup.string(),
+      osCyl: Yup.string(),
+      osSph: Yup.string(),
+      pd: Yup.string(),
+      lensPrice: Yup.string(),
+      frame: Yup.object(),
+    }),
+  ),
+  insuranceName: Yup.string(),
+  InsuranceAmount: Yup.string(),
+  descriptionPrice: Yup.string(),
+  deposit: Yup.string(),
+  discount: Yup.string(),
+  billBalance: Yup.string(),
+  SumTotalInvoice: Yup.string(),
 });

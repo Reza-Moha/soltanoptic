@@ -29,12 +29,13 @@ const Inputs = [
     id: 5,
     label: "مانده قبض",
     name: "billBalance",
+    readOnly: true, // فقط خواندنی
   },
   {
     id: 6,
     label: "مبلغ کل قبض",
     name: "SumTotalInvoice",
-    readOnly: true,
+    readOnly: true, // فقط خواندنی
   },
 ];
 
@@ -44,32 +45,34 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
 
     if (values.prescriptions && Array.isArray(values.prescriptions)) {
       values.prescriptions.forEach((prescription) => {
-        const lensPrice = convertFarsiToEnglish(prescription.lensPrice) || 0;
+        const lensPrice =
+          Number(convertFarsiToEnglish(prescription.lensPrice)) || 0;
         const framePrice =
-          convertFarsiToEnglish(prescription.frame?.price) || 0;
+          Number(convertFarsiToEnglish(prescription.frame?.price)) || 0;
 
         total += lensPrice + framePrice;
       });
     }
 
     const descriptionPrice =
-      convertFarsiToEnglish(values.descriptionPrice) || 0;
-
-    const discount = convertFarsiToEnglish(values.discount) || 0;
-    const insuranceAmount = convertFarsiToEnglish(values.InsuranceAmount) || 0;
-    const deposit = convertFarsiToEnglish(values.deposit) || 0;
+      Number(convertFarsiToEnglish(values.descriptionPrice)) || 0;
+    const discount = Number(convertFarsiToEnglish(values.discount)) || 0;
+    const insuranceAmount =
+      Number(convertFarsiToEnglish(values.InsuranceAmount)) || 0;
+    const deposit = Number(convertFarsiToEnglish(values.deposit)) || 0;
 
     total += descriptionPrice;
 
-    const formatedTotalPrice = toPersianDigits(total.toLocaleString("en-US"));
-
-    setFieldValue("SumTotalInvoice", formatedTotalPrice);
+    setFieldValue(
+      "SumTotalInvoice",
+      toPersianDigits(total.toLocaleString("ar-EG")),
+    );
 
     const billBalance = total - deposit - insuranceAmount - discount;
-    const formatedBillBalancePrice = toPersianDigits(
-      billBalance.toLocaleString("en-US"),
+    setFieldValue(
+      "billBalance",
+      toPersianDigits(billBalance.toLocaleString("ar-EG")),
     );
-    setFieldValue("billBalance", formatedBillBalancePrice);
   };
 
   useEffect(() => {
@@ -100,11 +103,10 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
             label={item.label}
             name={item.name}
             type="text"
-            readOnly={item.readOnly || false}
+            readOnly={item.readOnly || false} // فقط خواندنی برای برخی فیلدها
+            value={toPersianDigits(values[item.name])} // نمایش مقدار به فارسی
             onChange={(e) => {
-              const value = toPersianDigits(
-                e.target.value.toLocaleString("en-US"),
-              );
+              const value = convertFarsiToEnglish(e.target.value); // ذخیره مقدار به انگلیسی
               setFieldValue(item.name, value);
             }}
             onBlur={() => calculateTotalInvoice()}
