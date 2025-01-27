@@ -8,6 +8,7 @@ import lensSlice from "./slices/lensSlice";
 import frameSlice from "./slices/frame.slice";
 import bankSlice from "./slices/bankSlice";
 import insuranceSlice from "./slices/insuranceSlice";
+import companiesSlice from "./slices/companiesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     frameSlice,
     bankSlice,
     insuranceSlice,
+    companiesSlice,
   },
 });

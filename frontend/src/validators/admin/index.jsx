@@ -370,3 +370,13 @@ export const createNewPurchaseInvoiceSchema = Yup.object().shape({
   billBalance: Yup.string(),
   SumTotalInvoice: Yup.string(),
 });
+
+export const createNewCompanySchema = Yup.object().shape({
+  companyName: Yup.string()
+    .min(3, "نام شرکت باید حداقل 2 کاراکتر باشد")
+    .max(50, "نام شرکت نمی‌تواند بیش از ۵۰ کاراکتر باشد")
+    .required("لطفا نام شرکت خود را وارد فرمائید"),
+  whatsappNumber: Yup.string()
+    .required("شماره تماس الزامی است")
+    .matches(/^[0-9]+$/, "شماره تماس باید فقط شامل اعداد باشد"),
+});
