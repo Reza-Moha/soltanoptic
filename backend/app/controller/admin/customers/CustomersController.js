@@ -37,7 +37,7 @@ class CustomersController extends Controller {
         paymentToAccount,
         phoneNumber,
         prescriptions,
-      } = await createNewPurchaseInvoiceSchema.validateSync(req.body);
+      } = await createNewPurchaseInvoiceSchema.validateAsync(req.body);
 
       let user = await UserModel.findOne({
         where: {
