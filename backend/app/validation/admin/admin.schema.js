@@ -399,6 +399,77 @@ const createNewInsuranceSchema = Joi.object({
     "string.max": "توضیحات بیمه نمی‌تواند بیش از 200 کاراکتر باشد",
   }),
 });
+
+const createNewCompanySchema = Joi.object({
+  companyName: Joi.string().required().messages({
+    "string.base": "نام شرکت باید یک رشته باشد",
+    "any.required": "نام شرکت را وارد کنید",
+  }),
+  whatsappNumber: Joi.string()
+    .length(11)
+    .pattern(/^09[0-9]{9}$/)
+    .required()
+    .messages({
+      "string.length": "شماره موبایل باید ۱۱ رقم باشد",
+      "string.pattern.base": "شماره موبایل وارد شده صحیح نمی‌باشد",
+      "any.required": "لطفا شماره موبایل خود را وارد فرمائید",
+    }),
+});
+const createNewPurchaseInvoiceSchema = Joi.object({
+  invoiceNumber: Joi.string().required().messages({
+    "string.empty": "شماره فاکتور الزامی است",
+  }),
+  fullName: Joi.string().required().messages({
+    "string.empty": "نام کامل الزامی است",
+  }),
+  phoneNumber: Joi.string()
+    .length(11)
+    .pattern(/^09[0-9]{9}$/)
+    .required()
+    .messages({
+      "string.length": "شماره موبایل باید ۱۱ رقم باشد",
+      "string.pattern.base": "شماره موبایل وارد شده صحیح نمی‌باشد",
+      "any.required": "لطفا شماره موبایل خود را وارد فرمائید",
+    }),
+  description: Joi.string().allow(null, ""),
+  nationalId: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .messages({
+      "string.pattern.base": "کد ملی باید 10 رقم باشد",
+    }),
+  prescriptions: Joi.array().items(
+    Joi.object({
+      odAx: Joi.string().allow(null, ""),
+      odCyl: Joi.string().allow(null, ""),
+      odSph: Joi.string().allow(null, ""),
+      osAx: Joi.string().allow(null, ""),
+      osCyl: Joi.string().allow(null, ""),
+      osSph: Joi.string().allow(null, ""),
+      pd: Joi.string().allow(null, ""),
+      lensPrice: Joi.string().allow(null, ""),
+      frame: Joi.object().allow(null),
+    }),
+  ),
+  insuranceName: idSchema.extract("id").messages({
+    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+  InsuranceAmount: Joi.string().allow(null, ""),
+  descriptionPrice: Joi.string().allow(null, ""),
+  deposit: Joi.string().allow(null, ""),
+  discount: Joi.string().allow(null, ""),
+  billBalance: Joi.string().allow(null, ""),
+  SumTotalInvoice: Joi.string().allow(null, ""),
+  paymentToAccount: Joi.string().allow(null, ""),
+  paymentMethod: idSchema.extract("id").messages({
+    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+  orderLensFrom: idSchema.extract("id").messages({
+    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
+});
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -416,4 +487,6 @@ module.exports = {
   createNewFrameSchema,
   createNewBankSchema,
   createNewInsuranceSchema,
+  createNewCompanySchema,
+  createNewPurchaseInvoiceSchema,
 };

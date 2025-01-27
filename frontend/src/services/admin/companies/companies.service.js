@@ -5,13 +5,11 @@ export async function createNewCompanyApi(data) {
     .post(`/api/admin/company/create`, data)
     .then(({ data }) => data);
 }
-// export async function deleteBankById(id) {
-//     return httpService
-//         .delete(`/api/admin/bank/delete/${id}`)
-//         .then(({ data }) => data);
-// }
-// export async function getAllBankApi() {
-//     return httpService
-//         .get(`/api/admin/bank/get-all`)
-//         .then(({ data }) => data);
-// }
+export async function deleteCompanyById(id) {
+  return httpService
+    .delete(`/api/admin/company/delete/${id}`)
+    .then(({ data }) => data);
+}
+export async function getAllCompaniesApi() {
+  return httpService.get(`/api/admin/company/get-all`).then(({ data }) => data);
+}

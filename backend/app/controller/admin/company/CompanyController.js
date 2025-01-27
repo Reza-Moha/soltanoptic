@@ -1,68 +1,70 @@
 const Controller = require("../../Controller");
 const {
-  createNewBankSchema,
+  createNewCompanySchema,
   idSchema,
 } = require("../../../validation/admin/admin.schema");
-const { BankModel } = require("../../../models/Bank.model");
 const CreateError = require("http-errors");
 const { StatusCodes: HttpStatus } = require("http-status-codes");
+const { Op } = require("sequelize");
+const { CompanyModel } = require("../../../models/Company.model");
 class CompanyController extends Controller {
   async createNewCompany(req, res, next) {
     try {
       const { companyName, whatsappNumber } =
         await createNewCompanySchema.validateAsync(req.body);
-      const existCartNumber = await BankModel.findOne({
-        where: { cartNumber },
+      const exsistCompany = await CompanyModel.findOne({
+        where: {
+          [Op.or]: [{ companyName }, { whatsappNumber }],
+        },
       });
-      if (existCartNumber)
-        throw CreateError.BadRequest("شماره کارت وارد شده تکراری است");
 
-      const createdBank = await BankModel.create({
-        bankName,
-        bankAccountHolder,
-        shabaNumber,
-        cartNumber,
+      if (exsistCompany)
+        throw CreateError.BadRequest("شرکت وارد شده تکراری است");
+
+      const createdCompany = await CompanyModel.create({
+        companyName,
+        whatsappNumber,
       });
-      if (!createdBank)
+      if (!createdCompany)
         throw CreateError.InternalServerError(
-          "ذخیره اطلاعات بانک ناموفق بود لطفا دوباره امتحان کنید",
+          "ذخیره اطلاعات شرکت ناموفق بود لطفا دوباره امتحان کنید",
         );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
-        message: "اطلاعات بانک وارد شده با موفقیت ثبت گردید",
-        createdBank,
+        message: "شرکت وارد شده با موفقیت ثبت گردید",
+        createdCompany,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async getAllBanks(req, res, next) {
+  async getAllCompanies(req, res, next) {
     try {
-      const allBanks = await BankModel.findAll({
+      const allCompanies = await CompanyModel.findAll({
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
       });
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
-        allBanks,
+        allCompanies,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async deleteBankById(req, res, next) {
+  async deleteCompanyById(req, res, next) {
     try {
       await idSchema.validateAsync(req.params);
       const { id } = req.params;
-      const deletedBank = await BankModel.destroy({
-        where: { BankId: id },
+      const deletedCompany = await CompanyModel.destroy({
+        where: { CompanyId: id },
       });
-      if (deletedBank <= 0)
+      if (deletedCompany <= 0)
         throw CreateError.InternalServerError(
-          "حذف بانک ناموفق بود لطفا دوباره  امتحان کنید",
+          "حذف شرکت ناموفق بود لطفا دوباره  امتحان کنید",
         );
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
@@ -75,5 +77,5 @@ class CompanyController extends Controller {
 }
 
 module.exports = {
-  BankController: new CompanyController(),
+  CompanyController: new CompanyController(),
 };

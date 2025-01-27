@@ -10,6 +10,9 @@ import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_componen
 import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
 import { PaymentInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
 import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentMethods/PaymentMethods";
+import { ChoseCompaniesLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseCompaneisLens";
+import { useDispatch } from "react-redux";
+import { createNewInvoiceApi } from "@/services/customers/customers.service";
 
 export default function CreatePurchaseInvoice() {
   const initialValues = {
@@ -49,9 +52,10 @@ export default function CreatePurchaseInvoice() {
   const [showFrameModal, setShowFrameModal] = useState(false);
   const [showLensModal, setShowLensModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(null);
+  const dispatch = useDispatch();
 
-  const createNewPurchaseInvoiceHandler = (values) => {
-    console.log("ارسال به سرور:", values);
+  const createNewPurchaseInvoiceHandler = async (values) => {
+    await dispatch(createNewInvoiceApi(values));
   };
 
   const handleFrameSelect = useCallback((frame, index, setFieldValue) => {
@@ -139,7 +143,10 @@ export default function CreatePurchaseInvoice() {
               )}
             />
             <PaymentInformation values={values} setFieldValue={setFieldValue} />
-            <PaymentMethods values={values} setFieldValue={setFieldValue} />
+            <div className="grid grid-cols-1 md:grid-cols-5">
+              <PaymentMethods values={values} />
+              <ChoseCompaniesLens values={values} />
+            </div>
             <SubmitBtn>ایجاد</SubmitBtn>
           </div>
           {showPopup && (

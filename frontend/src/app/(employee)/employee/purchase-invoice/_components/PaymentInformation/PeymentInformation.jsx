@@ -3,7 +3,6 @@ import { convertFarsiToEnglish, toPersianDigits } from "@/utils";
 import Input from "@/components/Ui/Input";
 import { PriceInput } from "@/components/Ui/PriceInput";
 
-// آرایه اطلاعات ورودی
 const Inputs = [
   {
     id: 1,
@@ -29,13 +28,13 @@ const Inputs = [
     id: 5,
     label: "مانده قبض",
     name: "billBalance",
-    readOnly: true, // فقط خواندنی
+    readOnly: true,
   },
   {
     id: 6,
     label: "مبلغ کل قبض",
     name: "SumTotalInvoice",
-    readOnly: true, // فقط خواندنی
+    readOnly: true,
   },
 ];
 
@@ -87,7 +86,6 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5">
-      {/* توضیحات */}
       <div className="col-span-4">
         <Input
           label="توضیحات"
@@ -103,10 +101,10 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
             label={item.label}
             name={item.name}
             type="text"
-            readOnly={item.readOnly || false} // فقط خواندنی برای برخی فیلدها
-            value={toPersianDigits(values[item.name])} // نمایش مقدار به فارسی
+            readOnly={item.readOnly || false}
+            value={toPersianDigits(values[item.name])}
             onChange={(e) => {
-              const value = convertFarsiToEnglish(e.target.value); // ذخیره مقدار به انگلیسی
+              const value = convertFarsiToEnglish(e.target.value);
               setFieldValue(item.name, value);
             }}
             onBlur={() => calculateTotalInvoice()}

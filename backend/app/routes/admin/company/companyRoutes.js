@@ -1,27 +1,27 @@
-const {
-  BankController,
-} = require("../../../controller/admin/bank/BankController");
 const { checkPermission } = require("../../../middleware/permissions.guard");
 const { PERMISSIONS } = require("../../../constants");
+const {
+  CompanyController,
+} = require("../../../controller/admin/company/CompanyController");
 const router = require("express").Router();
 
 router.post(
   "/create",
   checkPermission(PERMISSIONS.ADMIN),
-  BankController.createNewBank,
+  CompanyController.createNewCompany,
 );
 
 router.get(
   "/get-all",
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
-  BankController.getAllBanks,
+  CompanyController.getAllCompanies,
 );
 
 router.delete(
   "/delete/:id",
   checkPermission(PERMISSIONS.ADMIN),
-  BankController.deleteBankById,
+  CompanyController.deleteCompanyById,
 );
 module.exports = {
-  bankRoutes: router,
+  companyRoutes: router,
 };

@@ -362,13 +362,32 @@ export const createNewPurchaseInvoiceSchema = Yup.object().shape({
       frame: Yup.object(),
     }),
   ),
-  insuranceName: Yup.string(),
+  insuranceName: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست",
+    )
+    .required("لطفا یکی از دسته بندی های بیمه را انتخاب کنید"),
   InsuranceAmount: Yup.string(),
   descriptionPrice: Yup.string(),
   deposit: Yup.string(),
   discount: Yup.string(),
   billBalance: Yup.string(),
   SumTotalInvoice: Yup.string(),
+  paymentToAccount: Yup.string(),
+  paymentMethod: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست",
+    ),
+  orderLensFrom: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست",
+    ),
 });
 
 export const createNewCompanySchema = Yup.object().shape({

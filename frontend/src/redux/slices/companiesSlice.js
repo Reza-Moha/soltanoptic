@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  deleteBankById,
-  getAllBankApi,
-} from "@/services/admin/bank/bank.service";
-import toast from "react-hot-toast";
-import { createNewCompanyApi } from "@/services/admin/companies/companies.service";
 
-export const fetchAllBanks = createAsyncThunk(
-  "bank/fetchAllBank",
+import toast from "react-hot-toast";
+import {
+  createNewCompanyApi,
+  deleteCompanyById,
+  getAllCompaniesApi,
+} from "@/services/admin/companies/companies.service";
+
+export const fetchAllCompanies = createAsyncThunk(
+  "company/fetchAllBank",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await getAllBankApi();
-      return data.allBanks;
+      const data = await getAllCompaniesApi();
+      return data.allCompanies;
     } catch (error) {
       const errors = error?.response?.data?.errors;
       toast.error(errors.message);
@@ -26,7 +27,7 @@ export const createNewCompany = createAsyncThunk(
     try {
       const data = await createNewCompanyApi(values);
       toast.success(data.message);
-      return data.createdBank;
+      return data.createdCompany;
     } catch (error) {
       const errors = error?.response?.data?.errors;
       toast.error(errors.message);
@@ -34,11 +35,11 @@ export const createNewCompany = createAsyncThunk(
     }
   },
 );
-export const deleteBank = createAsyncThunk(
-  "bank/delete",
+export const deleteCompany = createAsyncThunk(
+  "company/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const data = await deleteBankById(id);
+      const data = await deleteCompanyById(id);
       toast.success(data.message);
       return id;
     } catch (error) {
@@ -59,14 +60,14 @@ const companiesSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllBanks.pending, (state) => {
+      .addCase(fetchAllCompanies.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchAllBanks.fulfilled, (state, action) => {
-        state.bankList = action.payload;
+      .addCase(fetchAllCompanies.fulfilled, (state, action) => {
+        state.companyList = action.payload;
         state.isLoading = false;
       })
-      .addCase(fetchAllBanks.rejected, (state, action) => {
+      .addCase(fetchAllCompanies.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
@@ -75,16 +76,16 @@ const companiesSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createNewCompany.fulfilled, (state, action) => {
-        state.bankList.push(action.payload);
+        state.companyList.push(action.payload);
         state.isLoading = false;
       })
       .addCase(createNewCompany.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(deleteBank.fulfilled, (state, action) => {
-        state.bankList = state.bankList.filter(
-          (bank) => bank.BankId !== action.payload,
+      .addCase(deleteCompany.fulfilled, (state, action) => {
+        state.companyList = state.companyList.filter(
+          (company) => company.CompanyId !== action.payload,
         );
       });
   },

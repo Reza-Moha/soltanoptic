@@ -12,6 +12,8 @@ const { bankRoutes } = require("./bank/bankRoutes");
 const { insuranceRoutes } = require("./insurance/InsuranceRoutes");
 const { checkPermission } = require("../../middleware/permissions.guard");
 const { PERMISSIONS } = require("../../constants");
+const { companyRoutes } = require("./company/companyRoutes");
+const { customersRoutes } = require("./customers/customersRoutes");
 
 router.patch(
   "/admin-profile-update",
@@ -52,6 +54,8 @@ router.use("/lens", lensRoutes);
 router.use("/frame", frameRoutes);
 router.use("/bank", bankRoutes);
 router.use("/insurance", insuranceRoutes);
+router.use("/company", companyRoutes);
+router.use("/customers", customersRoutes);
 
 module.exports = {
   AdminRoutes: router,

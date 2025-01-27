@@ -24,7 +24,7 @@ const paymentMethods = [
   },
 ];
 
-export const PaymentMethods = ({ values, setFieldValue }) => {
+export const PaymentMethods = ({ values }) => {
   const { bankList } = useSelector((state) => state.bankSlice);
   const bankOptions = bankList.map((bank) => ({
     value: bank.BankId,
@@ -36,33 +36,31 @@ export const PaymentMethods = ({ values, setFieldValue }) => {
   }));
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-5">
-        {values.deposit !== 0 &&
-        values.deposit !== "0" &&
-        values.deposit !== "" ? (
-          <Field
-            name="paymentMethod"
-            component={SelectInput}
-            options={paymentMethodsOptions}
-            isMulti={false}
-            placeholder="نحوه پرداخت"
-            className="!p-0 scale-90"
-          />
-        ) : null}
-        {values.deposit !== 0 &&
-        values.deposit !== "0" &&
-        values.deposit !== "" &&
-        values.paymentMethod !== "نقد" ? (
-          <Field
-            name="paymentToAccount"
-            component={SelectInput}
-            options={bankOptions}
-            isMulti={false}
-            placeholder="نوع پرداخت"
-            className="!p-0 scale-90"
-          />
-        ) : null}
-      </div>
+      {values.deposit !== 0 &&
+      values.deposit !== "0" &&
+      values.deposit !== "" ? (
+        <Field
+          name="paymentMethod"
+          component={SelectInput}
+          options={paymentMethodsOptions}
+          isMulti={false}
+          placeholder="نحوه پرداخت"
+          className="!p-0 scale-90"
+        />
+      ) : null}
+      {values.deposit !== 0 &&
+      values.deposit !== "0" &&
+      values.deposit !== "" &&
+      values.paymentMethod !== "نقد" ? (
+        <Field
+          name="paymentToAccount"
+          component={SelectInput}
+          options={bankOptions}
+          isMulti={false}
+          placeholder="نوع پرداخت"
+          className="!p-0 scale-90"
+        />
+      ) : null}
     </>
   );
 };

@@ -3,14 +3,15 @@ import Input from "@/components/Ui/Input";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { createNewDoctor } from "@/redux/slices/doctors.slice";
 import { createNewCompanySchema } from "@/validators/admin";
+import { createNewCompany } from "@/redux/slices/companiesSlice";
+import CompaniesList from "@/app/(admin)/admin/(BasicDefinitions)/_components/companies/CompaniesList";
 
-export default function Doctors() {
+export default function CompaniesPage() {
   const dispatch = useDispatch();
 
   const createNewCompaniesHandler = (values, { resetForm }) => {
-    dispatch(createNewDoctor(values));
+    dispatch(createNewCompany(values));
     resetForm();
   };
 
@@ -47,6 +48,7 @@ export default function Doctors() {
           </Form>
         )}
       </Formik>
+      <CompaniesList />
     </section>
   );
 }

@@ -133,7 +133,6 @@ export const darkenColor = (colorCode, amount = 20) => {
 const getFilename = (url) => url.split("/").pop();
 
 export const imageUrlToFile = async (imgUrl) => {
-  console.log("imageUrl", imgUrl);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${imgUrl}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`);
@@ -189,9 +188,6 @@ export const calculateLensPriceForEye = (pricing, sph, cyl) => {
 
   let matchedGroup = pricing.find((item) => item.group === group);
   if (!matchedGroup) {
-    console.warn(
-      `Group ${group} not found. Falling back to default group 2/2.`,
-    );
     matchedGroup = pricing.find((item) => item.group === "2/2");
   }
 
