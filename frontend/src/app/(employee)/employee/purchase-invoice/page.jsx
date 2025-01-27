@@ -41,6 +41,8 @@ export default function CreatePurchaseInvoice() {
     SumTotalInvoice: 0,
     description: "",
     paymentToAccount: "",
+    paymentMethod: "",
+    orderLensFrom: "",
   };
 
   const [showPopup, setShowPopup] = useState(false);

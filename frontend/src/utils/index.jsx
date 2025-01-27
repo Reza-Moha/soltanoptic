@@ -2,7 +2,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { GiMicroscopeLens } from "react-icons/gi";
 import { BsEyeglasses } from "react-icons/bs";
 import { CiBank, CiMedicalClipboard } from "react-icons/ci";
-
+import { TbBuildingCog } from "react-icons/tb";
 export const toPersianDigits = (number) => {
   const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return number.toString().replace(/\d/g, (x) => farsiDigits[parseInt(x)]);
@@ -79,6 +79,13 @@ export const BasicDefinitionsLinks = [
     className: "text-sm",
     svg: <CiMedicalClipboard size="20" />,
     href: "insurance",
+  },
+  {
+    id: 8,
+    title: "تعریف شرکت پخش عدسی",
+    className: "text-sm",
+    svg: <TbBuildingCog size="20" />,
+    href: "companies",
   },
 ];
 
