@@ -13,24 +13,35 @@ UserPrescriptionModel.init(
     },
     odSph: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     odCyl: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     odAx: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     osSph: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     osCyl: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     osAx: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     pd: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    label: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

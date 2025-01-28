@@ -4,19 +4,41 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
 import { MedicalPrescription } from "@/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/FrameList";
 import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
 import { PaymentInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
 import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentMethods/PaymentMethods";
 import { ChoseCompaniesLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseCompaneisLens";
-import { useDispatch } from "react-redux";
-import { createNewInvoiceApi } from "@/services/customers/customers.service";
+import { useDispatch, useSelector } from "react-redux";
+import customerSlice, {
+  createNewInvoice,
+  getLastInvoiceNumber,
+} from "@/redux/slices/customersSlice";
+import Image from "next/image";
+import { BeatLoader } from "react-spinners";
+import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
+import toast from "react-hot-toast";
 
 export default function CreatePurchaseInvoice() {
+  const dispatch = useDispatch();
+  const { lastInvoiceNumber, isLoading } = useSelector(
+    (state) => state.customerSlice,
+  );
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [showFrameModal, setShowFrameModal] = useState(false);
+  const [showLensModal, setShowLensModal] = useState(false);
+  const [showCustomerInfoPopup, setShowCustomerInfoPopup] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState(null);
+
+  useEffect(() => {
+    dispatch(getLastInvoiceNumber());
+  }, [dispatch]);
+
   const initialValues = {
-    invoiceNumber: "",
+    invoiceNumber: lastInvoiceNumber || 1000,
     fullName: "",
     phoneNumber: "",
     nationalId: "",
@@ -32,30 +54,31 @@ export default function CreatePurchaseInvoice() {
         pd: "",
         frame: {},
         lens: {},
-        lensPrice: 0,
+        lensPrice: "",
       },
     ],
     insuranceName: "",
-    InsuranceAmount: 0,
-    descriptionPrice: 0,
-    deposit: 0,
-    discount: 0,
-    billBalance: 0,
-    SumTotalInvoice: 0,
+    InsuranceAmount: "",
+    descriptionPrice: "",
+    deposit: "",
+    discount: "",
+    billBalance: "",
+    SumTotalInvoice: "",
     description: "",
     paymentToAccount: "",
     paymentMethod: "",
     orderLensFrom: "",
   };
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [showFrameModal, setShowFrameModal] = useState(false);
-  const [showLensModal, setShowLensModal] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const dispatch = useDispatch();
-
   const createNewPurchaseInvoiceHandler = async (values) => {
-    await dispatch(createNewInvoiceApi(values));
+    try {
+      await dispatch(createNewInvoice(values));
+      setCustomerInfo(values);
+      setShowCustomerInfoPopup(true);
+      dispatch(getLastInvoiceNumber());
+    } catch (error) {
+      console.error("خطا در ایجاد فاکتور جدید:", error);
+    }
   };
 
   const handleFrameSelect = useCallback((frame, index, setFieldValue) => {
@@ -66,13 +89,34 @@ export default function CreatePurchaseInvoice() {
     setFieldValue(`prescriptions.${index}.lens`, lens);
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-2">
+        <span className="relative flex size-14">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+          <Image
+            src="/image/logoBlcak.svg"
+            alt="logo"
+            width="120"
+            height="120"
+            className="relative inline-flex size-14 rounded-full"
+          />
+        </span>
+        <div>
+          <BeatLoader size={5} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={createNewPurchaseInvoiceHandler}
       validationSchema={createNewPurchaseInvoiceSchema}
+      enableReinitialize
     >
-      {({ handleSubmit, values, setFieldValue, errors }) => (
+      {({ handleSubmit, values, setFieldValue }) => (
         <Form onSubmit={handleSubmit}>
           <div className="h-screen">
             <PersonalInformation />
@@ -132,8 +176,19 @@ export default function CreatePurchaseInvoice() {
                       type="button"
                       className="w-1/3 bg-green-100 text-green-600 border border-green-200 px-4 py-2 rounded mt-4 hover:border hover:border-green-300 transition-all ease-in-out duration-300 shadow-sm hover:shadow-lg shadow-green-600/30"
                       onClick={() => {
-                        setCurrentIndex(values.prescriptions.length);
-                        setShowPopup(true);
+                        arrayHelpers.push({
+                          label: `فریم ${values.prescriptions.length + 1}`,
+                          odAx: "",
+                          odCyl: "",
+                          odSph: "",
+                          osAx: "",
+                          osCyl: "",
+                          osSph: "",
+                          pd: "",
+                          frame: {},
+                          lens: {},
+                          lensPrice: "",
+                        });
                       }}
                     >
                       افزودن فریم
@@ -153,6 +208,12 @@ export default function CreatePurchaseInvoice() {
             <ChoseTypeOfFrameModal
               values={values}
               setShowPopup={setShowPopup}
+            />
+          )}
+          {showCustomerInfoPopup && customerInfo && (
+            <CustomerInfoPopup
+              customerInfo={customerInfo}
+              onClose={() => setShowCustomerInfoPopup(false)}
             />
           )}
         </Form>

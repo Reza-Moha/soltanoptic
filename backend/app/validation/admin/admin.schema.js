@@ -40,7 +40,7 @@ const createNewPermissionSchema = Joi.object({
 });
 
 const idSchema = Joi.object({
-  id: Joi.string().trim().guid({ version: "uuidv4" }).required(),
+  id: Joi.string().trim().guid({ version: "uuidv4" }),
 });
 
 const createNewRoleSchema = Joi.object({
@@ -416,8 +416,9 @@ const createNewCompanySchema = Joi.object({
     }),
 });
 const createNewPurchaseInvoiceSchema = Joi.object({
-  invoiceNumber: Joi.string().required().messages({
-    "string.empty": "شماره فاکتور الزامی است",
+  invoiceNumber: Joi.number().required().messages({
+    "number.base": "شماره فاکتور باید عدد باشد",
+    "any.required": "شماره فاکتور الزامی است",
   }),
   fullName: Joi.string().required().messages({
     "string.empty": "نام کامل الزامی است",
@@ -429,16 +430,21 @@ const createNewPurchaseInvoiceSchema = Joi.object({
     .messages({
       "string.length": "شماره موبایل باید ۱۱ رقم باشد",
       "string.pattern.base": "شماره موبایل وارد شده صحیح نمی‌باشد",
-      "any.required": "لطفا شماره موبایل خود را وارد فرمائید",
+      "any.required": "لطفا شماره موبایل مشتری را وارد فرمائید",
     }),
   description: Joi.string().allow(null, ""),
   nationalId: Joi.string()
-    .pattern(/^[0-9]{10}$/)
-    .messages({
-      "string.pattern.base": "کد ملی باید 10 رقم باشد",
+    .allow(null, "")
+    .length(10)
+    .custom((value, helpers) => {
+      if (value && !validateNationalId(value)) {
+        return helpers.message("کد ملی وارد شده معتبر نیست");
+      }
+      return value;
     }),
   prescriptions: Joi.array().items(
     Joi.object({
+      label: Joi.string().allow(null, ""),
       odAx: Joi.string().allow(null, ""),
       odCyl: Joi.string().allow(null, ""),
       odSph: Joi.string().allow(null, ""),
@@ -448,9 +454,10 @@ const createNewPurchaseInvoiceSchema = Joi.object({
       pd: Joi.string().allow(null, ""),
       lensPrice: Joi.string().allow(null, ""),
       frame: Joi.object().allow(null),
+      lens: Joi.object().allow(null),
     }),
   ),
-  insuranceName: idSchema.extract("id").messages({
+  insuranceName: idSchema.allow(null, "").optional().extract("id").messages({
     "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
     "string.guid": "فرمت UUID معتبر نیست",
   }),
@@ -460,13 +467,10 @@ const createNewPurchaseInvoiceSchema = Joi.object({
   discount: Joi.string().allow(null, ""),
   billBalance: Joi.string().allow(null, ""),
   SumTotalInvoice: Joi.string().allow(null, ""),
-  paymentToAccount: Joi.string().allow(null, ""),
-  paymentMethod: idSchema.extract("id").messages({
-    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
-    "string.guid": "فرمت UUID معتبر نیست",
-  }),
-  orderLensFrom: idSchema.extract("id").messages({
-    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
+  paymentToAccount: Joi.string().allow(null, "").optional(),
+  paymentMethod: Joi.string().allow(null, "").optional(),
+  orderLensFrom: idSchema.allow(null, "").optional().extract("id").messages({
+    "any.required": "لطفا یکی از شرکت های پخش عدسی را انتخاب کنید",
     "string.guid": "فرمت UUID معتبر نیست",
   }),
 });

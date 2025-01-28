@@ -41,7 +41,10 @@ export const MedicalPrescription = memo(
 
     const handleBlur = useCallback(
       (field, value) => {
-        const updatedValue = ensureNegativeValue(value);
+        const updatedValue =
+          value.trim() === "0" || value.trim() === "0.0"
+            ? "PL"
+            : ensureNegativeValue(value);
         setLensValues((prev) => ({ ...prev, [field]: updatedValue }));
         setFieldValue(`${fieldPrefix}.${field}`, updatedValue);
       },

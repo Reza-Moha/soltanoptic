@@ -14,6 +14,14 @@ const { Roles } = require("./Roles.model");
 const { UserModel } = require("./User.model");
 const { FrameColor } = require("./frame/FrameColor.model");
 const { FrameImages } = require("./frame/FrameImage.model");
+const { InvoiceModel } = require("./Invoice/Invoice.model");
+const {
+  UserPrescriptionModel,
+} = require("./Invoice/MedicalPrescription.model");
+const { PaymentInfoModel } = require("./Invoice/PaymentInfo.model");
+const { CompanyModel } = require("./Company.model");
+const { BankModel } = require("./Bank.model");
+const { InsuranceModel } = require("./Insurance.model");
 
 const Associations = () => {
   // roles & permissions
@@ -58,6 +66,48 @@ const Associations = () => {
   FrameModel.belongsTo(FrameCategory, { onDelete: "CASCADE" });
   FrameModel.belongsTo(FrameGender, { onDelete: "CASCADE" });
   FrameModel.belongsTo(FrameType, { onDelete: "CASCADE" });
+
+  UserModel.hasMany(InvoiceModel, {
+    foreignKey: "userId",
+    as: "customerInvoices",
+  });
+  InvoiceModel.belongsTo(UserModel, { foreignKey: "userId", as: "user" });
+
+  // Invoice -> UserPrescription
+  InvoiceModel.hasMany(UserPrescriptionModel, {
+    foreignKey: "InvoiceId",
+    as: "prescriptions",
+    onDelete: "CASCADE",
+  });
+  UserPrescriptionModel.belongsTo(InvoiceModel, {
+    foreignKey: "InvoiceId",
+    as: "invoice",
+    onDelete: "CASCADE",
+  });
+  InvoiceModel.belongsTo(CompanyModel, {
+    foreignKey: "orderLensFrom",
+    as: "company",
+  });
+  InvoiceModel.belongsTo(BankModel, {
+    foreignKey: "paymentToAccount",
+    as: "bank",
+  });
+  InvoiceModel.belongsTo(InsuranceModel, {
+    foreignKey: "insuranceName",
+    as: "insurance",
+  });
+
+  // Invoice -> PaymentInfo
+  InvoiceModel.hasOne(PaymentInfoModel, {
+    foreignKey: "InvoiceId",
+    as: "paymentInfo",
+    onDelete: "CASCADE",
+  });
+  PaymentInfoModel.belongsTo(InvoiceModel, {
+    foreignKey: "InvoiceId",
+    as: "invoice",
+    onDelete: "CASCADE",
+  });
 };
 sequelize.sync({ alter: true });
 module.exports = {

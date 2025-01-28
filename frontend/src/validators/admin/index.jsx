@@ -342,13 +342,22 @@ export const createNewInsuranceSchema = Yup.object().shape({
 });
 
 export const createNewPurchaseInvoiceSchema = Yup.object().shape({
-  invoiceNumber: Yup.string().required("شماره فاکتور الزامی است"),
+  invoiceNumber: Yup.number().required("شماره فاکتور الزامی است"),
   fullName: Yup.string().required("نام کامل الزامی است"),
   phoneNumber: Yup.string()
-    .required("شماره تماس الزامی است")
-    .matches(/^[0-9]+$/, "شماره تماس باید فقط شامل اعداد باشد"),
+    .min(11, "شماره موبایل وارد شده معتبر نیست")
+    .max(11, "شماره موبایل وارد شده معتبر نیست")
+    .matches(/^[0][9][0-9][0-9]{8,8}$/, "شماره موبایل وارد شده معتبر نیست")
+    .required("لطفا شماره موبایل خود را وارد فرمائید"),
   description: Yup.string(),
-  nationalId: Yup.string().matches(/^[0-9]{10}$/, "کد ملی باید 10 رقم باشد"),
+  nationalId: Yup.string()
+    .nullable()
+    .matches(/^\d{10}$/, "کد ملی باید شامل ۱۰ رقم باشد")
+    .test(
+      "validateNationalCode",
+      "کد ملی وارد شده معتبر نیست",
+      (value) => !value || validateNationalId(value),
+    ),
   prescriptions: Yup.array().of(
     Yup.object().shape({
       odAx: Yup.string(),
@@ -375,10 +384,13 @@ export const createNewPurchaseInvoiceSchema = Yup.object().shape({
   discount: Yup.string(),
   billBalance: Yup.string(),
   SumTotalInvoice: Yup.string(),
-  paymentToAccount: Yup.string(),
-  paymentMethod: Yup.string(),
+  paymentToAccount: Yup.string().nullable(),
+  paymentMethod: Yup.string().nullable(),
   orderLensFrom: Yup.string()
-    .trim()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value,
+    )
     .matches(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
       "فرمت UUID معتبر نیست",

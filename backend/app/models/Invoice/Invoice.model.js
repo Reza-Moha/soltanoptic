@@ -11,14 +11,22 @@ InvoiceModel.init(
       unique: true,
       primaryKey: true,
     },
+    invoiceNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1000,
+    },
     orderLensFrom: {
       type: DataTypes.UUID,
+      allowNull: true,
     },
     paymentToAccount: {
       type: DataTypes.UUID,
+      allowNull: true,
     },
     insuranceName: {
       type: DataTypes.UUID,
+      allowNull: true,
     },
   },
   {

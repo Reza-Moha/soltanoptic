@@ -9,6 +9,7 @@ export const InsuranceCategoryOptions = () => {
     value: insurance.id,
     label: insurance.insuranceName,
   }));
+
   return (
     <>
       <Field

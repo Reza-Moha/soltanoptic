@@ -20,7 +20,14 @@ function EmployeeHeader() {
             </span>
           </div>
         </div>
-        <Image src="/image/logoWhite.svg" alt="logo" width={80} height={80} />
+        <Image
+          src="/image/logoWhite.svg"
+          alt="logo"
+          width={80}
+          height={80}
+          priority
+          style={{ width: "45px", height: "45px" }}
+        />
         <div className="flex items-center gap-x-3">
           <Link href="/employee/dashboard">
             <ButtonIcon

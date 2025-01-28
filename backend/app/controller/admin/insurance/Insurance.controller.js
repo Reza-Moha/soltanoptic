@@ -20,7 +20,9 @@ class InsuranceController extends Controller {
         description,
         documents,
       } = await createNewInsuranceSchema.validateAsync(req.body);
-      const existingInsurance = await InsuranceModel.findOne({ insuranceName });
+      const existingInsurance = await InsuranceModel.findOne({
+        where: { insuranceName },
+      });
       if (existingInsurance)
         throw CreateError.BadRequest("بیمه با این مشخصات قبلا ثبت شده است");
       const createdInsurance = await InsuranceModel.create({

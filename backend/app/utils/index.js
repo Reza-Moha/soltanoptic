@@ -158,7 +158,6 @@ function isValidBankCardNumber(cardNumber) {
 
   return sum % 10 === 0;
 }
-
 async function sendSms(RecNumber, code) {
   const accessHash = process.env.SMS_ACCESS_HASH;
   const phoneNumber = process.env.SMS_PHONENUMBER;
@@ -175,6 +174,39 @@ async function sendSms(RecNumber, code) {
 const getRolePermissions = (role) => {
   return PERMISSIONS[role] || [];
 };
+const farsiDigitToEnglish = (farsiNumber) => {
+  const digitMap = {
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۴": "4",
+    "۵": "5",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9",
+    "٠": "0",
+    "١": "1",
+    "٢": "2",
+    "٣": "3",
+    "٤": "4",
+    "٥": "5",
+    "٦": "6",
+    "٧": "7",
+    "٨": "8",
+    "٩": "9",
+  };
+
+  farsiNumber = farsiNumber.replace(/٬/g, "");
+
+  let englishNumber = "";
+  for (const ch of farsiNumber || "") {
+    englishNumber += digitMap[ch] || ch;
+  }
+
+  return parseFloat(englishNumber) || 0;
+};
 
 module.exports = {
   randomNumberGenerator,
@@ -188,4 +220,5 @@ module.exports = {
   isValidBankCardNumber,
   sendSms,
   getRolePermissions,
+  farsiDigitToEnglish,
 };

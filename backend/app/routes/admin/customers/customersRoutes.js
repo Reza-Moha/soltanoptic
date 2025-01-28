@@ -10,6 +10,11 @@ router.post(
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
   CustomersController.createNewInvoice,
 );
+router.get(
+  "/get-last-invoice-number",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.getLastInvoiceNumber,
+);
 
 // router.get(
 //     "/get-all",

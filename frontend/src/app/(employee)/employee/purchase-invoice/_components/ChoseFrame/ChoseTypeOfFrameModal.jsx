@@ -7,17 +7,17 @@ export const ChoseTypeOfFrameModal = ({ values, setShowPopup }) => {
 
   const handleButtonClick = (frame) => {
     values.prescriptions.push({
-       label: frame.label,
-        odAx: "",
-        odCyl: "",
-        odSph: "",
-        osAx: "",
-        osCyl: "",
-        osSph: "",
-        pd: "",
-        frame: {},
-        lens: {},
-        lensPrice: 0,
+      label: frame.label,
+      odAx: "",
+      odCyl: "",
+      odSph: "",
+      osAx: "",
+      osCyl: "",
+      osSph: "",
+      pd: "",
+      frame: {},
+      lens: {},
+      lensPrice: "",
     });
 
     setShowPopup(false);

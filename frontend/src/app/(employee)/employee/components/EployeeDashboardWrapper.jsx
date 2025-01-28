@@ -7,6 +7,7 @@ import { fetchAllFrame } from "@/redux/slices/frame.slice";
 import { fetchAllLens } from "@/redux/slices/lensSlice";
 import { fetchAllBanks } from "@/redux/slices/bankSlice";
 import { fetchAllCompanies } from "@/redux/slices/companiesSlice";
+import { getLastInvoiceNumber } from "@/redux/slices/customersSlice";
 export const EmployeeDashboardWrapper = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -16,6 +17,7 @@ export const EmployeeDashboardWrapper = ({ children }) => {
     dispatch(fetchAllLens({ page: 1, size: 10 }));
     dispatch(fetchAllBanks());
     dispatch(fetchAllCompanies());
+    dispatch(getLastInvoiceNumber());
   }, [dispatch]);
   return <div className="xl:max-w-screen-xl">{children}</div>;
 };

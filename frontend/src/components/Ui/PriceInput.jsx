@@ -7,7 +7,6 @@ export const PriceInput = ({ label, bg = "bg-white", ...props }) => {
   const { setValue } = helpers;
 
   const formatWithCommas = (value) => {
-      console.log(value)
     const numericValue = value.replace(/[^\d]/g, "");
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };

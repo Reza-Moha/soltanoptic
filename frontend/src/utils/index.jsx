@@ -174,6 +174,7 @@ export const ensureNegativeValue = (value) => {
   const number = parseFloat(trimmedValue).toFixed(2);
   return `${sign}${number}`;
 };
+
 export const customRoundToGroup = (value) => {
   const step = 0.25;
   const rounded = Math.round(value / step) * step;
