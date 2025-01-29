@@ -41,6 +41,7 @@ class CustomersController extends Controller {
         paymentToAccount,
         phoneNumber,
         prescriptions,
+        gender,
       } = await createNewPurchaseInvoiceSchema.validateAsync(req.body);
       if (phoneNumber === process.env.ADMIN_PHONENUMBER)
         throw CreateError.BadRequest("شماره موبایل وارد شده نامعتبر است");
@@ -52,7 +53,7 @@ class CustomersController extends Controller {
 
       if (!user) {
         user = await UserModel.create(
-          { fullName, phoneNumber, nationalId },
+          { fullName, phoneNumber, nationalId, gender },
           { transaction },
         );
       }
@@ -64,7 +65,6 @@ class CustomersController extends Controller {
           orderLensFrom,
           paymentToAccount,
           SumTotalInvoice: farsiDigitToEnglish(SumTotalInvoice || 0) || 0,
-          description: description || null,
           userId: user.id,
         },
         { transaction },
@@ -95,6 +95,7 @@ class CustomersController extends Controller {
             deposit: deposit.replace(/[^\d.-]/g, "") || 0,
             descriptionPrice: descriptionPrice.replace(/[^\d.-]/g, "") || 0,
             paymentToAccount,
+            description,
           },
           { transaction },
         );

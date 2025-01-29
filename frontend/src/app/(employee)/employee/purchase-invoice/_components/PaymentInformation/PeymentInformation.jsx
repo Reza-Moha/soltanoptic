@@ -85,8 +85,8 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
   ]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5">
-      <div className="col-span-4">
+    <div className="grid grid-cols-1 md:grid-cols-6">
+      <div className="col-span-1 md:col-span-5">
         <Input
           label="توضیحات"
           name="description"
@@ -112,7 +112,7 @@ export const PaymentInformation = ({ values, setFieldValue }) => {
         </div>
       ))}
 
-      <div className="col-span-5 h-px bg-secondary-300 inline-block mb-4 md:mx-10"></div>
+      <div className="col-span-1 md:col-span-6 h-px bg-secondary-300 inline-block mb-4 md:mx-10"></div>
     </div>
   );
 };

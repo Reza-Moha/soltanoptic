@@ -19,6 +19,10 @@ PaymentInfoModel.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     insuranceAmount: {
       type: DataTypes.INTEGER,
       allowNull: true,

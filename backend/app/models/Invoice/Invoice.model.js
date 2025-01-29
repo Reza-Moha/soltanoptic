@@ -11,6 +11,10 @@ InvoiceModel.init(
       unique: true,
       primaryKey: true,
     },
+    SumTotalInvoice: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     invoiceNumber: {
       type: DataTypes.INTEGER,
       allowNull: false,

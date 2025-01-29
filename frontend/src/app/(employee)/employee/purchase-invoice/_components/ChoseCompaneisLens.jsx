@@ -18,7 +18,9 @@ export const ChoseCompaniesLens = ({ values }) => {
           options={companyOptions}
           isMulti={false}
           placeholder="سفارش عدسی به"
-          className="!p-0 scale-90"
+          className="!p-0 scale-90 col-span-1 md:col-span-2"
+          svgWidth="15"
+          svgHeight="15"
         />
       ) : null}
     </>

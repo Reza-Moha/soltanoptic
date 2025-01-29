@@ -433,6 +433,7 @@ const createNewPurchaseInvoiceSchema = Joi.object({
       "any.required": "لطفا شماره موبایل مشتری را وارد فرمائید",
     }),
   description: Joi.string().allow(null, ""),
+  gender: Joi.string().allow(null, ""),
   nationalId: Joi.string()
     .allow(null, "")
     .length(10)
@@ -467,12 +468,23 @@ const createNewPurchaseInvoiceSchema = Joi.object({
   discount: Joi.string().allow(null, ""),
   billBalance: Joi.string().allow(null, ""),
   SumTotalInvoice: Joi.string().allow(null, ""),
-  paymentToAccount: Joi.string().allow(null, "").optional(),
+  paymentToAccount: Joi.string()
+    .guid({ version: ["uuidv4"] })
+    .allow(null)
+    .empty("")
+    .optional()
+    .messages({
+      "string.guid": "فرمت UUID معتبر نیست",
+    }),
   paymentMethod: Joi.string().allow(null, "").optional(),
-  orderLensFrom: idSchema.allow(null, "").optional().extract("id").messages({
-    "any.required": "لطفا یکی از شرکت های پخش عدسی را انتخاب کنید",
-    "string.guid": "فرمت UUID معتبر نیست",
-  }),
+  orderLensFrom: Joi.string()
+    .guid({ version: ["uuidv4"] })
+    .allow(null)
+    .empty("")
+    .optional()
+    .messages({
+      "string.guid": "فرمت UUID معتبر نیست",
+    }),
 });
 module.exports = {
   updateAdminProfileSchema,

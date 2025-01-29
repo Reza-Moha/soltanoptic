@@ -18,7 +18,9 @@ export const InsuranceCategoryOptions = () => {
         options={insuranceCategoryOptions}
         isMulti={false}
         placeholder="نوع بیمه"
-        className="!mt-8 !pt-0"
+        className="!mt-8 !pt-0 !text-sm"
+        svgWidth={15}
+        svgHeight={15}
       />
     </>
   );

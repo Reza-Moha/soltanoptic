@@ -41,6 +41,7 @@ export default function CreatePurchaseInvoice() {
     invoiceNumber: lastInvoiceNumber || 1000,
     fullName: "",
     phoneNumber: "",
+    gender: "",
     nationalId: "",
     prescriptions: [
       {
@@ -198,7 +199,7 @@ export default function CreatePurchaseInvoice() {
               )}
             />
             <PaymentInformation values={values} setFieldValue={setFieldValue} />
-            <div className="grid grid-cols-1 md:grid-cols-5">
+            <div className="grid grid-cols-1 md:grid-cols-6">
               <PaymentMethods values={values} />
               <ChoseCompaniesLens values={values} />
             </div>

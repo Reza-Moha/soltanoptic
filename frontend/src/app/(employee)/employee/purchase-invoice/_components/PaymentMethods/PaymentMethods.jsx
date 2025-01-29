@@ -45,7 +45,9 @@ export const PaymentMethods = ({ values }) => {
           options={paymentMethodsOptions}
           isMulti={false}
           placeholder="نحوه پرداخت"
-          className="!p-0 scale-90"
+          className="!p-0 scale-90 col-span-1 md:col-span-2"
+          svgWidth="15"
+          svgHeight="15"
         />
       ) : null}
       {values.deposit !== 0 &&
@@ -58,7 +60,9 @@ export const PaymentMethods = ({ values }) => {
           options={bankOptions}
           isMulti={false}
           placeholder="نوع پرداخت"
-          className="!p-0 scale-90"
+          className="!p-0 scale-90 col-span-1 md:col-span-2 text-sm"
+          svgWidth="15"
+          svgHeight="15"
         />
       ) : null}
     </>
