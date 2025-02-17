@@ -23,6 +23,7 @@ export const MedicalPrescription = memo(
     selectedLens,
     setFieldValue,
     tabIndices,
+    setCurrentIndex,
   }) => {
     const [lensValues, setLensValues] = useState({
       odSph: "",
@@ -76,6 +77,15 @@ export const MedicalPrescription = memo(
         onBlur={(e) => handleBlur(field, e.target.value)}
       />
     );
+    const handleFrameClick = () => {
+      setCurrentIndex(index);
+      setShowFrameModal(true);
+    };
+
+    const handleLensClick = () => {
+      setCurrentIndex(index);
+      setShowLensModal(true);
+    };
     return (
       <div className="w-full h-full flex items-center justify-center gap-2">
         <div className="flex-1">
@@ -141,7 +151,7 @@ export const MedicalPrescription = memo(
               ) : (
                 <button
                   type="button"
-                  onClick={() => setShowLensModal(true)}
+                  onClick={handleLensClick}
                   className="medicalPrescriptionInput"
                 >
                   انتخاب عدسی
@@ -159,7 +169,7 @@ export const MedicalPrescription = memo(
               ) : (
                 <button
                   type="button"
-                  onClick={() => setShowFrameModal(true)}
+                  onClick={handleFrameClick}
                   className="medicalPrescriptionInput"
                 >
                   انتخاب فریم

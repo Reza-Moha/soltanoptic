@@ -11,7 +11,7 @@ export const ChoseCompaniesLens = ({ values }) => {
 
   return (
     <>
-      {values.prescriptions[0].lens !== {} ? (
+      {values.prescriptions[0]?.lens !== {} ? (
         <Field
           name="orderLensFrom"
           component={SelectInput}

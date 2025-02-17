@@ -1,47 +1,24 @@
 "use client";
-import { Formik, Form, FieldArray } from "formik";
-import SubmitBtn from "@/components/Ui/SubmitBtn";
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { createNewInvoiceApi } from "@/services/customers/customers.service";
+import { FieldArray, Form, Formik } from "formik";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
 import { MedicalPrescription } from "@/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription";
-import { useState, useEffect, useCallback } from "react";
-import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/FrameList";
 import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
 import { PaymentInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
 import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentMethods/PaymentMethods";
 import { ChoseCompaniesLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseCompaneisLens";
-import { useDispatch, useSelector } from "react-redux";
-import customerSlice, {
-  createNewInvoice,
-  getLastInvoiceNumber,
-} from "@/redux/slices/customersSlice";
-import Image from "next/image";
-import { BeatLoader } from "react-spinners";
-import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
-import toast from "react-hot-toast";
+import SubmitBtn from "@/components/Ui/SubmitBtn";
+import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 
 export default function CreatePurchaseInvoice() {
-  const dispatch = useDispatch();
-  const { lastInvoiceNumber, isLoading } = useSelector(
-    (state) => state.customerSlice,
-  );
-
-  const [showPopup, setShowPopup] = useState(false);
-  const [showFrameModal, setShowFrameModal] = useState(false);
-  const [showLensModal, setShowLensModal] = useState(false);
-  const [showCustomerInfoPopup, setShowCustomerInfoPopup] = useState(false);
-  const [customerInfo, setCustomerInfo] = useState(null);
-
-  useEffect(() => {
-    dispatch(getLastInvoiceNumber());
-  }, [dispatch]);
-
   const initialValues = {
-    invoiceNumber: lastInvoiceNumber || 1000,
+    invoiceNumber: "",
     fullName: "",
     phoneNumber: "",
-    gender: "",
     nationalId: "",
     prescriptions: [
       {
@@ -55,170 +32,162 @@ export default function CreatePurchaseInvoice() {
         pd: "",
         frame: {},
         lens: {},
-        lensPrice: "",
+        lensPrice: 0,
+        currentIndex: 0,
       },
     ],
     insuranceName: "",
-    InsuranceAmount: "",
-    descriptionPrice: "",
-    deposit: "",
-    discount: "",
-    billBalance: "",
-    SumTotalInvoice: "",
+    InsuranceAmount: 0,
+    descriptionPrice: 0,
+    deposit: 0,
+    discount: 0,
+    billBalance: 0,
+    SumTotalInvoice: 0,
     description: "",
     paymentToAccount: "",
     paymentMethod: "",
     orderLensFrom: "",
   };
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [showFrameModal, setShowFrameModal] = useState(false);
+  const [showLensModal, setShowLensModal] = useState(false);
+  const dispatch = useDispatch();
+
   const createNewPurchaseInvoiceHandler = async (values) => {
-    try {
-      await dispatch(createNewInvoice(values));
-      setCustomerInfo(values);
-      setShowCustomerInfoPopup(true);
-      dispatch(getLastInvoiceNumber());
-    } catch (error) {
-      console.error("خطا در ایجاد فاکتور جدید:", error);
-    }
+    await dispatch(createNewInvoiceApi(values));
   };
-
-  const handleFrameSelect = useCallback((frame, index, setFieldValue) => {
-    setFieldValue(`prescriptions.${index}.frame`, frame);
-  }, []);
-
-  const handleLensSelect = useCallback((lens, index, setFieldValue) => {
-    setFieldValue(`prescriptions.${index}.lens`, lens);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="h-screen flex flex-col items-center justify-center gap-2">
-        <span className="relative flex size-14">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-          <Image
-            src="/image/logoBlcak.svg"
-            alt="logo"
-            width="120"
-            height="120"
-            className="relative inline-flex size-14 rounded-full"
-          />
-        </span>
-        <div>
-          <BeatLoader size={5} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={createNewPurchaseInvoiceHandler}
       validationSchema={createNewPurchaseInvoiceSchema}
-      enableReinitialize
     >
-      {({ handleSubmit, values, setFieldValue }) => (
-        <Form onSubmit={handleSubmit}>
-          <div className="h-screen">
-            <PersonalInformation />
-            <FieldArray
-              name="prescriptions"
-              render={(arrayHelpers) => (
-                <div>
-                  {values.prescriptions.map((prescription, index) => {
-                    const baseTabIndex = index * 10;
+      {({ handleSubmit, values, setFieldValue, errors }) => {
+        const handleLensSelect = useCallback(
+          (lens, index, setFieldValue) => {
+            const currentIdx = values.prescriptions[index].currentIndex;
+            setFieldValue(`prescriptions.${currentIdx}.lens`, lens);
+            setShowLensModal(false);
+          },
+          [values.prescriptions],
+        );
 
-                    return (
-                      <div
-                        key={index}
-                        className="mb-5 h-full border-b border-secondary-300"
-                      >
-                        <MedicalPrescription
-                          label={prescription.label || `فریم ${index + 1}`}
-                          fieldPrefix={`prescriptions.${index}`}
-                          selectedFrame={values.prescriptions[index].frame}
-                          selectedLens={values.prescriptions[index].lens}
-                          setShowFrameModal={setShowFrameModal}
-                          setShowLensModal={setShowLensModal}
-                          arrayHelpers={arrayHelpers}
-                          index={index}
-                          setFieldValue={setFieldValue}
-                          tabIndices={{
-                            odSph: baseTabIndex + 1,
-                            odCyl: baseTabIndex + 2,
-                            odAx: baseTabIndex + 3,
-                            osSph: baseTabIndex + 4,
-                            osCyl: baseTabIndex + 5,
-                            osAx: baseTabIndex + 6,
-                            pd: baseTabIndex + 7,
-                          }}
-                        />
-                        {showFrameModal && (
-                          <ChoseFrame
+        const handleFrameSelect = useCallback(
+          (frame, index, setFieldValue) => {
+            const currentIdx = values.prescriptions[index].currentIndex;
+            setFieldValue(`prescriptions.${currentIdx}.frame`, frame);
+            setShowFrameModal(false);
+          },
+          [values.prescriptions],
+        );
+        return (
+          <Form onSubmit={handleSubmit}>
+            <div className="h-screen">
+              <PersonalInformation />
+              <FieldArray
+                name="prescriptions"
+                render={(arrayHelpers) => (
+                  <div>
+                    {values.prescriptions.map((prescription, index) => {
+                      const baseTabIndex = index * 10;
+                      return (
+                        <div
+                          key={index}
+                          className="mb-5 h-full border-b border-secondary-300"
+                        >
+                          <MedicalPrescription
+                            label={prescription.label || `فریم ${index + 1}`}
+                            fieldPrefix={`prescriptions.${index}`}
+                            selectedFrame={values.prescriptions[index].frame}
+                            selectedLens={values.prescriptions[index].lens}
                             setShowFrameModal={setShowFrameModal}
-                            onFrameSelect={(frame) =>
-                              handleFrameSelect(frame, index, setFieldValue)
-                            }
-                          />
-                        )}
-                        {showLensModal && (
-                          <ChoseLens
                             setShowLensModal={setShowLensModal}
-                            onLensSelect={(lens) =>
-                              handleLensSelect(lens, index, setFieldValue)
+                            arrayHelpers={arrayHelpers}
+                            index={index}
+                            setFieldValue={setFieldValue}
+                            setCurrentIndex={() =>
+                              setFieldValue(
+                                `prescriptions.${index}.currentIndex`,
+                                index,
+                              )
                             }
+                            tabIndices={{
+                              odSph: baseTabIndex + 1,
+                              odCyl: baseTabIndex + 2,
+                              odAx: baseTabIndex + 3,
+                              osSph: baseTabIndex + 4,
+                              osCyl: baseTabIndex + 5,
+                              osAx: baseTabIndex + 6,
+                              pd: baseTabIndex + 7,
+                            }}
                           />
-                        )}
-                      </div>
-                    );
-                  })}
-                  <div className="w-full flex items-center justify-center">
-                    <button
-                      type="button"
-                      className="w-1/3 bg-green-100 text-green-600 border border-green-200 px-4 py-2 rounded mt-4 hover:border hover:border-green-300 transition-all ease-in-out duration-300 shadow-sm hover:shadow-lg shadow-green-600/30"
-                      onClick={() => {
-                        arrayHelpers.push({
-                          label: `فریم ${values.prescriptions.length + 1}`,
-                          odAx: "",
-                          odCyl: "",
-                          odSph: "",
-                          osAx: "",
-                          osCyl: "",
-                          osSph: "",
-                          pd: "",
-                          frame: {},
-                          lens: {},
-                          lensPrice: "",
-                        });
-                      }}
-                    >
-                      افزودن فریم
-                    </button>
+
+                          {showFrameModal && (
+                            <ChoseFrame
+                              setShowFrameModal={setShowFrameModal}
+                              onFrameSelect={(frame) =>
+                                handleFrameSelect(
+                                  frame,
+                                  values.prescriptions[index].currentIndex,
+                                  setFieldValue,
+                                )
+                              }
+                            />
+                          )}
+
+                          {showLensModal && (
+                            <ChoseLens
+                              setShowLensModal={setShowLensModal}
+                              onLensSelect={(lens) =>
+                                handleLensSelect(
+                                  lens,
+                                  values.prescriptions[index].currentIndex,
+                                  setFieldValue,
+                                )
+                              }
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                    <div className="w-full flex items-center justify-center">
+                      <button
+                        type="button"
+                        className="w-1/3 bg-green-100 text-green-600 border border-green-200 px-4 py-2 rounded mt-4 hover:border hover:border-green-300 transition-all ease-in-out duration-300 shadow-sm hover:shadow-lg shadow-green-600/30"
+                        onClick={() => {
+                          setShowPopup(true);
+                        }}
+                      >
+                        افزودن فریم
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
-            />
-            <PaymentInformation values={values} setFieldValue={setFieldValue} />
-            <div className="grid grid-cols-1 md:grid-cols-6">
-              <PaymentMethods values={values} />
-              <ChoseCompaniesLens values={values} />
+                )}
+              />
+              <PaymentInformation
+                values={values}
+                setFieldValue={setFieldValue}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-5">
+                <PaymentMethods values={values} />
+                <ChoseCompaniesLens values={values} />
+              </div>
+              <SubmitBtn>ایجاد</SubmitBtn>
             </div>
-            <SubmitBtn>ایجاد</SubmitBtn>
-          </div>
-          {showPopup && (
-            <ChoseTypeOfFrameModal
-              values={values}
-              setShowPopup={setShowPopup}
-            />
-          )}
-          {showCustomerInfoPopup && customerInfo && (
-            <CustomerInfoPopup
-              customerInfo={customerInfo}
-              onClose={() => setShowCustomerInfoPopup(false)}
-            />
-          )}
-        </Form>
-      )}
+            {showPopup && (
+              <ChoseTypeOfFrameModal
+                values={values}
+                setShowPopup={setShowPopup}
+              />
+            )}
+            <pre style={{ textAlign: "left" }}>
+              {JSON.stringify(values, null, 2)}
+            </pre>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

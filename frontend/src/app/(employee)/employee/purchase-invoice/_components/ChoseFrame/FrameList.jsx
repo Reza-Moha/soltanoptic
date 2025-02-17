@@ -33,11 +33,12 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
-
-  const handleColorSelect = (frame, color) => {
+  console.log("selectedFrameIndex", selectedFrame.index);
+  const handleColorSelect = (frame, color, index) => {
     setSelectedFrame({
       ...frame,
       FrameColors: [color],
+      index,
     });
     setSelectedColor(color);
     setShowPopup(true);
@@ -45,7 +46,7 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
 
   const handleConfirmSelection = (e) => {
     e.preventDefault();
-    onFrameSelect(selectedFrame, selectedColor);
+    onFrameSelect(selectedFrame, selectedColor, selectedFrame.index);
     setShowPopup(false);
     setShowFrameModal(false);
   };
@@ -98,7 +99,7 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
                         <button
                           type="button"
                           key={colorIndex}
-                          onClick={() => handleColorSelect(frame, color)}
+                          onClick={() => handleColorSelect(frame, color, index)}
                           className={`p-3 rounded mr-2 my-1 ${
                             color === selectedColor
                               ? "bg-blue-500 text-white"
