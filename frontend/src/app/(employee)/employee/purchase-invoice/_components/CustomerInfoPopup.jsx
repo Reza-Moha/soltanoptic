@@ -4,6 +4,7 @@ import printingAnimation from "@/assets/animation/printingAnimation.json";
 import { LottieAnimation } from "@/components/Ui/LottieAnimation";
 
 export const CustomerInfoPopup = ({ customerInfo, onClose }) => {
+  console.log(customerInfo);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"

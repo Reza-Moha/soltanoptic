@@ -15,6 +15,7 @@ import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
+import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
 
 export default function CreatePurchaseInvoice() {
   const { lastInvoiceNumber, isLoading: invoiceNumberLoading } = useSelector(
@@ -38,7 +39,6 @@ export default function CreatePurchaseInvoice() {
         frame: {},
         lens: {},
         lensPrice: 0,
-        currentIndex: 0,
       },
     ],
     insuranceName: "",
@@ -57,10 +57,20 @@ export default function CreatePurchaseInvoice() {
   const [showPopup, setShowPopup] = useState(false);
   const [showFrameModal, setShowFrameModal] = useState(false);
   const [showLensModal, setShowLensModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState(null);
   const dispatch = useDispatch();
 
   const createNewPurchaseInvoiceHandler = async (values) => {
-    await dispatch(createNewInvoiceApi(values));
+    try {
+      const response = await dispatch(createNewInvoiceApi(values));
+      if (response && response.data) {
+        setModalData(response.data);
+        setShowModal(true);
+      }
+    } catch (error) {
+      console.error("Error while creating invoice:", error);
+    }
   };
 
   return (
@@ -89,8 +99,7 @@ export default function CreatePurchaseInvoice() {
           {({ handleSubmit, values, setFieldValue, errors }) => {
             const handleLensSelect = useCallback(
               (lens, index, setFieldValue) => {
-                const currentIdx = values.prescriptions[index].currentIndex;
-                setFieldValue(`prescriptions.${currentIdx}.lens`, lens);
+                setFieldValue(`prescriptions.${index}.lens`, lens);
                 setShowLensModal(false);
               },
               [values.prescriptions],
@@ -98,8 +107,7 @@ export default function CreatePurchaseInvoice() {
 
             const handleFrameSelect = useCallback(
               (frame, index, setFieldValue) => {
-                const currentIdx = values.prescriptions[index].currentIndex;
-                setFieldValue(`prescriptions.${currentIdx}.frame`, frame);
+                setFieldValue(`prescriptions.${index}.frame`, frame);
                 setShowFrameModal(false);
               },
               [values.prescriptions],
@@ -133,12 +141,7 @@ export default function CreatePurchaseInvoice() {
                                 arrayHelpers={arrayHelpers}
                                 index={index}
                                 setFieldValue={setFieldValue}
-                                setCurrentIndex={() =>
-                                  setFieldValue(
-                                    `prescriptions.${index}.currentIndex`,
-                                    index,
-                                  )
-                                }
+                                setCurrentIndex={() => setFieldValue(index)}
                                 tabIndices={{
                                   odSph: baseTabIndex + 1,
                                   odCyl: baseTabIndex + 2,
@@ -156,7 +159,7 @@ export default function CreatePurchaseInvoice() {
                                   onFrameSelect={(frame) =>
                                     handleFrameSelect(
                                       frame,
-                                      values.prescriptions[index].currentIndex,
+                                      index,
                                       setFieldValue,
                                     )
                                   }
@@ -167,11 +170,7 @@ export default function CreatePurchaseInvoice() {
                                 <ChoseLens
                                   setShowLensModal={setShowLensModal}
                                   onLensSelect={(lens) =>
-                                    handleLensSelect(
-                                      lens,
-                                      values.prescriptions[index].currentIndex,
-                                      setFieldValue,
-                                    )
+                                    handleLensSelect(lens, index, setFieldValue)
                                   }
                                 />
                               )}
@@ -208,13 +207,16 @@ export default function CreatePurchaseInvoice() {
                     setShowPopup={setShowPopup}
                   />
                 )}
-                <pre style={{ textAlign: "left" }}>
-                  {JSON.stringify(values, null, 2)}
-                </pre>
               </Form>
             );
           }}
         </Formik>
+      )}
+      {showModal && modalData && (
+        <CustomerInfoPopup
+          customerInfo={modalData}
+          onClose={() => setShowModal(false)}
+        />
       )}
     </>
   );
