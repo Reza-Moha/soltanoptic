@@ -19,6 +19,7 @@ const Inputs = [
     name: "nationalId",
   },
 ];
+
 const genderInfo = [
   {
     id: 1,
@@ -31,6 +32,7 @@ const genderInfo = [
     name: "female",
   },
 ];
+
 export const PersonalInformation = () => {
   const genderOptions = genderInfo.map((gender) => ({
     value: gender.label,

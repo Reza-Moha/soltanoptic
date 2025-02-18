@@ -18,6 +18,7 @@ export const ChoseTypeOfFrameModal = ({ values, setShowPopup }) => {
       frame: {},
       lens: {},
       lensPrice: "",
+      currentIndex: 0,
     });
 
     setShowPopup(false);

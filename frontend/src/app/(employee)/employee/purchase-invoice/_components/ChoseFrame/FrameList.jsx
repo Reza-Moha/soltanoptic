@@ -33,7 +33,7 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
-  console.log("selectedFrameIndex", selectedFrame.index);
+
   const handleColorSelect = (frame, color, index) => {
     setSelectedFrame({
       ...frame,

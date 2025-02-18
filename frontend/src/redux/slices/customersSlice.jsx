@@ -6,20 +6,6 @@ import {
   getLastInvoiceNumberApi,
 } from "@/services/customers/customers.service";
 
-// export const fetchAllBanks = createAsyncThunk(
-//   "bank/fetchAllBank",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const data = await getAllBankApi();
-//       return data.allBanks;
-//     } catch (error) {
-//       const errors = error?.response?.data?.errors;
-//       toast.error(errors.message);
-//       return rejectWithValue(errors);
-//     }
-//   },
-// );
-
 export const createNewInvoice = createAsyncThunk(
   "customer/createNewInvoice",
   async (values, { rejectWithValue }) => {
