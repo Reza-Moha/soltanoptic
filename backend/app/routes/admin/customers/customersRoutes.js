@@ -16,17 +16,12 @@ router.get(
   CustomersController.getLastInvoiceNumber,
 );
 
-// router.get(
-//     "/get-all",
-//     checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
-//     CompanyController.getAllCompanies,
-// );
-//
-// router.delete(
-//     "/delete/:id",
-//     checkPermission(PERMISSIONS.ADMIN),
-//     CompanyController.deleteCompanyById,
-// );
+router.post(
+  "/send-sms-purchase",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.sendSmsThanksForThePurchase,
+);
+
 module.exports = {
   customersRoutes: router,
 };

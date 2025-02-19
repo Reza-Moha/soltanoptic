@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createNewInvoiceApi } from "@/services/customers/customers.service";
+import { useSelector } from "react-redux";
 import { FieldArray, Form, Formik } from "formik";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
@@ -16,9 +15,11 @@ import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoic
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
 import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
+import { createNewInvoiceApi } from "@/services/customers/customers.service";
+import { toast } from "react-hot-toast";
 
 export default function CreatePurchaseInvoice() {
-  const { lastInvoiceNumber, isLoading: invoiceNumberLoading } = useSelector(
+  const { lastInvoiceNumber, isLoading } = useSelector(
     (state) => state.customerSlice,
   );
   const initialValues = {
@@ -59,23 +60,34 @@ export default function CreatePurchaseInvoice() {
   const [showLensModal, setShowLensModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
-  const dispatch = useDispatch();
 
-  const createNewPurchaseInvoiceHandler = async (values) => {
+  const createNewPurchaseInvoiceHandler = async (
+    values,
+    { setErrors, setStatus },
+  ) => {
     try {
-      const response = await dispatch(createNewInvoiceApi(values));
-      if (response && response.data) {
-        setModalData(response.data);
+      const { message, statusCode, fullUserData } =
+        await createNewInvoiceApi(values);
+      console.log("fullUserData", fullUserData);
+      if (statusCode === 201 && fullUserData) {
+        toast.success(message);
+        setModalData(fullUserData);
         setShowModal(true);
       }
     } catch (error) {
       console.error("Error while creating invoice:", error);
+      const errors = error?.response?.data?.errors;
+      if (errors) {
+        setErrors(errors);
+      } else {
+        setStatus({ errorMessage: "An unknown error occurred." });
+      }
     }
   };
 
   return (
     <>
-      {invoiceNumberLoading ? (
+      {isLoading ? (
         <div className="h-screen flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-y-3">
             <Image
@@ -96,7 +108,7 @@ export default function CreatePurchaseInvoice() {
           onSubmit={createNewPurchaseInvoiceHandler}
           validationSchema={createNewPurchaseInvoiceSchema}
         >
-          {({ handleSubmit, values, setFieldValue, errors }) => {
+          {({ handleSubmit, values, setFieldValue, isSubmitting }) => {
             const handleLensSelect = useCallback(
               (lens, index, setFieldValue) => {
                 setFieldValue(`prescriptions.${index}.lens`, lens);
@@ -199,7 +211,9 @@ export default function CreatePurchaseInvoice() {
                     <PaymentMethods values={values} />
                     <ChoseCompaniesLens values={values} />
                   </div>
-                  <SubmitBtn>ایجاد</SubmitBtn>
+                  <SubmitBtn disabled={isLoading || isSubmitting}>
+                    ایجاد
+                  </SubmitBtn>
                 </div>
                 {showPopup && (
                   <ChoseTypeOfFrameModal
@@ -214,10 +228,18 @@ export default function CreatePurchaseInvoice() {
       )}
       {showModal && modalData && (
         <CustomerInfoPopup
-          customerInfo={modalData}
-          onClose={() => setShowModal(false)}
+          customerInfo={modalData || {}}
+          setShowModal={setShowModal}
+          invoiceNumber={lastInvoiceNumber || 0}
         />
       )}
+      {showModal ? (
+        <CustomerInfoPopup
+          customerInfo={modalData || {}}
+          setShowModal={setShowModal}
+          invoiceNumber={lastInvoiceNumber || 0}
+        />
+      ) : null}
     </>
   );
 }

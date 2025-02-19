@@ -140,6 +140,7 @@ function validateNationalId(code) {
     (remainder >= 2 && controlDigit === 11 - remainder)
   );
 }
+
 function isValidBankCardNumber(cardNumber) {
   let sum = 0;
   let shouldDouble = false;
@@ -158,6 +159,7 @@ function isValidBankCardNumber(cardNumber) {
 
   return sum % 10 === 0;
 }
+
 async function sendSms(RecNumber, code) {
   const accessHash = process.env.SMS_ACCESS_HASH;
   const phoneNumber = process.env.SMS_PHONENUMBER;
@@ -171,9 +173,29 @@ async function sendSms(RecNumber, code) {
     return { success: false, message: error.message };
   }
 }
+async function smsThanksPurchase(
+  RecNumber,
+  gender,
+  invoiceNumber,
+  customerName,
+) {
+  const accessHash = process.env.SMS_ACCESS_HASH;
+  const phoneNumber = process.env.SMS_PHONENUMBER;
+  const patternId = process.env.SMS_TANKS_PATTER_ID;
+  try {
+    const response = await axios.get(
+      `http://smspanel.trez.ir/SendPatternWithUrl.ashx?AccessHash=${accessHash}&PhoneNumber=${phoneNumber}&PatternId=${patternId}&RecNumber=${RecNumber}&Smsclass=1&token1=${gender}&token2=${customerName}&token3=${invoiceNumber}`,
+    );
+    return { success: true, message: response.data.Message };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+}
+
 const getRolePermissions = (role) => {
   return PERMISSIONS[role] || [];
 };
+
 const farsiDigitToEnglish = (farsiNumber) => {
   const digitMap = {
     "۰": "0",
@@ -221,4 +243,5 @@ module.exports = {
   sendSms,
   getRolePermissions,
   farsiDigitToEnglish,
+  smsThanksPurchase,
 };

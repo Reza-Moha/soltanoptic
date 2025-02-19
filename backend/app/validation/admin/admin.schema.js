@@ -415,6 +415,7 @@ const createNewCompanySchema = Joi.object({
       "any.required": "لطفا شماره موبایل خود را وارد فرمائید",
     }),
 });
+
 const createNewPurchaseInvoiceSchema = Joi.object({
   invoiceNumber: Joi.number().required().messages({
     "number.base": "شماره فاکتور باید عدد باشد",
@@ -486,6 +487,30 @@ const createNewPurchaseInvoiceSchema = Joi.object({
       "string.guid": "فرمت UUID معتبر نیست",
     }),
 });
+
+const sendSmsThanksForThePurchaseSchema = Joi.object({
+  invoiceNumber: Joi.number().required().messages({
+    "number.base": "شماره فاکتور باید عدد باشد",
+    "any.required": "شماره فاکتور الزامی است",
+  }),
+  customerName: Joi.string().required().messages({
+    "string.empty": "نام کامل الزامی است",
+  }),
+  phoneNumber: Joi.string()
+    .length(11)
+    .pattern(/^09[0-9]{9}$/)
+    .required()
+    .messages({
+      "string.length": "شماره موبایل باید ۱۱ رقم باشد",
+      "string.pattern.base": "شماره موبایل وارد شده صحیح نمی‌باشد",
+      "any.required": "لطفا شماره موبایل مشتری را وارد فرمائید",
+    }),
+  gender: Joi.string().required().messages({
+    "string.base": "جنسیت باید یک رشته باشد",
+    "any.required": "جنسیت را وارد کنید",
+  }),
+});
+
 module.exports = {
   updateAdminProfileSchema,
   createNewPermissionSchema,
@@ -505,4 +530,5 @@ module.exports = {
   createNewInsuranceSchema,
   createNewCompanySchema,
   createNewPurchaseInvoiceSchema,
+  sendSmsThanksForThePurchaseSchema,
 };
