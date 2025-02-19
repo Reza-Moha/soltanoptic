@@ -11,7 +11,8 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/public/*": ["./public/*"],
       "@/styles/*": ["./src/styles/*"],
-      "@/providers/*": ["./src/providers/*"]
+      "@/providers/*": ["./src/providers/*"],
+      "@/assets/*": ["./src/assets/*"]
     }
   }
 }

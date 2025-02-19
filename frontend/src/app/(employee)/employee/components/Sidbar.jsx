@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "@/redux/slices/authSlice";
 import SideBarNavs from "@/app/(employee)/employee/components/SidbarNavs";

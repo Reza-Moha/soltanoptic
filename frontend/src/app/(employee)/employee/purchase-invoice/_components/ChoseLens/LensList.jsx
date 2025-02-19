@@ -1,3 +1,4 @@
+"use client";
 import { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
@@ -19,11 +20,9 @@ export const ChoseLens = ({ setShowLensModal, onLensSelect }) => {
     ];
   }, [lensList]);
 
-
   const types = useMemo(() => {
     return [...new Set(lensList.map((lens) => lens.LensType.title))];
   }, [lensList]);
-
 
   const refractiveIndices = useMemo(() => {
     return [
@@ -32,7 +31,6 @@ export const ChoseLens = ({ setShowLensModal, onLensSelect }) => {
       ),
     ];
   }, [lensList]);
-
 
   const filteredLensList = lensList.filter((lens) => {
     const matchesName = lens.lensName

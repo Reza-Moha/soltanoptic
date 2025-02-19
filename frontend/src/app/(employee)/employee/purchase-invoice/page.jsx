@@ -12,12 +12,11 @@ import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_comp
 import { ChoseCompaniesLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseCompaneisLens";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
 import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
-import Image from "next/image";
-import { BeatLoader } from "react-spinners";
-import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
 import { createNewInvoiceApi } from "@/services/customers/customers.service";
+import { BeatLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
-
+import Image from "next/image";
+import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
 export default function CreatePurchaseInvoice() {
   const { lastInvoiceNumber, isLoading } = useSelector(
     (state) => state.customerSlice,
@@ -61,27 +60,18 @@ export default function CreatePurchaseInvoice() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
 
-  const createNewPurchaseInvoiceHandler = async (
-    values,
-    { setErrors, setStatus },
-  ) => {
+  const createNewPurchaseInvoiceHandler = async (values) => {
     try {
       const { message, statusCode, fullUserData } =
         await createNewInvoiceApi(values);
-      console.log("fullUserData", fullUserData);
       if (statusCode === 201 && fullUserData) {
         toast.success(message);
         setModalData(fullUserData);
         setShowModal(true);
       }
     } catch (error) {
-      console.error("Error while creating invoice:", error);
       const errors = error?.response?.data?.errors;
-      if (errors) {
-        setErrors(errors);
-      } else {
-        setStatus({ errorMessage: "An unknown error occurred." });
-      }
+      console.error("Error while creating invoice:", errors);
     }
   };
 
@@ -97,7 +87,7 @@ export default function CreatePurchaseInvoice() {
               height={100}
               priority
               style={{ width: "60px", height: "60px" }}
-              className="rounded-full "
+              className="rounded-full"
             />
             <BeatLoader size={16} />
           </div>
@@ -140,9 +130,7 @@ export default function CreatePurchaseInvoice() {
                               className="mb-5 h-full border-b border-secondary-300"
                             >
                               <MedicalPrescription
-                                label={
-                                  prescription.label || `فریم ${index + 1}`
-                                }
+                                label={prescription.label || `فریم${index + 1}`}
                                 fieldPrefix={`prescriptions.${index}`}
                                 selectedFrame={
                                   values.prescriptions[index].frame
@@ -233,13 +221,6 @@ export default function CreatePurchaseInvoice() {
           invoiceNumber={lastInvoiceNumber || 0}
         />
       )}
-      {showModal ? (
-        <CustomerInfoPopup
-          customerInfo={modalData || {}}
-          setShowModal={setShowModal}
-          invoiceNumber={lastInvoiceNumber || 0}
-        />
-      ) : null}
     </>
   );
 }

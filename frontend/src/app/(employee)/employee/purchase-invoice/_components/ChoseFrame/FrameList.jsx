@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";

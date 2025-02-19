@@ -1,26 +1,36 @@
+"use client";
 import doneAnimation from "@/assets/animation/doneAnimation.json";
 import messageAnimation from "@/assets/animation/messageAnimation.json";
+import sendingSmsAnimation from "@/assets/animation/sendingSmsAnimation.json";
+import sendingSmsSuccessfullyAnimation from "@/assets/animation/SendingSmsSuccessfullyAnimation.json";
 import printingAnimation from "@/assets/animation/printingAnimation.json";
 import { LottieAnimation } from "@/components/Ui/LottieAnimation";
 import { sendSmsPurchaseApi } from "@/services/customers/customers.service";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
 
 export const CustomerInfoPopup = ({
   customerInfo,
   setShowModal,
   invoiceNumber,
 }) => {
+  const [sendingSms, setSendingSms] = useState(0);
+
   const sendSmsThanksForThePurchaseHandler = async (values, e) => {
     try {
+      setSendingSms(1);
       e.stopPropagation();
       const data = await sendSmsPurchaseApi(values);
       if (data.statusCode === 200) {
         toast.success(data.message);
+        setSendingSms(2);
       }
     } catch (e) {
       console.log(e);
+      setSendingSms(0);
     }
   };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -38,24 +48,47 @@ export const CustomerInfoPopup = ({
         </div>
         <div className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-4">
-            <div
-              onClick={(e) =>
-                sendSmsThanksForThePurchaseHandler(
-                  {
-                    invoiceNumber,
-                    phoneNumber: customerInfo.phoneNumber,
-                    gender: customerInfo.gender,
-                    customerName: customerInfo.fullName,
-                  },
-                  e,
-                )
-              }
-              className="col-span-1 flex items-center gap-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-400 hover:text-white cursor-pointer transition-all ease-linear duration-300"
-            >
-              <button className="px-1 py-2 text-sm">ارسال پیامک</button>
-              <div className="w-10 h-10">
-                <LottieAnimation animationData={messageAnimation} />
-              </div>
+            <div className="col-span-1 flex items-center gap-2 bg-blue-200 text-blue-500 rounded  hover:text-white  transition-all ease-linear duration-300">
+              {sendingSms === 2 && (
+                <div>
+                  <button className="px-1 py-2 text-sm select-none">
+                    پیامک ارسال شد
+                  </button>
+                  <div className="w-10 h-10 select-none">
+                    <LottieAnimation
+                      animationData={sendingSmsSuccessfullyAnimation}
+                    />
+                  </div>
+                </div>
+              )}
+              {sendingSms === 1 && (
+                <div className="flex-1 h-14 select-none">
+                  <LottieAnimation animationData={sendingSmsAnimation} />
+                </div>
+              )}
+              {sendingSms === 0 && (
+                <>
+                  <div
+                    className="hover:bg-blue-400 flex items-center gap-2 rounded  hover:text-white cursor-pointer "
+                    onClick={(e) =>
+                      sendSmsThanksForThePurchaseHandler(
+                        {
+                          invoiceNumber,
+                          phoneNumber: customerInfo.phoneNumber,
+                          gender: customerInfo.gender,
+                          customerName: customerInfo.fullName,
+                        },
+                        e,
+                      )
+                    }
+                  >
+                    <button className="px-1 py-2 text-sm">ارسال پیامک</button>
+                    <div className="w-10 h-10">
+                      <LottieAnimation animationData={messageAnimation} />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="col-span-1 flex items-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
               <button className="px-1 py-2 text-sm">چاپ قبض</button>

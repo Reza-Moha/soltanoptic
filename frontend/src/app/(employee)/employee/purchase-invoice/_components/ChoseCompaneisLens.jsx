@@ -1,3 +1,4 @@
+"use client";
 import { useSelector } from "react-redux";
 import { Field } from "formik";
 import SelectInput from "@/components/Ui/SelectInput";
