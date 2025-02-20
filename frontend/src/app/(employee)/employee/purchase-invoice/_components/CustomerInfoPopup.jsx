@@ -1,14 +1,12 @@
 "use client";
-import doneAnimation from "@/assets/animation/doneAnimation.json";
-import messageAnimation from "@/assets/animation/messageAnimation.json";
-import sendingSmsAnimation from "@/assets/animation/sendingSmsAnimation.json";
-import sendingSmsSuccessfullyAnimation from "@/assets/animation/SendingSmsSuccessfullyAnimation.json";
-import printingAnimation from "@/assets/animation/printingAnimation.json";
-import { LottieAnimation } from "@/components/Ui/LottieAnimation";
 import { sendSmsPurchaseApi } from "@/services/customers/customers.service";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-
+import { IoCheckmarkDoneCircle, IoPrintSharp } from "react-icons/io5";
+import { MdDownloadDone } from "react-icons/md";
+import { BeatLoader } from "react-spinners";
+import { TiMessage } from "react-icons/ti";
+import { FaPrint } from "react-icons/fa6";
 export const CustomerInfoPopup = ({
   customerInfo,
   setShowModal,
@@ -40,36 +38,33 @@ export const CustomerInfoPopup = ({
         className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-center border-b border-green-100 mb-2">
-          <div className="w-16 h-16">
-            <LottieAnimation animationData={doneAnimation} />
-          </div>
+        <div className="flex items-center justify-center border-b border-green-100 mb-2 gap-x-2">
+          <IoCheckmarkDoneCircle
+            size={35}
+            className="text-green-500 bg-green-50 animate-bounce"
+          />
+
           <p>{`قبض ${customerInfo.fullName} به شماره ${invoiceNumber} با موفقیت ذخیره شد.`}</p>
         </div>
         <div className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-4">
-            <div className="col-span-1 flex items-center gap-2 bg-blue-200 text-blue-500 rounded  hover:text-white  transition-all ease-linear duration-300">
+            <div className="col-span-1 flex items-center gap-2 bg-blue-200 text-blue-500 rounded  transition-all ease-linear duration-300">
               {sendingSms === 2 && (
-                <div>
-                  <button className="px-1 py-2 text-sm select-none">
-                    پیامک ارسال شد
-                  </button>
-                  <div className="w-10 h-10 select-none">
-                    <LottieAnimation
-                      animationData={sendingSmsSuccessfullyAnimation}
-                    />
-                  </div>
+                <div className="flex item-center justify-center gap-x-2 px-1 py-2 select-none">
+                  <button className="text-sm ">پیامک ارسال شد</button>
+                  <MdDownloadDone />
                 </div>
               )}
               {sendingSms === 1 && (
-                <div className="flex-1 h-14 select-none">
-                  <LottieAnimation animationData={sendingSmsAnimation} />
+                <div className="flex item-center justify-center gap-x-2 px-1 py-2 select-none">
+                  <button className="text-sm ">درحال ارسال پیامک</button>
+                  <BeatLoader size={8} />
                 </div>
               )}
               {sendingSms === 0 && (
                 <>
                   <div
-                    className="hover:bg-blue-400 flex items-center gap-2 rounded  hover:text-white cursor-pointer "
+                    className="hover:bg-blue-400 px-2 flex items-center justify-center gap-2 rounded  hover:text-white cursor-pointer "
                     onClick={(e) =>
                       sendSmsThanksForThePurchaseHandler(
                         {
@@ -83,24 +78,19 @@ export const CustomerInfoPopup = ({
                     }
                   >
                     <button className="px-1 py-2 text-sm">ارسال پیامک</button>
-                    <div className="w-10 h-10">
-                      <LottieAnimation animationData={messageAnimation} />
-                    </div>
+                    <TiMessage size={20} />
                   </div>
                 </>
               )}
             </div>
-            <div className="col-span-1 flex items-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
+            <div className="col-span-1 flex px-2 items-center justify-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
               <button className="px-1 py-2 text-sm">چاپ قبض</button>
-              <div className="w-10 h-10">
-                <LottieAnimation animationData={printingAnimation} />
-              </div>
+              <IoPrintSharp size={20} />
             </div>
-            <div className="col-span-1 flex items-center gap-2 bg-orange-200 text-orange-500 rounded hover:bg-orange-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
+            <div className="col-span-1 px-2 flex items-center justify-center gap-2 bg-orange-200 text-orange-500 rounded hover:bg-orange-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
               <button className="px-1 py-2 text-sm">صدور فاکتور</button>
-              <div className="w-10 h-10">
-                <LottieAnimation animationData={printingAnimation} />
-              </div>
+
+              <FaPrint size={18} />
             </div>
           </div>
         </div>

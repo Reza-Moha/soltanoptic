@@ -3,20 +3,20 @@ import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { FieldArray, Form, Formik } from "formik";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
-import { PersonalInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PersonalInformation";
-import { MedicalPrescription } from "@/app/(employee)/employee/purchase-invoice/_components/MedicalPrescription";
-import { ChoseFrame } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/FrameList";
-import { ChoseLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseLens/LensList";
-import { PaymentInformation } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentInformation/PeymentInformation";
-import { PaymentMethods } from "@/app/(employee)/employee/purchase-invoice/_components/PaymentMethods/PaymentMethods";
-import { ChoseCompaniesLens } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseCompaneisLens";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
-import { ChoseTypeOfFrameModal } from "@/app/(employee)/employee/purchase-invoice/_components/ChoseFrame/ChoseTypeOfFrameModal";
 import { createNewInvoiceApi } from "@/services/customers/customers.service";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
-import { CustomerInfoPopup } from "@/app/(employee)/employee/purchase-invoice/_components/CustomerInfoPopup";
+import { PaymentInformation } from "./_components/PaymentInformation/PeymentInformation";
+import { PersonalInformation } from "./_components/PersonalInformation";
+import { MedicalPrescription } from "./_components/MedicalPrescription";
+import { ChoseFrame } from "./_components/ChoseFrame/FrameList";
+import { ChoseLens } from "./_components/ChoseLens/LensList";
+import { PaymentMethods } from "./_components/PaymentMethods/PaymentMethods";
+import { ChoseCompaniesLens } from "./_components/ChoseCompaneisLens";
+import { ChoseTypeOfFrameModal } from "./_components/ChoseFrame/ChoseTypeOfFrameModal";
+import { CustomerInfoPopup } from "./_components/CustomerInfoPopup";
 export default function CreatePurchaseInvoice() {
   const { lastInvoiceNumber, isLoading } = useSelector(
     (state) => state.customerSlice,
