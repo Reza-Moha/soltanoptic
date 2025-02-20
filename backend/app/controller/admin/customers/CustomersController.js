@@ -26,6 +26,7 @@ class CustomersController extends Controller {
     try {
       const {
         InsuranceAmount,
+        employeeId,
         SumTotalInvoice,
         billBalance,
         deposit,
@@ -56,45 +57,37 @@ class CustomersController extends Controller {
       });
 
       if (!user) {
-        // Case: If the user doesn't exist and both fullName and gender are null
         if (fullName === null && gender === null) {
-          // Try to find user by phoneNumber only (without fullName and gender)
           user = await UserModel.findOne({
             where: { phoneNumber },
           });
 
           if (user) {
-            // If the user exists, update with new phoneNumber and nationalId but skip updating null fullName/gender
             user = await user.update(
               {
-                nationalId, // Update nationalId if it exists
-                phoneNumber, // Update phoneNumber if necessary
+                nationalId,
+                phoneNumber,
               },
               { transaction },
             );
           } else {
-            // If no user is found, create a new one without fullName and gender
             user = await UserModel.create(
-              { phoneNumber, nationalId }, // Create without fullName and gender
+              { phoneNumber, nationalId },
               { transaction },
             );
           }
         } else {
-          // Case: Create new user with fullName and gender provided
           user = await UserModel.create(
             { fullName, phoneNumber, nationalId, gender },
             { transaction },
           );
         }
       } else {
-        // Case: User exists, handle possible null fullName or gender updates
         if (fullName && gender) {
-          // Only update fullName and gender if both are provided
-          await user.update({ fullName, gender }, { transaction });
+          await user.update({ fullName, gender, nationalId }, { transaction });
         }
       }
 
-      // Create the invoice
       const newInvoice = await InvoiceModel.create(
         {
           insuranceName,
@@ -103,11 +96,11 @@ class CustomersController extends Controller {
           paymentToAccount,
           SumTotalInvoice: farsiDigitToEnglish(SumTotalInvoice || 0) || 0,
           userId: user.id,
+          employeeId,
         },
         { transaction },
       );
 
-      // Handle prescriptions (if any)
       if (prescriptions && prescriptions.length > 0) {
         for (const prescription of prescriptions) {
           await UserPrescriptionModel.create(
@@ -120,7 +113,6 @@ class CustomersController extends Controller {
         }
       }
 
-      // Process payment information
       const formatedSumTotalInvoice = farsiDigitToEnglish(SumTotalInvoice || 0);
       const formatedInsuranceAmount = farsiDigitToEnglish(billBalance) || 0;
 
@@ -142,10 +134,8 @@ class CustomersController extends Controller {
         );
       }
 
-      // Commit transaction
       await transaction.commit();
 
-      // Fetch and return the full user data
       const fullUserData = await UserModel.findOne({
         where: { id: user.id },
         include: [
@@ -217,14 +207,12 @@ class CustomersController extends Controller {
         fullUserData,
       });
     } catch (error) {
-      // Rollback transaction if something goes wrong
       if (transaction && !transaction.finished) {
         await transaction.rollback();
       }
       next(error);
     }
   }
-
   async getLastInvoiceNumber(req, res, next) {
     try {
       const lastInvoice = await InvoiceModel.findOne({

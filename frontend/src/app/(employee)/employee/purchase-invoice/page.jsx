@@ -21,8 +21,10 @@ export default function CreatePurchaseInvoice() {
   const { lastInvoiceNumber, isLoading } = useSelector(
     (state) => state.customerSlice,
   );
+  const { user } = useSelector((state) => state.auth);
   const initialValues = {
     invoiceNumber: lastInvoiceNumber || 0,
+    employeeId: user?.id || "",
     fullName: "",
     phoneNumber: "",
     nationalId: "",
@@ -62,8 +64,13 @@ export default function CreatePurchaseInvoice() {
 
   const createNewPurchaseInvoiceHandler = async (values) => {
     try {
+      const formattedValues = {
+        ...values,
+        descriptionPrice:
+          values.descriptionPrice === 0 ? "" : values.descriptionPrice,
+      };
       const { message, statusCode, fullUserData } =
-        await createNewInvoiceApi(values);
+        await createNewInvoiceApi(formattedValues);
       if (statusCode === 201 && fullUserData) {
         toast.success(message);
         setModalData(fullUserData);

@@ -417,13 +417,20 @@ const createNewCompanySchema = Joi.object({
 });
 
 const createNewPurchaseInvoiceSchema = Joi.object({
+  employeeId: idSchema.extract("id").messages({
+    "any.required": "لطفا مشخصات کارمند را هم وارد کنید",
+    "string.guid": "فرمت UUID معتبر نیست",
+  }),
   invoiceNumber: Joi.number().required().messages({
     "number.base": "شماره فاکتور باید عدد باشد",
     "any.required": "شماره فاکتور الزامی است",
   }),
-  fullName: Joi.string().required().messages({
+  fullName: Joi.string().min(2).max(100).required().messages({
     "string.empty": "نام کامل الزامی است",
+    "string.min": "نام کامل باید حداقل ۲ حرف باشد",
+    "string.max": "نام کامل نباید بیشتر از ۱۰۰ حرف باشد",
   }),
+
   phoneNumber: Joi.string()
     .length(11)
     .pattern(/^09[0-9]{9}$/)
@@ -433,55 +440,106 @@ const createNewPurchaseInvoiceSchema = Joi.object({
       "string.pattern.base": "شماره موبایل وارد شده صحیح نمی‌باشد",
       "any.required": "لطفا شماره موبایل مشتری را وارد فرمائید",
     }),
-  description: Joi.string().allow(null, ""),
-  gender: Joi.string().allow(null, ""),
+
   nationalId: Joi.string()
-    .allow(null, "")
     .length(10)
+    .allow(null, "")
     .custom((value, helpers) => {
       if (value && !validateNationalId(value)) {
         return helpers.message("کد ملی وارد شده معتبر نیست");
       }
       return value;
+    })
+    .messages({
+      "string.length": "کد ملی باید ۱۰ رقم باشد",
     }),
-  prescriptions: Joi.array().items(
-    Joi.object({
-      label: Joi.string().allow(null, ""),
-      odAx: Joi.string().allow(null, ""),
-      odCyl: Joi.string().allow(null, ""),
-      odSph: Joi.string().allow(null, ""),
-      osAx: Joi.string().allow(null, ""),
-      osCyl: Joi.string().allow(null, ""),
-      osSph: Joi.string().allow(null, ""),
-      pd: Joi.string().allow(null, ""),
-      lensPrice: Joi.string().allow(null, ""),
-      frame: Joi.object().allow(null),
-      lens: Joi.object().allow(null),
-    }),
-  ),
-  insuranceName: idSchema.allow(null, "").optional().extract("id").messages({
-    "any.required": "لطفا یکی از دسته بندی های فریم را انتخاب کنید",
-    "string.guid": "فرمت UUID معتبر نیست",
+
+  gender: Joi.string().valid("آقای", "خانم", "").allow(null, "").messages({
+    "any.only": "جنسیت باید مرد یا زن باشد",
   }),
-  InsuranceAmount: Joi.string().allow(null, ""),
-  descriptionPrice: Joi.string().allow(null, ""),
-  deposit: Joi.string().allow(null, ""),
-  discount: Joi.string().allow(null, ""),
-  billBalance: Joi.string().allow(null, ""),
-  SumTotalInvoice: Joi.string().allow(null, ""),
+
+  prescriptions: Joi.array()
+    .min(1)
+    .items(
+      Joi.object({
+        label: Joi.string().allow(null, ""),
+        odAx: Joi.string().allow(null, ""),
+        odCyl: Joi.string().allow(null, ""),
+        odSph: Joi.string().allow(null, ""),
+        osAx: Joi.string().allow(null, ""),
+        osCyl: Joi.string().allow(null, ""),
+        osSph: Joi.string().allow(null, ""),
+        pd: Joi.string().allow(null, ""),
+        lensPrice: Joi.number().min(0).allow(null, "").messages({
+          "number.min": "قیمت عدسی نمی‌تواند منفی باشد",
+        }),
+        frame: Joi.object().allow(null),
+        lens: Joi.object().allow(null),
+      }),
+    )
+    .messages({
+      "array.min": "حداقل یک نسخه باید ثبت شود",
+    }),
+
+  insuranceName: Joi.string().allow(null, "").optional(),
+
+  InsuranceAmount: Joi.number().min(0).allow(null, "").messages({
+    "number.min": "مبلغ بیمه نمی‌تواند منفی باشد",
+  }),
+
+  descriptionPrice: Joi.alternatives()
+    .try(Joi.number().min(0), Joi.string().allow(""))
+    .messages({
+      "number.min": "مبلغ توضیحات نمی‌تواند منفی باشد",
+    }),
+
+  deposit: Joi.alternatives()
+    .try(Joi.number().min(0), Joi.string().allow(""))
+    .messages({
+      "number.min": "مبلغ ودیعه نمی‌تواند منفی باشد",
+    }),
+
+  discount: Joi.alternatives()
+    .try(Joi.number().min(0), Joi.string().allow(""))
+    .messages({
+      "number.min": "مبلغ تخفیف نمی‌تواند منفی باشد",
+    }),
+
+  billBalance: Joi.alternatives()
+    .try(Joi.number().min(0), Joi.string().allow(""))
+    .messages({
+      "number.min": "مانده حساب نمی‌تواند منفی باشد",
+    }),
+
+  SumTotalInvoice: Joi.alternatives()
+    .try(Joi.number().min(0), Joi.string().allow(""))
+    .messages({
+      "number.min": "مجموع مبلغ فاکتور نمی‌تواند منفی باشد",
+    }),
+
+  description: Joi.string().allow(null, "").max(500).messages({
+    "string.max": "توضیحات نباید بیشتر از ۵۰۰ حرف باشد",
+  }),
+
   paymentToAccount: Joi.string()
     .guid({ version: ["uuidv4"] })
-    .allow(null)
-    .empty("")
+    .allow(null, "")
     .optional()
     .messages({
       "string.guid": "فرمت UUID معتبر نیست",
     }),
-  paymentMethod: Joi.string().allow(null, "").optional(),
+
+  paymentMethod: Joi.string()
+    .valid("cash", "card", "online", "")
+    .allow(null, "")
+    .optional()
+    .messages({
+      "any.only": "روش پرداخت نامعتبر است",
+    }),
+
   orderLensFrom: Joi.string()
     .guid({ version: ["uuidv4"] })
-    .allow(null)
-    .empty("")
+    .allow(null, "")
     .optional()
     .messages({
       "string.guid": "فرمت UUID معتبر نیست",

@@ -343,6 +343,13 @@ export const createNewInsuranceSchema = Yup.object().shape({
 
 export const createNewPurchaseInvoiceSchema = Yup.object().shape({
   invoiceNumber: Yup.number().required("شماره فاکتور الزامی است"),
+  employeeId: Yup.string()
+    .trim()
+    .matches(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+      "فرمت UUID معتبر نیست",
+    )
+    .required(),
   fullName: Yup.string().required("نام کامل الزامی است"),
   gender: Yup.string().required("لطفا یک جنسیت برای مشتری انتخاب کنید"),
   phoneNumber: Yup.string()

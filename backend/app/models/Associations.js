@@ -39,6 +39,14 @@ const Associations = () => {
 
   // user
   UserModel.hasOne(Roles);
+  UserModel.hasMany(InvoiceModel, {
+    foreignKey: "employeeId",
+    as: "employeeInvoices", // فاکتورهایی که کارمند ثبت کرده
+  });
+  InvoiceModel.belongsTo(UserModel, {
+    foreignKey: "employeeId",
+    as: "employee",
+  });
 
   // lens
 
@@ -71,7 +79,10 @@ const Associations = () => {
     foreignKey: "userId",
     as: "customerInvoices",
   });
-  InvoiceModel.belongsTo(UserModel, { foreignKey: "userId", as: "user" });
+  InvoiceModel.belongsTo(UserModel, {
+    foreignKey: "userId",
+    as: "customer",
+  });
 
   // Invoice -> UserPrescription
   InvoiceModel.hasMany(UserPrescriptionModel, {
