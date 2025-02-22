@@ -6,6 +6,7 @@ const {
   sendSmsThanksForThePurchaseSchema,
 } = require("../../../validation/admin/admin.schema");
 const { UserModel } = require("../../../models/User.model");
+const { LensModel } = require("../../../models/lens/Lens.model");
 const { Op } = require("sequelize");
 const { sequelize } = require("../../../libs/DBConfig");
 const { InvoiceModel } = require("../../../models/Invoice/Invoice.model");
@@ -19,6 +20,8 @@ const { farsiDigitToEnglish, smsThanksPurchase } = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
 const { InsuranceModel } = require("../../../models/Insurance.model");
+const generateCustomerInvoicePdf = require("../../../utils/createCustomerInvoicePdf");
+const { FrameModel } = require("../../../models/frame/Frame.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -103,9 +106,48 @@ class CustomersController extends Controller {
 
       if (prescriptions && prescriptions.length > 0) {
         for (const prescription of prescriptions) {
+          let frameModelId = null;
+          let lenId = null;
+
+          // ذخیره اطلاعات فریم اگر مقدار داشته باشد
+          if (prescription.frame) {
+            const [frame, createdFrame] = await FrameModel.findOrCreate({
+              where: { id: prescription.frame.id },
+              defaults: {
+                id: prescription.frame.id,
+                name: prescription.frame.name || "بدون نام",
+                brand: prescription.frame.brand || "نامشخص",
+                colorCode: prescription.frame.colorCode || "نامشخص",
+                price: prescription.frame.price || 0,
+              },
+              transaction,
+            });
+            frameModelId = frame.id;
+          }
+
+          // ذخیره اطلاعات لنز اگر مقدار داشته باشد
+          if (prescription.lens) {
+            const [lens, createdLens] = await LensModel.findOrCreate({
+              where: { id: prescription.lens.id },
+              defaults: {
+                id: prescription.lens.id,
+                type: prescription.lens.type || "نامشخص",
+                material: prescription.lens.material || "نامشخص",
+                coating: prescription.lens.coating || "نامشخص",
+                price: prescription.lens.price || 0,
+              },
+              transaction,
+            });
+            lenId = lens.id;
+          }
+
+          // ذخیره اطلاعات نسخه‌ی کاربر همراه با فریم و لنز
           await UserPrescriptionModel.create(
             {
               ...prescription,
+              frameModelId: frameModelId,
+              lenId: lenId,
+              frameColorCode: prescription.frame?.colorCode || "نامشخص",
               InvoiceId: newInvoice.InvoiceId,
             },
             { transaction },
@@ -142,6 +184,7 @@ class CustomersController extends Controller {
           {
             model: InvoiceModel,
             as: "customerInvoices",
+            where: { InvoiceId: newInvoice.InvoiceId },
             include: [
               {
                 model: CompanyModel,
@@ -200,11 +243,12 @@ class CustomersController extends Controller {
           exclude: ["jobTitle", "otp", "createdAt", "updatedAt"],
         },
       });
-
+      const invoicePdf = await generateCustomerInvoicePdf(fullUserData, res);
       return res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
         message: "قبض با موفقیت ذخیره گردید",
         fullUserData,
+        invoicePdf,
       });
     } catch (error) {
       if (transaction && !transaction.finished) {

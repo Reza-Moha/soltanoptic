@@ -43,6 +43,10 @@ UserPrescriptionModel.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    frameColorCode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,

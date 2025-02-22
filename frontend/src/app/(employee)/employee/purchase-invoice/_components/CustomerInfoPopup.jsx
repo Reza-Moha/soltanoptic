@@ -83,7 +83,12 @@ export const CustomerInfoPopup = ({
                 </>
               )}
             </div>
-            <div className="col-span-1 flex px-2 items-center justify-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer">
+            <div
+              onClick={() => {
+                console.log(customerInfo.invoicePdf);
+              }}
+              className="col-span-1 flex px-2 items-center justify-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer"
+            >
               <button className="px-1 py-2 text-sm">چاپ قبض</button>
               <IoPrintSharp size={20} />
             </div>

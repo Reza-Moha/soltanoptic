@@ -68,6 +68,7 @@ export default function CreatePurchaseInvoice() {
         ...values,
         descriptionPrice:
           values.descriptionPrice === 0 ? "" : values.descriptionPrice,
+        employeeId: user.id,
       };
       const { message, statusCode, fullUserData } =
         await createNewInvoiceApi(formattedValues);
@@ -105,7 +106,7 @@ export default function CreatePurchaseInvoice() {
           onSubmit={createNewPurchaseInvoiceHandler}
           validationSchema={createNewPurchaseInvoiceSchema}
         >
-          {({ handleSubmit, values, setFieldValue, isSubmitting }) => {
+          {({ handleSubmit, values, setFieldValue, isSubmitting, errors }) => {
             const handleLensSelect = useCallback(
               (lens, index, setFieldValue) => {
                 setFieldValue(`prescriptions.${index}.lens`, lens);
@@ -123,6 +124,7 @@ export default function CreatePurchaseInvoice() {
             );
             return (
               <Form onSubmit={handleSubmit}>
+                <pre>{JSON.stringify(errors, null, 2)}</pre>
                 <div className="h-screen">
                   <PersonalInformation />
                   <FieldArray
@@ -207,7 +209,7 @@ export default function CreatePurchaseInvoice() {
                     <ChoseCompaniesLens values={values} />
                   </div>
                   <SubmitBtn disabled={isLoading || isSubmitting}>
-                    ایجاد
+                    {isSubmitting ? <BeatLoader size={5} /> : "ذخیره قبض"}
                   </SubmitBtn>
                 </div>
                 {showPopup && (

@@ -114,6 +114,11 @@ const Associations = () => {
     as: "paymentInfo",
     onDelete: "CASCADE",
   });
+
+  FrameModel.hasOne(UserPrescriptionModel);
+  UserPrescriptionModel.belongsTo(FrameModel);
+  LensModel.hasOne(UserPrescriptionModel);
+  UserPrescriptionModel.belongsTo(LensModel);
   PaymentInfoModel.belongsTo(InvoiceModel, {
     foreignKey: "InvoiceId",
     as: "invoice",

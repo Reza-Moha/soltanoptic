@@ -470,9 +470,7 @@ const createNewPurchaseInvoiceSchema = Joi.object({
         osCyl: Joi.string().allow(null, ""),
         osSph: Joi.string().allow(null, ""),
         pd: Joi.string().allow(null, ""),
-        lensPrice: Joi.number().min(0).allow(null, "").messages({
-          "number.min": "قیمت عدسی نمی‌تواند منفی باشد",
-        }),
+        lensPrice: Joi.string().allow(null, ""),
         frame: Joi.object().allow(null),
         lens: Joi.object().allow(null),
       }),
@@ -483,9 +481,7 @@ const createNewPurchaseInvoiceSchema = Joi.object({
 
   insuranceName: Joi.string().allow(null, "").optional(),
 
-  InsuranceAmount: Joi.number().min(0).allow(null, "").messages({
-    "number.min": "مبلغ بیمه نمی‌تواند منفی باشد",
-  }),
+  InsuranceAmount: Joi.string().allow(null, ""),
 
   descriptionPrice: Joi.alternatives()
     .try(Joi.number().min(0), Joi.string().allow(""))
@@ -530,7 +526,7 @@ const createNewPurchaseInvoiceSchema = Joi.object({
     }),
 
   paymentMethod: Joi.string()
-    .valid("cash", "card", "online", "")
+    .valid("کارت خوان", "کارت به کارت", "نقد", "چک صیادی")
     .allow(null, "")
     .optional()
     .messages({
