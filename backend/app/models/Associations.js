@@ -40,12 +40,23 @@ const Associations = () => {
   // user
   UserModel.hasOne(Roles);
   UserModel.hasMany(InvoiceModel, {
-    foreignKey: "employeeId",
-    as: "employeeInvoices", // فاکتورهایی که کارمند ثبت کرده
+    foreignKey: "userId",
+    as: "customerInvoices", // ارتباط کاربر با فاکتورهای مشتری
   });
+
+  InvoiceModel.belongsTo(UserModel, {
+    foreignKey: "userId",
+    as: "customer", // ارتباط فاکتور با مشتری
+  });
+
+  UserModel.hasMany(InvoiceModel, {
+    foreignKey: "employeeId",
+    as: "employeeInvoices", // ارتباط کاربر با فاکتورهای کارمند
+  });
+
   InvoiceModel.belongsTo(UserModel, {
     foreignKey: "employeeId",
-    as: "employee",
+    as: "employee", // ارتباط فاکتور با کارمند
   });
 
   // lens
@@ -74,15 +85,6 @@ const Associations = () => {
   FrameModel.belongsTo(FrameCategory, { onDelete: "CASCADE" });
   FrameModel.belongsTo(FrameGender, { onDelete: "CASCADE" });
   FrameModel.belongsTo(FrameType, { onDelete: "CASCADE" });
-
-  UserModel.hasMany(InvoiceModel, {
-    foreignKey: "userId",
-    as: "customerInvoices",
-  });
-  InvoiceModel.belongsTo(UserModel, {
-    foreignKey: "userId",
-    as: "customer",
-  });
 
   // Invoice -> UserPrescription
   InvoiceModel.hasMany(UserPrescriptionModel, {

@@ -3,16 +3,14 @@ const fs = require("fs");
 const path = require("path");
 
 const TEMP_DIR = path.join(__dirname, "../", "temp");
-
-// اطمینان از وجود پوشه temp
 if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 }
 
-const generateCustomerInvoicePdf = async (data) => {
+const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
   try {
     const browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
@@ -21,10 +19,7 @@ const generateCustomerInvoicePdf = async (data) => {
     // تنظیم اندازه صفحه
     await page.setViewport({ width: 790, height: 1000 });
 
-    // اطمینان از اینکه داده‌ها مقدار دارند
-    const prescriptions = Array.isArray(data.prescriptions)
-      ? data.prescriptions
-      : [];
+    const { paymentInfo, insurance, prescriptions } = data.customerInvoices[0];
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -35,84 +30,108 @@ const generateCustomerInvoicePdf = async (data) => {
             <title>فاکتور</title>
             <style>
                 @page { size: 79mm auto; margin: 5mm; }
-                body { font-family: Tahoma, Arial, sans-serif; direction: rtl; text-align: right; font-size: 12px; }
-                h1 { text-align: center; font-size: 16px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                th, td { border: 1px solid #000; padding: 5px; text-align: center; }
-                th { background-color: #f2f2f2; }
+                body { font-family: Tahoma, sans-serif; font-size: 12px; }
+                .tg  {width: 100%;height: 100%;border-collapse:collapse;border-color:#bbb;border-spacing:0;}
+.tg td{background-color:#E0FFEB;border-color:#bbb;border-style:solid;border-width:1px;color:#594F4F;
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{background-color:#9DE0AD;border-color:#bbb;border-style:solid;border-width:1px;color:#493F3F;
+  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
             </style>
         </head>
         <body>
-
-            <h1>🛍️ فاکتور فروش</h1>
-
-            <h3>📝 مشخصات مشتری:</h3>
-            <p><strong>👤 نام:</strong> ${data.fullName || "نامشخص"}</p>
-            <p><strong>🆔 کد ملی:</strong> ${data.nationalId || "نامشخص"}</p>
-            <p><strong>📞 شماره تماس:</strong> ${data.phoneNumber || "نامشخص"}</p>
-            <p><strong>📄 شماره فاکتور:</strong> ${data.invoiceNumber || "نامشخص"}</p>
-            <p><strong>💳 روش پرداخت:</strong> ${data.paymentMethod || "نامشخص"}</p>
-
-            <h3>💰 جزئیات فاکتور:</h3>
-            <table>
-                <tr>
-                    <th>شرح</th>
-                    <th>مبلغ (تومان)</th>
-                </tr>
-                <tr><td>جمع کل</td><td>${data.SumTotalInvoice ?? "۰"}</td></tr>
-                <tr><td>باقیمانده</td><td>${data.billBalance ?? "۰"}</td></tr>
-                <tr><td>بیعانه</td><td>${data.deposit ?? "۰"}</td></tr>
-                <tr><td>تخفیف</td><td>${data.discount ?? "۰"}</td></tr>
-                <tr><td>مبلغ بیمه</td><td>${data.InsuranceAmount ?? "۰"}</td></tr>
-                <tr><td>هزینه توصیف</td><td>${data.descriptionPrice ?? "۰"}</td></tr>
-            </table>
-
-            <h3>👓 نسخه‌های تجویزی:</h3>
-            <table>
-                <tr>
-                    <th>چشم</th>
-                    <th>SPH</th>
-                    <th>CYL</th>
-                    <th>AXE</th>
-                    <th>PD</th>
-                </tr>
-                ${
-                  prescriptions.length > 0
-                    ? prescriptions
-                        .map(
-                          (prescription) => `
+        <table class="tg"><thead>
+  <tr>
+    <th class="tg-c3ow" colspan="8"></th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow" colspan="4">${invoiceNumber}</td>
+    <td class="tg-c3ow" colspan="4">شماره قبض</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="4">${data.fullName}</td>
+    <td class="tg-c3ow" colspan="4">نام مشتری</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" colspan="4">${data.phoneNumber}</td>
+    <td class="tg-c3ow" colspan="4">شماره تماس</td>
+  </tr>
+  ${
+    prescriptions.length > 0
+      ? prescriptions
+          .map(
+            (prescription) => `
                     <tr>
-                        <td>OD</td>
-                        <td>${prescription.odSph ?? "-"}</td>
-                        <td>${prescription.odCyl ?? "-"}</td>
-                        <td>${prescription.odAx ?? "-"}</td>
-                        <td rowspan="2">${prescription.pd ?? "-"}</td>
-                    </tr>
-                    <tr>
-                        <td>OS</td>
-                        <td>${prescription.osSph ?? "-"}</td>
-                        <td>${prescription.osCyl ?? "-"}</td>
-                        <td>${prescription.osAx ?? "-"}</td>
-                    </tr>
+    <td class="tg-c3ow">${prescription.label}</td>
+    <td class="tg-c3ow">SPH</td>
+    <td class="tg-c3ow">CYL</td>
+    <td class="tg-c3ow">AX</td>
+    <td class="tg-c3ow" colspan="4">PD:${prescription.pd}</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">OD</td>
+    <td class="tg-c3ow">${prescription.odSph}</td>
+    <td class="tg-c3ow">${prescription.odCyl}</td>
+    <td class="tg-c3ow">${prescription.odAx}</td>
+    <td class="tg-c3ow" colspan="2">تستس</td>
+    <td class="tg-c3ow" colspan="2">عدسی</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">OS</td>
+    <td class="tg-c3ow">${prescription.osSph}</td>
+    <td class="tg-c3ow">${prescription.osCyl}</td>
+    <td class="tg-c3ow">${prescription.osAx}</td>
+    <td class="tg-c3ow" colspan="2">تستی</td>
+    <td class="tg-c3ow" colspan="2">فریم</td>
+  </tr>
                   `,
-                        )
-                        .join("")
-                    : `<tr><td colspan="5">📌 نسخه‌ای موجود نیست.</td></tr>`
-                }
-            </table>
-
+          )
+          .join("")
+      : `<tr><td colspan="5">📌 نسخه‌ای موجود نیست.</td></tr>`
+  }
+  
+  <tr>
+    <td class="tg-c3ow" colspan="4">${paymentInfo.SumTotalInvoice}</td>
+    <td class="tg-c3ow" colspan="4">جمع کل</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh" colspan="4">${paymentInfo.deposit}</td>
+    <td class="tg-baqh" colspan="4">مبلغ پرداختی</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh" colspan="4">${insurance.insuranceName}</td>
+    <td class="tg-baqh" colspan="4">نوع بیمه</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh" colspan="4">${paymentInfo.insuranceAmount}</td>
+    <td class="tg-baqh" colspan="4">حواله بیمه</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh" colspan="4">${paymentInfo.discount}</td>
+    <td class="tg-baqh" colspan="4">تخفیف</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax" colspan="4">${paymentInfo.billBalance}</td>
+    <td class="tg-baqh" colspan="4">مانده قبض</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax" colspan="4">${employee.fullName}</td>
+    <td class="tg-baqh" colspan="4">مسئول فروش</td>
+  </tr>
+</tbody></table>
+               
         </body>
         </html>
     `;
 
-    // بارگذاری HTML در صفحه
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-    // تولید نام فایل
-    const fileName = `invoice_${data.invoiceNumber}_${Date.now()}.pdf`;
+    const fileName = `invoice_${invoiceNumber}-${Date.now()}.pdf`;
     const filePath = path.join(TEMP_DIR, fileName);
 
-    // ذخیره PDF
     await page.pdf({
       path: filePath,
       width: "79mm",
@@ -121,8 +140,7 @@ const generateCustomerInvoicePdf = async (data) => {
 
     await browser.close();
 
-    // بازگرداندن لینک دانلود
-    return `${process.env.SERVERBASEURL}/temp/${fileName}`;
+    return `${process.env.SERVERBASEURL}:5000/temp/${fileName}`;
   } catch (error) {
     console.error("⚠️ خطا در ایجاد PDF:", error);
     return null;

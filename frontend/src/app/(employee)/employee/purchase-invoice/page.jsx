@@ -124,7 +124,6 @@ export default function CreatePurchaseInvoice() {
             );
             return (
               <Form onSubmit={handleSubmit}>
-                <pre>{JSON.stringify(errors, null, 2)}</pre>
                 <div className="h-screen">
                   <PersonalInformation />
                   <FieldArray
