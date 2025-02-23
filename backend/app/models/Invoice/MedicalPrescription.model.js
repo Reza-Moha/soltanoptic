@@ -11,6 +11,12 @@ UserPrescriptionModel.init(
       unique: true,
       primaryKey: true,
     },
+    frameId: {
+      type: DataTypes.UUID,
+    },
+    lensId: {
+      type: DataTypes.UUID,
+    },
     odSph: {
       type: DataTypes.STRING,
       allowNull: true,

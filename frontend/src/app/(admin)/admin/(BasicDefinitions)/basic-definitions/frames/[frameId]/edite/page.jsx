@@ -17,7 +17,7 @@ async function editePage({ params: { frameId } }) {
   const { frame } = data || {};
 
   const initialData = {
-    id: frame.id,
+    id: frame.frameId,
     name: frame.name,
     price: frame.price.replace(/,/g, ""),
     frameCategory: frame.FrameCategory.id,

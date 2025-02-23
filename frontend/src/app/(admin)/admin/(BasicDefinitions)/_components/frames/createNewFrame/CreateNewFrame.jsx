@@ -13,7 +13,6 @@ import { imageUrlToFile } from "@/utils";
 import { useRouter } from "next/navigation";
 const FrameForm = ({ isEdit = false, initialData = null }) => {
   const dispatch = useDispatch();
-  const router = useRouter()
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
 
@@ -52,7 +51,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
       await dispatch(createNewFrame(formData));
     }
 
-    resetForm();
+    // resetForm();
   };
   return (
     <BasicWrapper

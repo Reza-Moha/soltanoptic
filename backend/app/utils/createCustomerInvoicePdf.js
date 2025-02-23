@@ -27,99 +27,99 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>فاکتور</title>
-            <style>
-                @page { size: 79mm auto; margin: 5mm; }
-                body { font-family: Tahoma, sans-serif; font-size: 12px; }
-                .tg  {width: 100%;height: 100%;border-collapse:collapse;border-color:#bbb;border-spacing:0;}
-.tg td{background-color:#E0FFEB;border-color:#bbb;border-style:solid;border-width:1px;color:#594F4F;
-  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{background-color:#9DE0AD;border-color:#bbb;border-style:solid;border-width:1px;color:#493F3F;
-  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-baqh{text-align:center;vertical-align:top}
+            <title>قبض${invoiceNumber}</title>
+            <style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-us0j{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;font-weight:bold;
+  text-align:left;vertical-align:top}
+.tg .tg-b6f9{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;font-weight:bold;
+  text-align:center;vertical-align:top}
 .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-6pot{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-weight:bold;text-align:center;
+  vertical-align:top}
+.tg .tg-yn58{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;text-align:center;
+  vertical-align:top}
+.tg .tg-6sbi{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;text-align:left;
+  vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 .tg .tg-0lax{text-align:left;vertical-align:top}
-            </style>
+.tg .tg-rlus{font-family:Tahoma, Geneva, sans-serif !important;font-weight:bold;text-align:center;vertical-align:top}
+</style>
         </head>
         <body>
-        <table class="tg"><thead>
+       <table class="tg"><thead>
   <tr>
-    <th class="tg-c3ow" colspan="8"></th>
+    <th class="tg-yn58" colspan="9" rowspan="2">سلطان اپتیک</th>
+  </tr>
+  <tr>
   </tr></thead>
 <tbody>
-  <tr>
-    <td class="tg-c3ow" colspan="4">${invoiceNumber}</td>
-    <td class="tg-c3ow" colspan="4">شماره قبض</td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" colspan="4">${data.fullName}</td>
-    <td class="tg-c3ow" colspan="4">نام مشتری</td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" colspan="4">${data.phoneNumber}</td>
-    <td class="tg-c3ow" colspan="4">شماره تماس</td>
-  </tr>
   ${
     prescriptions.length > 0
-      ? prescriptions
-          .map(
-            (prescription) => `
-                    <tr>
-    <td class="tg-c3ow">${prescription.label}</td>
-    <td class="tg-c3ow">SPH</td>
-    <td class="tg-c3ow">CYL</td>
-    <td class="tg-c3ow">AX</td>
-    <td class="tg-c3ow" colspan="4">PD:${prescription.pd}</td>
+      ? prescriptions.map((prescription, index) => {
+          return `<tr>
+    <td class="tg-yn58">frameType</td>
+    <td class="tg-b6f9" colspan="2">SPH</td>
+    <td class="tg-b6f9" colspan="2">CYL</td>
+    <td class="tg-b6f9">AXE</td>
+    <td class="tg-us0j" colspan="3">PD</td>
   </tr>
   <tr>
-    <td class="tg-c3ow">OD</td>
-    <td class="tg-c3ow">${prescription.odSph}</td>
-    <td class="tg-c3ow">${prescription.odCyl}</td>
-    <td class="tg-c3ow">${prescription.odAx}</td>
-    <td class="tg-c3ow" colspan="2">تستس</td>
-    <td class="tg-c3ow" colspan="2">عدسی</td>
+    <td class="tg-b6f9">OD</td>
+    <td class="tg-yn58" colspan="2"></td>
+    <td class="tg-yn58" colspan="2"></td>
+    <td class="tg-yn58"></td>
+    <td class="tg-6sbi" colspan="3">Lens</td>
   </tr>
   <tr>
-    <td class="tg-c3ow">OS</td>
-    <td class="tg-c3ow">${prescription.osSph}</td>
-    <td class="tg-c3ow">${prescription.osCyl}</td>
-    <td class="tg-c3ow">${prescription.osAx}</td>
-    <td class="tg-c3ow" colspan="2">تستی</td>
-    <td class="tg-c3ow" colspan="2">فریم</td>
-  </tr>
-                  `,
-          )
-          .join("")
-      : `<tr><td colspan="5">📌 نسخه‌ای موجود نیست.</td></tr>`
+    <td class="tg-b6f9">OS</td>
+    <td class="tg-yn58" colspan="2"></td>
+    <td class="tg-yn58" colspan="2"></td>
+    <td class="tg-yn58"></td>
+    <td class="tg-6sbi" colspan="3">Frame</td>
+  </tr>`;
+        })
+      : null
   }
-  
   <tr>
-    <td class="tg-c3ow" colspan="4">${paymentInfo.SumTotalInvoice}</td>
-    <td class="tg-c3ow" colspan="4">جمع کل</td>
+    <td class="tg-yn58" colspan="5"></td>
+    <td class="tg-b6f9" colspan="4">نام بیمار</td>
   </tr>
   <tr>
-    <td class="tg-baqh" colspan="4">${paymentInfo.deposit}</td>
-    <td class="tg-baqh" colspan="4">مبلغ پرداختی</td>
+    <td class="tg-yn58" colspan="5"></td>
+    <td class="tg-b6f9" colspan="4">شماره تماس</td>
   </tr>
   <tr>
-    <td class="tg-baqh" colspan="4">${insurance.insuranceName}</td>
-    <td class="tg-baqh" colspan="4">نوع بیمه</td>
+    <td class="tg-yn58" colspan="5"></td>
+    <td class="tg-b6f9" colspan="4">تاریخ سفارش</td>
   </tr>
   <tr>
-    <td class="tg-baqh" colspan="4">${paymentInfo.insuranceAmount}</td>
-    <td class="tg-baqh" colspan="4">حواله بیمه</td>
+    <td class="tg-yn58" colspan="5"></td>
+    <td class="tg-b6f9" colspan="4">مبلغ کل</td>
   </tr>
   <tr>
-    <td class="tg-baqh" colspan="4">${paymentInfo.discount}</td>
-    <td class="tg-baqh" colspan="4">تخفیف</td>
+    <td class="tg-c3ow" colspan="5"></td>
+    <td class="tg-6pot" colspan="4">تخفیف</td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="4">${paymentInfo.billBalance}</td>
-    <td class="tg-baqh" colspan="4">مانده قبض</td>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6pot" colspan="4">دریافتی</td>
   </tr>
   <tr>
-    <td class="tg-0lax" colspan="4">${employee.fullName}</td>
-    <td class="tg-baqh" colspan="4">مسئول فروش</td>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6pot" colspan="4">باقیمانده</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax" colspan="5"></td>
+    <td class="tg-rlus" colspan="4">نوع بیمه</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax" colspan="5"></td>
+    <td class="tg-rlus" colspan="4">فروشنده</td>
   </tr>
 </tbody></table>
                

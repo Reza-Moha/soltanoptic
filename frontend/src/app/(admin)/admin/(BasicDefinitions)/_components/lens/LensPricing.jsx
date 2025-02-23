@@ -20,18 +20,18 @@ const CreateNewLens = () => {
   const [previewList, setPreviewList] = useState([]);
   const dispatch = useDispatch();
   const { lensCategories, lensList } = useSelector((state) => state.lensSlice);
-
-  const lensCategoriesOptions = lensCategories.map(({ id, lensCategoryName }) => ({
-    value: id,
-    label: lensCategoryName,
-  }));
-
+  const lensCategoriesOptions = lensCategories.map(
+    ({ id, lensCategoryName }) => ({
+      value: id,
+      label: lensCategoryName,
+    }),
+  );
   const filterLensList = useCallback(
     (categoryId) =>
       lensList
         .filter((lens) => lens.LensCategory.id === categoryId)
-        .map(({ id, lensName }) => ({ value: id, label: lensName })),
-    [lensList]
+        .map(({ lensId, lensName }) => ({ value: lensId, label: lensName })),
+    [lensList],
   );
 
   const addToPreview = (group, price, setFieldValue) => {
@@ -85,7 +85,7 @@ const CreateNewLens = () => {
           useEffect(() => {
             if (values.LensId) {
               const selectedLens = lensList.find(
-                (lens) => lens.id === values.LensId
+                (lens) => lens.lensId === values.LensId,
               );
 
               if (selectedLens?.LensGroup?.pricing) {
@@ -93,7 +93,7 @@ const CreateNewLens = () => {
                   selectedLens.LensGroup.pricing.map(({ group, price }) => ({
                     group: `(${group})`,
                     price,
-                  }))
+                  })),
                 );
               } else {
                 setPreviewList([]);

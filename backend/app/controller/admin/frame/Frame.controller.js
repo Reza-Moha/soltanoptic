@@ -45,7 +45,7 @@ class FrameController extends Controller {
           const createdColor = await FrameColor.create({
             colorCode: color.colorCode,
             count: parseInt(color.count),
-            FrameModelId: frame.id,
+            FrameModelId: frame.frameId,
           });
 
           const colorFiles = req.files.filter(
@@ -68,7 +68,7 @@ class FrameController extends Controller {
         }),
       );
       const newFrame = await FrameModel.findOne({
-        where: { id: frame.id },
+        where: { frameId: frame.frameId },
         include: [
           { model: FrameCategory, as: "FrameCategory" },
           { model: FrameType, as: "FrameType" },
@@ -330,7 +330,7 @@ class FrameController extends Controller {
             totalInventoryValue += colorValue;
           } else {
             console.warn(
-                `Invalid data for frame: ${frame.id}, price: ${frame.price}, count: ${color.count}`
+              `Invalid data for frame: ${frame.id}, price: ${frame.price}, count: ${color.count}`,
             );
           }
         });

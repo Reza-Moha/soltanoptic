@@ -41,22 +41,22 @@ const Associations = () => {
   UserModel.hasOne(Roles);
   UserModel.hasMany(InvoiceModel, {
     foreignKey: "userId",
-    as: "customerInvoices", // ارتباط کاربر با فاکتورهای مشتری
+    as: "customerInvoices",
   });
 
   InvoiceModel.belongsTo(UserModel, {
     foreignKey: "userId",
-    as: "customer", // ارتباط فاکتور با مشتری
+    as: "customer",
   });
 
   UserModel.hasMany(InvoiceModel, {
     foreignKey: "employeeId",
-    as: "employeeInvoices", // ارتباط کاربر با فاکتورهای کارمند
+    as: "employeeInvoices",
   });
 
   InvoiceModel.belongsTo(UserModel, {
     foreignKey: "employeeId",
-    as: "employee", // ارتباط فاکتور با کارمند
+    as: "employee",
   });
 
   // lens
@@ -116,11 +116,26 @@ const Associations = () => {
     as: "paymentInfo",
     onDelete: "CASCADE",
   });
+  UserPrescriptionModel.belongsTo(FrameModel, {
+    foreignKey: "frameId",
+    as: "frame",
+  });
 
-  FrameModel.hasOne(UserPrescriptionModel);
-  UserPrescriptionModel.belongsTo(FrameModel);
-  LensModel.hasOne(UserPrescriptionModel);
-  UserPrescriptionModel.belongsTo(LensModel);
+  UserPrescriptionModel.belongsTo(LensModel, {
+    foreignKey: "lensId",
+    as: "lens",
+  });
+
+  FrameModel.hasMany(UserPrescriptionModel, {
+    foreignKey: "frameId",
+    as: "prescriptions",
+  });
+
+  LensModel.hasMany(UserPrescriptionModel, {
+    foreignKey: "lensId",
+    as: "prescriptions",
+  });
+
   PaymentInfoModel.belongsTo(InvoiceModel, {
     foreignKey: "InvoiceId",
     as: "invoice",

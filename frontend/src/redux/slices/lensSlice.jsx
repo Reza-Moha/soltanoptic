@@ -33,7 +33,7 @@ export const createNewLens = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const pricingLens = createAsyncThunk(
@@ -52,7 +52,7 @@ export const pricingLens = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllLens = createAsyncThunk(
@@ -64,7 +64,7 @@ export const fetchAllLens = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const deleteLens = createAsyncThunk(
@@ -79,7 +79,7 @@ export const deleteLens = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllRefractiveIndex = createAsyncThunk(
@@ -91,7 +91,7 @@ export const fetchAllRefractiveIndex = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createNewRefractiveIndex = createAsyncThunk(
@@ -108,7 +108,7 @@ export const createNewRefractiveIndex = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const deleteRefractiveIndex = createAsyncThunk(
@@ -123,7 +123,7 @@ export const deleteRefractiveIndex = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllLensType = createAsyncThunk(
@@ -135,7 +135,7 @@ export const fetchAllLensType = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 export const createNewLensType = createAsyncThunk(
@@ -152,7 +152,7 @@ export const createNewLensType = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const deleteLensType = createAsyncThunk(
@@ -167,7 +167,7 @@ export const deleteLensType = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const createNewLensCategoires = createAsyncThunk(
@@ -184,7 +184,7 @@ export const createNewLensCategoires = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const deleteLensCategories = createAsyncThunk(
@@ -199,7 +199,7 @@ export const deleteLensCategories = createAsyncThunk(
       toast.error(data.errors.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const fetchAllLensCategories = createAsyncThunk(
@@ -211,7 +211,7 @@ export const fetchAllLensCategories = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 const lensSlice = createSlice({
@@ -222,7 +222,7 @@ const lensSlice = createSlice({
     refractiveIndexList: [],
     lensType: [],
     lensCategories: [],
-    totalLenses:"",
+    totalLenses: "",
     isLoading: false,
     error: null,
   },
@@ -273,28 +273,28 @@ const lensSlice = createSlice({
       })
       .addCase(deleteLens.fulfilled, (state, action) => {
         state.lensList = state.lensList.filter(
-          (Lens) => Lens.id !== action.payload
+          (Lens) => Lens.lensId !== action.payload,
         );
       })
 
       .addCase(deleteRefractiveIndex.fulfilled, (state, action) => {
         state.refractiveIndexList = state.refractiveIndexList.filter(
-          (ref) => ref.id !== action.payload
+          (ref) => ref.id !== action.payload,
         );
       })
       .addCase(deleteLensType.fulfilled, (state, action) => {
         state.lensType = state.lensType.filter(
-          (lType) => lType.id !== action.payload
+          (lType) => lType.id !== action.payload,
         );
       })
       .addCase(deleteLensCategories.fulfilled, (state, action) => {
         state.lensCategories = state.lensCategories.filter(
-          (LCategory) => LCategory.id !== action.payload
+          (LCategory) => LCategory.id !== action.payload,
         );
       })
       .addCase(pricingLens.fulfilled, (state, action) => {
         const index = state.lensList.findIndex(
-          (lens) => lens.id === action.payload.id
+          (lens) => lens.lensId === action.payload.id,
         );
         if (index !== -1) {
           state.lensList[index] = action.payload;

@@ -36,7 +36,7 @@ export default function ListOfFrame() {
           <Table.Body>
             {frameList?.length > 0 ? (
               frameList.map((frame) => (
-                <motion.tr key={frame.id}>
+                <motion.tr key={frame.frameId}>
                   <td>{frame.name}</td>
                   <td>{toPersianDigits(frame.price || 0)}</td>
                   <td>{frame.serialNumber}</td>
@@ -74,7 +74,7 @@ export default function ListOfFrame() {
                   <td className="flex items-center gap-x-4">
                     <button
                       className="text-rose-500"
-                      onClick={() => handleDeleteFrame(frame.id)}
+                      onClick={() => handleDeleteFrame(frame.frameId)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +90,7 @@ export default function ListOfFrame() {
                       </svg>
                     </button>
                     <Link
-                      href={`frames/${frame.id}/edite`}
+                      href={`frames/${frame.frameId}/edite`}
                       className="text-slate-800"
                     >
                       <CgEditExposure size={20} />

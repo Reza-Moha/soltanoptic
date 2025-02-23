@@ -5,7 +5,7 @@ class FrameModel extends Model {}
 
 FrameModel.init(
   {
-    id: {
+    frameId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
@@ -33,7 +33,7 @@ FrameModel.init(
     sequelize,
     timestamps: false,
     tableName: "FrameModel",
-  }
+  },
 );
 
 module.exports = { FrameModel };

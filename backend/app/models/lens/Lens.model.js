@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize");
 const LensModel = sequelize.define(
   "Lens",
   {
-    id: {
+    lensId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
@@ -26,7 +26,7 @@ const LensModel = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 module.exports = LensModel;

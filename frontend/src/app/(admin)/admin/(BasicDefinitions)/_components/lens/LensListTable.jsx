@@ -22,7 +22,7 @@ export default function LensListTable({
         <Table.Body>
           {lensList?.length > 0 ? (
             lensList.map((lens) => (
-              <motion.tr key={lens.id}>
+              <motion.tr key={lens.lensId}>
                 <td className="text-lg font-bold flex flex-col md:flex-row items-center gap-x-2">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_API_URL}/${lens?.lensImage}`}
@@ -67,7 +67,7 @@ export default function LensListTable({
                 >
                   <button
                     className="text-rose-500 hover:bg-rose-100 rounded-full p-1 transition-all ease-in-out duration-300"
-                    onClick={() => handleDeleteLens(lens.id)}
+                    onClick={() => handleDeleteLens(lens.lensId)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

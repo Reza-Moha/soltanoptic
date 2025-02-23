@@ -21,6 +21,7 @@ const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
 const { InsuranceModel } = require("../../../models/Insurance.model");
 const generateCustomerInvoicePdf = require("../../../utils/createCustomerInvoicePdf");
+const { FrameModel } = require("../../../models/frame/Frame.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -108,9 +109,9 @@ class CustomersController extends Controller {
           await UserPrescriptionModel.create(
             {
               ...prescription,
-              frameModelId: prescription.frame.id || null,
-              lenId: prescription.lens.id,
-              frameColorCode: prescription.frame?.colorCode || "نامشخص",
+              frameId: prescription.frame?.id,
+              lensId: prescription.lens.id,
+              frameColorCode: prescription.frame?.FrameColors?.[0]?.colorCode,
               InvoiceId: newInvoice.InvoiceId,
             },
             { transaction },
@@ -152,17 +153,12 @@ class CustomersController extends Controller {
               {
                 model: CompanyModel,
                 as: "company",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt"],
-                },
+                attributes: { exclude: ["createdAt", "updatedAt"] },
               },
-
               {
                 model: BankModel,
                 as: "bank",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt"],
-                },
+                attributes: { exclude: ["createdAt", "updatedAt"] },
               },
               {
                 model: InsuranceModel,
@@ -179,6 +175,20 @@ class CustomersController extends Controller {
               {
                 model: UserPrescriptionModel,
                 as: "prescriptions",
+                include: [
+                  {
+                    model: FrameModel, // ✅ مطمئن شو که `FrameModel` مقداردهی شده
+                    as: "frame",
+                    required: false, // 🚨 اگر فریم وجود نداشت، باعث خطا نشود
+                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                  },
+                  {
+                    model: LensModel, // ✅ مطمئن شو که `LensModel` مقداردهی شده
+                    as: "lens",
+                    required: false,
+                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                  },
+                ],
                 attributes: {
                   exclude: ["createdAt", "updatedAt", "InvoiceId"],
                 },
@@ -203,9 +213,7 @@ class CustomersController extends Controller {
             },
           },
         ],
-        attributes: {
-          exclude: ["jobTitle", "otp", "createdAt", "updatedAt"],
-        },
+        attributes: { exclude: ["jobTitle", "otp", "createdAt", "updatedAt"] },
       });
       const employee = await UserModel.findByPk(employeeId);
       const invoicePdf = await generateCustomerInvoicePdf(
@@ -226,6 +234,7 @@ class CustomersController extends Controller {
       next(error);
     }
   }
+
   async getLastInvoiceNumber(req, res, next) {
     try {
       const lastInvoice = await InvoiceModel.findOne({

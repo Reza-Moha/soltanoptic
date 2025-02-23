@@ -107,7 +107,8 @@ class LensController extends Controller {
         },
         {
           model: LensCategory,
-        },{
+        },
+        {
           model: LensGroup,
         },
       ];
@@ -181,7 +182,7 @@ class LensController extends Controller {
         {
           where: {
             LensCategoryId,
-            id: LensId,
+            lensId: LensId,
           },
           returning: true,
         },
@@ -331,14 +332,14 @@ class LensController extends Controller {
         await createNewLensCategorySchema.validateAsync(req.body);
       const lensImage = path.join(fileUploadPath, filename).replace(/\\/g, "/");
       const exsistLensCategory = await LensCategory.findOne({
-        where: { lensCategoryName :lensName },
+        where: { lensCategoryName: lensName },
       });
       if (exsistLensCategory)
         throw CreateError.BadRequest(
           "دسته بندی با این مشخصات قبلا ثبت شده است",
         );
       const newLensCategory = await LensCategory.create({
-        lensCategoryName : lensName,
+        lensCategoryName: lensName,
         lensImage,
       });
       if (!newLensCategory)

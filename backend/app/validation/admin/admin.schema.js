@@ -260,7 +260,6 @@ const createFrameGenderSchema = Joi.object({
 });
 
 const createNewFrameSchema = Joi.object({
-  id: Joi.string().trim().guid({ version: "uuidv4" }).allow(),
   name: Joi.string().required().messages({
     "any.required": "لطفا نام فریم را وارد فرمائید",
   }),
