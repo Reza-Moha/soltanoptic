@@ -9,13 +9,14 @@ import Button from "@/components/Ui/Button";
 import { getOtpApi } from "@/services/auth/auth.service";
 import { toast } from "react-hot-toast";
 import OtpForm from "@/components/tools/OtpForm";
+import SubmitBtn from "@/components/Ui/SubmitBtn";
 
 export default function Login() {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [loading, setLoading] = useState(false);
   return (
     <>
-      <div className="container w-full max-w-sm bg-transparent rounded-xl shadow-xl border-2 border-[#e0e0e2] p-5 md:p-8 flex flex-col items-center justify-center gap-8 bg-slate-100  z-50">
+      <div className="container w-full max-w-sm bg-transparent rounded-xl shadow-xl border-2 border-[#e0e0e2] p-5 md:p-8 flex flex-col items-center justify-center gap-8 bg-slate-100  z-50 font-iranSans">
         <div className="w-full">
           <Link href="/">
             <Image
@@ -81,14 +82,9 @@ export default function Login() {
                       </span>
                     ) : null}
 
-                    <Button
-                      disabled={errors?.phoneNumber?.length > 1 || loading}
-                      className="rounded w-full py-2 text-lg font-kalamehBlack mt-4 disabled:opacity-35"
-                      variant="secondary"
-                      type="submit"
-                    >
-                      <h3> ارسال رمز یکبار مصرف</h3>
-                    </Button>
+                    <div className="w-full mt-2">
+                      <SubmitBtn>ارسال رمز یکبار مصرف</SubmitBtn>
+                    </div>
                   </Form>
                 ) : loading ? (
                   <div className="spinner-mini" />

@@ -88,7 +88,7 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
               <Table.Body>
                 {(currentData || []).map((frame, index) => (
                   <tr
-                    key={frame.id}
+                    key={frame.frameId}
                     className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
                   >
                     <td className="p-2">{frame.name}</td>

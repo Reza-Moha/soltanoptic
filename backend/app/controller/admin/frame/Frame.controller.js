@@ -39,7 +39,7 @@ class FrameController extends Controller {
         FrameTypeId: frameType,
         FrameGenderId: frameGender,
       });
-
+      console.log(frame);
       await Promise.all(
         colors.map(async (color) => {
           const createdColor = await FrameColor.create({
@@ -124,7 +124,7 @@ class FrameController extends Controller {
       }
 
       const existingColors = await FrameColor.findAll({
-        where: { FrameModelId: frame.id },
+        where: { FrameModelId: frame.frameId },
       });
       for (const color of existingColors) {
         const images = await FrameImages.findAll({
@@ -151,7 +151,7 @@ class FrameController extends Controller {
         const createdColor = await FrameColor.create({
           colorCode: color.colorCode,
           count: parseInt(color.count),
-          FrameModelId: frame.id,
+          FrameModelId: frame.frameId,
         });
 
         for (const file of req.files) {
@@ -170,7 +170,7 @@ class FrameController extends Controller {
         }
       }
       const updatedFrame = await FrameModel.findOne({
-        where: { id: frame.id },
+        where: { id: frame.frameId },
         include: [
           { model: FrameCategory, as: "FrameCategory" },
           { model: FrameType, as: "FrameType" },
@@ -330,7 +330,7 @@ class FrameController extends Controller {
             totalInventoryValue += colorValue;
           } else {
             console.warn(
-              `Invalid data for frame: ${frame.id}, price: ${frame.price}, count: ${color.count}`,
+              `Invalid data for frame: ${frame.frameId}, price: ${frame.price}, count: ${color.count}`,
             );
           }
         });

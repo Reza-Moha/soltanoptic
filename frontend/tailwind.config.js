@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import { fontFamily } from "tailwindcss/defaultTheme";
-import tailwindFormPlugin from "@tailwindcss/forms";
+
 function withOpacity(variableName) {
   return ({ opacityValue }) => {
     if (opacityValue !== undefined) {
@@ -9,6 +9,7 @@ function withOpacity(variableName) {
     return `rgb(var(${variableName}))`;
   };
 }
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -29,57 +30,89 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          900: withOpacity("--color-primary-900"),
-          800: withOpacity("--color-primary-800"),
-          700: withOpacity("--color-primary-700"),
-          600: withOpacity("--color-primary-600"),
-          500: withOpacity("--color-primary-500"),
-          400: withOpacity("--color-primary-400"),
-          300: withOpacity("--color-primary-300"),
-          200: withOpacity("--color-primary-200"),
           100: withOpacity("--color-primary-100"),
+          200: withOpacity("--color-primary-200"),
+          300: withOpacity("--color-primary-300"),
+          400: withOpacity("--color-primary-400"),
+          500: withOpacity("--color-primary-500"),
+          600: withOpacity("--color-primary-600"),
+          700: withOpacity("--color-primary-700"),
+          800: withOpacity("--color-primary-800"),
+          900: withOpacity("--color-primary-900"),
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          900: withOpacity("--color-secondary-900"),
-          800: withOpacity("--color-secondary-800"),
-          700: withOpacity("--color-secondary-700"),
-          600: withOpacity("--color-secondary-600"),
-          500: withOpacity("--color-secondary-500"),
-          400: withOpacity("--color-secondary-400"),
-          300: withOpacity("--color-secondary-300"),
-          200: withOpacity("--color-secondary-200"),
-          100: withOpacity("--color-secondary-100"),
-          50: withOpacity("--color-secondary-50"),
           0: withOpacity("--color-secondary-0"),
+          50: withOpacity("--color-secondary-50"),
+          100: withOpacity("--color-secondary-100"),
+          200: withOpacity("--color-secondary-200"),
+          300: withOpacity("--color-secondary-300"),
+          400: withOpacity("--color-secondary-400"),
+          500: withOpacity("--color-secondary-500"),
+          600: withOpacity("--color-secondary-600"),
+          700: withOpacity("--color-secondary-700"),
+          800: withOpacity("--color-secondary-800"),
+          900: withOpacity("--color-secondary-900"),
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         success: withOpacity("--color-success"),
         warning: withOpacity("--color-warning"),
         error: withOpacity("--color-error"),
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
+        "color-1": "hsl(var(--color-1))",
+        "color-2": "hsl(var(--color-2))",
+        "color-3": "hsl(var(--color-3))",
+        "color-4": "hsl(var(--color-4))",
+        "color-5": "hsl(var(--color-5))",
       },
       fontFamily: {
         kalame: ["var(--font-kalame)", ...fontFamily.sans],
         iranSans: ["var(--font-iranSans)", ...fontFamily.sans],
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/aspect-ratio"),
-    tailwindFormPlugin({
+    require("@tailwindcss/forms")({
       strategy: "class",
     }),
   ],

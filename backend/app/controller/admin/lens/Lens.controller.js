@@ -53,21 +53,24 @@ class LensController extends Controller {
         throw CreateError.InternalServerError(
           "در ایجاد عدسی جدید با خطا روبرو شد لظفا دوباره امتحان کنید",
         );
-      const newLensWithRelations = await LensModel.findByPk(createdNewLens.id, {
-        include: [
-          { model: LensType },
-          { model: RefractiveIndex },
-          {
-            model: LensCategory,
-            attributes: {
-              exclude: ["createdAt", "updatedAt"],
+      const newLensWithRelations = await LensModel.findByPk(
+        createdNewLens.lensId,
+        {
+          include: [
+            { model: LensType },
+            { model: RefractiveIndex },
+            {
+              model: LensCategory,
+              attributes: {
+                exclude: ["createdAt", "updatedAt"],
+              },
             },
+          ],
+          attributes: {
+            exclude: ["lensCategoryId", "RefractiveIndexId", "LensTypeId"],
           },
-        ],
-        attributes: {
-          exclude: ["lensCategoryId", "RefractiveIndexId", "LensTypeId"],
         },
-      });
+      );
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "عدسی با موفقیت به انبار اضافه شد",

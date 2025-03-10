@@ -51,7 +51,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
       await dispatch(createNewFrame(formData));
     }
 
-    // resetForm();
+    resetForm();
   };
   return (
     <BasicWrapper
@@ -97,7 +97,7 @@ const FrameForm = ({ isEdit = false, initialData = null }) => {
               setFieldValue={setFieldValue}
             />
             <div className="md:col-span-2 px-10">
-              <SubmitBtn>{isEdit ? "ویرایش" : "ایجاد"}</SubmitBtn>
+              <SubmitBtn>{isEdit ? "ویرایش فریم" : "ذخیره فریم"}</SubmitBtn>
             </div>
           </Form>
         )}

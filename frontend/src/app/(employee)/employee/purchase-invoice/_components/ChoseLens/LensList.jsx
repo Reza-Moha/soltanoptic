@@ -137,7 +137,7 @@ export const ChoseLens = ({ setShowLensModal, onLensSelect }) => {
               <Table.Body>
                 {(filteredLensList || []).map((lens, index) => (
                   <tr
-                    key={lens.id}
+                    key={lens.lensId}
                     className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
                   >
                     <td className="p-2 flex items-center gap-2">

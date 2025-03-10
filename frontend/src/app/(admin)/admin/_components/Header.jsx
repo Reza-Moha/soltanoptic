@@ -27,15 +27,15 @@ export default function AdminHeader() {
 
   return (
     <>
-      <header className="sticky h-16 bg-slate-900 text-secondary-50 font-iranSans">
+      <header className="sticky h-16 bg-slate-900 text-slate-50 font-iranSans">
         <div className="h-full flex items-center justify-between px-5">
           <div className="hidden md:block">
             <div className="flex items-center justify-start">
               <div
                 className={`flex items-center gap-1 justify-center p-1 rounded transition-all ease-in-out duration-300 ${
                   isActiveLink("/admin/dashboard")
-                    ? "bg-secondary-700 text-secondary-50 border border-secondary-800"
-                    : "hover:bg-secondary-800 hover:text-secondary-50"
+                    ? "bg-slate-700 text-slate-50 border border-slate-800"
+                    : "hover:bg-slate-800 hover:text-slate-50"
                 }`}
               >
                 <LuLayoutDashboard />
@@ -46,8 +46,8 @@ export default function AdminHeader() {
               <div
                 className={`flex items-center gap-1 justify-center p-1 rounded transition-all ease-in-out ${
                   isActiveLink("/admin/basic-definitions/create-new-employee")
-                    ? "bg-secondary-700 text-secondary-50"
-                    : "hover:bg-secondary-800 hover:text-secondary-50"
+                    ? "bg-slate-700 text-slate-50"
+                    : "hover:bg-slate-800 hover:text-slate-50"
                 }`}
               >
                 <svg
@@ -91,7 +91,7 @@ export default function AdminHeader() {
           >
             <div className="inline-flex items-center">
               {user?.profileImage ? (
-                <div className="rounded-full border-2 border-secondary-500 overflow-hidden select-none">
+                <div className="rounded-full border-2 border-slate-500 overflow-hidden select-none">
                   <Image
                     width={48}
                     height={48}
@@ -102,7 +102,7 @@ export default function AdminHeader() {
                   />
                 </div>
               ) : (
-                <div className="bg-secondary-800 rounded-full p-1">
+                <div className="bg-slate-800 rounded-full p-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

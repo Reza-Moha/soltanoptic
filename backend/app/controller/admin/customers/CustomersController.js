@@ -110,7 +110,7 @@ class CustomersController extends Controller {
             {
               ...prescription,
               frameId: prescription.frame?.id,
-              lensId: prescription.lens.id,
+              lensId: prescription.lens.lensId,
               frameColorCode: prescription.frame?.FrameColors?.[0]?.colorCode,
               InvoiceId: newInvoice.InvoiceId,
             },
@@ -175,20 +175,7 @@ class CustomersController extends Controller {
               {
                 model: UserPrescriptionModel,
                 as: "prescriptions",
-                include: [
-                  {
-                    model: FrameModel, // ✅ مطمئن شو که `FrameModel` مقداردهی شده
-                    as: "frame",
-                    required: false, // 🚨 اگر فریم وجود نداشت، باعث خطا نشود
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
-                  },
-                  {
-                    model: LensModel, // ✅ مطمئن شو که `LensModel` مقداردهی شده
-                    as: "lens",
-                    required: false,
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
-                  },
-                ],
+
                 attributes: {
                   exclude: ["createdAt", "updatedAt", "InvoiceId"],
                 },

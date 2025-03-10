@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import DropDownButton from "@/components/Ui/DropDownButton";
 import ConditionalLink from "@/components/tools/Roles";
 import { toPersianDigits } from "@/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import Avatar from "@/components/Ui/Avatar";
+import { RippleButton } from "@/components/magicui/ripple-button";
 
 const Dropdown = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);

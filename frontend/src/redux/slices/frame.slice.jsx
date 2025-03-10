@@ -259,7 +259,7 @@ const frameSlice = createSlice({
       })
       .addCase(deleteFrame.fulfilled, (state, action) => {
         state.frameList = state.frameList.filter(
-          (frame) => frame.id !== action.payload,
+          (frame) => frame.frameId !== action.payload,
         );
       })
       .addCase(deleteFrameCategory.fulfilled, (state, action) => {
@@ -310,7 +310,7 @@ const frameSlice = createSlice({
       })
       .addCase(updateFrame.fulfilled, (state, action) => {
         const index = state.frameList.findIndex(
-          (frame) => frame.id === action.payload.id,
+          (frame) => frame.frameId === action.payload.id,
         );
         if (index !== -1) {
           state.frameList[index] = action.payload;
