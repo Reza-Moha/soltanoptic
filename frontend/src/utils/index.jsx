@@ -3,6 +3,7 @@ import { GiMicroscopeLens } from "react-icons/gi";
 import { BsEyeglasses } from "react-icons/bs";
 import { CiBank, CiMedicalClipboard } from "react-icons/ci";
 import { TbBuildingCog } from "react-icons/tb";
+
 export const toPersianDigits = (number) => {
   const farsiDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return number.toString().replace(/\d/g, (x) => farsiDigits[parseInt(x)]);
@@ -207,6 +208,7 @@ export const calculateTotalLensPrice = (
   const result = priceForRightEye + priceForLeftEye;
   return toPersianDigits(result.toLocaleString("en-US"));
 };
+
 export const convertFarsiToEnglish = (farsiNumber) => {
   const digitMap = {
     "۰": "0",

@@ -15,13 +15,12 @@ const { UserModel } = require("./User.model");
 const { FrameColor } = require("./frame/FrameColor.model");
 const { FrameImages } = require("./frame/FrameImage.model");
 const { InvoiceModel } = require("./Invoice/Invoice.model");
-const {
-  UserPrescriptionModel,
-} = require("./Invoice/MedicalPrescription.model");
+
 const { PaymentInfoModel } = require("./Invoice/PaymentInfo.model");
 const { CompanyModel } = require("./Company.model");
 const { BankModel } = require("./Bank.model");
 const { InsuranceModel } = require("./Insurance.model");
+const { UserPrescriptionModel } = require("./Invoice/UserPrescription.model");
 
 const Associations = () => {
   // roles & permissions

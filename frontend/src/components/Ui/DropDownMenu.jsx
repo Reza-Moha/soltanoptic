@@ -30,7 +30,7 @@ const Dropdown = ({ user }) => {
     <div className="inline-block">
       <DropDownButton toggleDropdown={toggleDropdown} />
       {isOpen && (
-        <div className="origin-top-right absolute left-9 top-14 mt-2 pb-2 w-52 rounded-lg shadow-lg bg-secondary-50 ring-1 ring-black ring-opacity-5 px-2 text-secondary-800 px-5">
+        <div className="origin-top-right absolute left-9 top-14 mt-2 pb-2 w-52 rounded-lg shadow-lg bg-secondary-50 ring-1 ring-black ring-opacity-5 text-secondary-800 px-5 !z-50">
           <ul
             role="menu"
             aria-orientation="vertical"

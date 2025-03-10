@@ -1,9 +1,8 @@
-import React from "react";
-
+import React, { memo } from "react";
 import { cn } from "@/lib/utils";
 
-export const Ripple = React.memo(function Ripple({
-  mainCircleSize = 210,
+export const Ripple = memo(function Ripple({
+  mainCircleSize = 350,
   mainCircleOpacity = 0.24,
   numCircles = 8,
   className,
@@ -13,9 +12,10 @@ export const Ripple = React.memo(function Ripple({
     <div
       className={cn(
         "pointer-events-none absolute inset-0 select-none [mask-image:linear-gradient(to_bottom,white,transparent)]",
-        className
+        className,
       )}
-      {...props}>
+      {...props}
+    >
       {Array.from({ length: numCircles }, (_, i) => {
         const size = mainCircleSize + i * 70;
         const opacity = mainCircleOpacity - i * 0.03;
@@ -26,21 +26,20 @@ export const Ripple = React.memo(function Ripple({
         return (
           <div
             key={i}
-            className={`[--i: absolute animate-ripple rounded-full border bg-foreground/25 shadow-xl${i}]`}
-            style={
-              {
-                width: `${size}px`,
-                height: `${size}px`,
-                opacity,
-                animationDelay,
-                borderStyle,
-                borderWidth: "1px",
-                borderColor: `hsl(var(--foreground), ${borderOpacity / 100})`,
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%) scale(1)"
-              }
-            } />
+            className={`absolute animate-ripple rounded-full border bg-foreground/25 shadow-xl`}
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              opacity,
+              animationDelay,
+              borderStyle,
+              borderWidth: "1px",
+              borderColor: `hsl(var(--foreground), ${borderOpacity / 100})`,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%) scale(1)",
+            }}
+          />
         );
       })}
     </div>

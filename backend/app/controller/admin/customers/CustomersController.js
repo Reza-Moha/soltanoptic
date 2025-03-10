@@ -6,13 +6,9 @@ const {
   sendSmsThanksForThePurchaseSchema,
 } = require("../../../validation/admin/admin.schema");
 const { UserModel } = require("../../../models/User.model");
-const { LensModel } = require("../../../models/lens/Lens.model");
 const { Op } = require("sequelize");
 const { sequelize } = require("../../../libs/DBConfig");
 const { InvoiceModel } = require("../../../models/Invoice/Invoice.model");
-const {
-  UserPrescriptionModel,
-} = require("../../../models/Invoice/MedicalPrescription.model");
 const {
   PaymentInfoModel,
 } = require("../../../models/Invoice/PaymentInfo.model");
@@ -21,7 +17,9 @@ const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
 const { InsuranceModel } = require("../../../models/Insurance.model");
 const generateCustomerInvoicePdf = require("../../../utils/createCustomerInvoicePdf");
-const { FrameModel } = require("../../../models/frame/Frame.model");
+const {
+  UserPrescriptionModel,
+} = require("../../../models/Invoice/UserPrescription.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {

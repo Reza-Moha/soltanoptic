@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { Ripple } from "@/components/magicui/ripple";
 import { TextAnimate } from "@/components/magicui/text-animate";
+import { Meteors } from "@/components/magicui/meteors";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -21,12 +22,14 @@ export default function Home() {
             style={{ direction: "ltr" }}
             className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background"
           >
-            <p className="z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-slate-900">
+            <div className="z-50 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-slate-900">
               <TextAnimate animation="blurInUp" by="character" duration={5}>
-                Soltan Optic
+                Soltan Optic Accounting Web Application
               </TextAnimate>
-            </p>
+            </div>
             <Ripple />
+
+            <Meteors number={30} />
           </div>
         </main>
       </div>

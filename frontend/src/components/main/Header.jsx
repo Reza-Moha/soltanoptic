@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`z-10 shadow-md bg-inherit sticky top-0 transition-all duration-200 border-b border-b-secondary-300 font-iranSans ${
+        className={`z-50 shadow-md bg-inherit sticky top-0 transition-all duration-200 border-b border-b-secondary-300 font-iranSans ${
           isLoading ? "blur-sm opacity-70" : "opacity-100 blur-0"
         }`}
       >

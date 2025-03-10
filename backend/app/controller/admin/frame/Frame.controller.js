@@ -45,7 +45,7 @@ class FrameController extends Controller {
           const createdColor = await FrameColor.create({
             colorCode: color.colorCode,
             count: parseInt(color.count),
-            FrameModelId: frame.frameId,
+            FrameModelFrameId: frame.frameId,
           });
 
           const colorFiles = req.files.filter(
