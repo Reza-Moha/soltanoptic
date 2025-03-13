@@ -17,10 +17,10 @@ export default function Home() {
     <>
       <div className="h-screen">
         <Header />
-        <main>
+        <main className="bg-slate-800">
           <div
             style={{ direction: "ltr" }}
-            className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background"
+            className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background bg-gradient-to-br from-gray-700 via-gray-900 to-black"
           >
             <div className="z-50 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-slate-900">
               <TextAnimate animation="blurInUp" by="character" duration={5}>

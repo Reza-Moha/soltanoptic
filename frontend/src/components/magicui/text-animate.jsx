@@ -325,6 +325,7 @@ export function TextAnimate({
         {segments.map((segment, i) => (
           <motion.span
             key={`${by}-${segment}-${i}`}
+            style={{ color: "#fff" }}
             variants={finalVariants.item}
             custom={i * staggerTimings[by]}
             className={cn(

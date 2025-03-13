@@ -19,7 +19,7 @@ export const TotalInventoryValue = () => {
           {toPersianDigits(
             totalInventoryValue
               .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || 0,
           )}
           <span className="mr-0.5 text-xs"> تومان</span>
         </span>

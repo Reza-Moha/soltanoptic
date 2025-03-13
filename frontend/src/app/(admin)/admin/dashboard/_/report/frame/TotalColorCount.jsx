@@ -3,11 +3,9 @@ import { useSelector } from "react-redux";
 import { toPersianDigits } from "@/utils";
 import { TbKeyframeAlignHorizontal } from "react-icons/tb";
 export const TotalColorCount = () => {
-  const {
-    totalColorCount,
-
-    isLoading,
-  } = useSelector((state) => state.frameSlice);
+  const { totalColorCount, isLoading } = useSelector(
+    (state) => state.frameSlice,
+  );
   return (
     <div className="flex items-center justify-between gap-2 mb-2">
       <div className="inline-flex items-center justify-center gap-x-1">
@@ -18,7 +16,7 @@ export const TotalColorCount = () => {
         <div className="spinner-mini"></div>
       ) : (
         <span className={`${totalColorCount === 0 ? "text-rose-500" : ""}`}>
-          {toPersianDigits(totalColorCount)}
+          {toPersianDigits(totalColorCount || 0)}
           <span className="mr-0.5 text-xs"> عدد</span>
         </span>
       )}

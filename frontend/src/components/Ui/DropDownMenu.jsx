@@ -30,7 +30,7 @@ const Dropdown = ({ user }) => {
     <div className="inline-block">
       <DropDownButton toggleDropdown={toggleDropdown} />
       {isOpen && (
-        <div className="origin-top-right absolute left-9 top-14 mt-2 pb-2 w-52 rounded-lg shadow-lg bg-secondary-50 ring-1 ring-black ring-opacity-5 text-secondary-800 px-5 !z-50">
+        <div className="origin-top-right absolute left-9 top-14 mt-2 pb-2 w-52 rounded-lg shadow-lg bg-slate-50 ring-1 ring-black ring-opacity-5 text-slate-800 px-5 !z-50">
           <ul
             role="menu"
             aria-orientation="vertical"
@@ -106,7 +106,7 @@ const Dropdown = ({ user }) => {
             </li>
             <li>
               <div
-                className="block px-5 py-3 text-sm hover:bg-gray-100 rounded-lg hover:text-rose-500 transition-all ease-linear duration-200"
+                className="block px-5 py-3 text-sm hover:bg-rose-100 rounded-lg hover:text-rose-500 transition-all ease-linear duration-200"
                 onClick={closeDropdown}
               >
                 <button className="w-full h-full flex items-start justify-start font-iranSans font-thin text-md gap-x-2">

@@ -1,11 +1,22 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
+const {
+  convertToPersianNumber,
+  formatNumberWithCommas,
+  formatToPersianDate,
+} = require("./index");
 
 const TEMP_DIR = path.join(__dirname, "../", "temp");
 if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 }
+
+const fontBuffer = fs.readFileSync(
+  path.join(__dirname, "../", "public/font/IRANSansWeb.ttf"),
+);
+const fontBase64 = fontBuffer.toString("base64");
+const fontDataUrl = `data:font/ttf;base64,${fontBase64}`;
 
 const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
   try {
@@ -15,11 +26,27 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
     });
 
     const page = await browser.newPage();
+    await page.setViewport({ width: 790, height: 790 });
 
-    // تنظیم اندازه صفحه
-    await page.setViewport({ width: 790, height: 1000 });
+    // اضافه کردن استایل برای فونت در Puppeteer
+    await page.addStyleTag({
+      content: `
+        @font-face {
+          font-family: 'IRANSans';
+     src: url('${fontDataUrl}') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+        body {
+          font-family: 'IRANSans', Arial, sans-serif;
+          direction: rtl;
+          text-align: right;
+        }
+      `,
+    });
 
-    const { paymentInfo, insurance, prescriptions } = data.customerInvoices[0];
+    const { paymentInfo, insurance, prescriptions, createdAt, company } =
+      data.customerInvoices[0];
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -27,102 +54,119 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>قبض${invoiceNumber}</title>
+            <title>قبض ${invoiceNumber}</title>
             <style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-us0j{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;font-weight:bold;
-  text-align:left;vertical-align:top}
-.tg .tg-b6f9{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;font-weight:bold;
-  text-align:center;vertical-align:top}
-.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
-.tg .tg-6pot{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-weight:bold;text-align:center;
-  vertical-align:top}
-.tg .tg-yn58{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;text-align:center;
-  vertical-align:top}
-.tg .tg-6sbi{border-color:inherit;font-family:Tahoma, Geneva, sans-serif !important;font-size:medium;text-align:left;
-  vertical-align:top}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-.tg .tg-rlus{font-family:Tahoma, Geneva, sans-serif !important;font-weight:bold;text-align:center;vertical-align:top}
-</style>
+                .tg {
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    width: 100%;
+                    text-align: center;
+                    font-size: 14px;
+                }
+                .tg td, .tg th {
+                    border: 1px solid black;
+                    padding: 10px;
+                }
+                .tg th {
+                    background-color: #f3f3f3;
+                }
+            </style>
         </head>
         <body>
-       <table class="tg"><thead>
-  <tr>
-    <th class="tg-yn58" colspan="9" rowspan="2">سلطان اپتیک</th>
-  </tr>
-  <tr>
-  </tr></thead>
-<tbody>
-  ${
-    prescriptions.length > 0
-      ? prescriptions.map((prescription, index) => {
-          return `<tr>
-    <td class="tg-yn58">frameType</td>
-    <td class="tg-b6f9" colspan="2">SPH</td>
-    <td class="tg-b6f9" colspan="2">CYL</td>
-    <td class="tg-b6f9">AXE</td>
-    <td class="tg-us0j" colspan="3">PD</td>
-  </tr>
-  <tr>
-    <td class="tg-b6f9">OD</td>
-    <td class="tg-yn58" colspan="2"></td>
-    <td class="tg-yn58" colspan="2"></td>
-    <td class="tg-yn58"></td>
-    <td class="tg-6sbi" colspan="3">Lens</td>
-  </tr>
-  <tr>
-    <td class="tg-b6f9">OS</td>
-    <td class="tg-yn58" colspan="2"></td>
-    <td class="tg-yn58" colspan="2"></td>
-    <td class="tg-yn58"></td>
-    <td class="tg-6sbi" colspan="3">Frame</td>
-  </tr>`;
-        })
-      : null
-  }
-  <tr>
-    <td class="tg-yn58" colspan="5"></td>
-    <td class="tg-b6f9" colspan="4">نام بیمار</td>
-  </tr>
-  <tr>
-    <td class="tg-yn58" colspan="5"></td>
-    <td class="tg-b6f9" colspan="4">شماره تماس</td>
-  </tr>
-  <tr>
-    <td class="tg-yn58" colspan="5"></td>
-    <td class="tg-b6f9" colspan="4">تاریخ سفارش</td>
-  </tr>
-  <tr>
-    <td class="tg-yn58" colspan="5"></td>
-    <td class="tg-b6f9" colspan="4">مبلغ کل</td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow" colspan="5"></td>
-    <td class="tg-6pot" colspan="4">تخفیف</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky" colspan="5"></td>
-    <td class="tg-6pot" colspan="4">دریافتی</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky" colspan="5"></td>
-    <td class="tg-6pot" colspan="4">باقیمانده</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax" colspan="5"></td>
-    <td class="tg-rlus" colspan="4">نوع بیمه</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax" colspan="5"></td>
-    <td class="tg-rlus" colspan="4">فروشنده</td>
-  </tr>
-</tbody></table>
-               
+        <table class="tg">
+            <thead>
+                <tr>
+                    <th colspan="9">${invoiceNumber} - سلطان اپتیک</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${
+                  prescriptions.length > 0
+                    ? prescriptions
+                        .map(
+                          (prescription) => `
+                <tr>
+                    <td>${prescription.label}</td>
+                    <td colspan="2">SPH</td>
+                    <td colspan="2">CYL</td>
+                    <td>AXE</td>
+                    <td colspan="3">PD: ${prescription.pd}</td>
+                </tr>
+                <tr>
+                    <td>OD</td>
+                    <td colspan="2">${prescription.odSph}</td>
+                    <td colspan="2">${prescription.odCyl}</td>
+                    <td>${prescription.odAx}</td>
+                    <td colspan="3">${prescription.lens.lensName}</td>
+                </tr>
+                <tr>
+                    <td>OS</td>
+                    <td colspan="2">${prescription.osSph}</td>
+                    <td colspan="2">${prescription.osCyl}</td>
+                    <td>${prescription.osAx}</td>
+                    <td colspan="3">${prescription.frame.serialNumber}</td>
+                </tr>`,
+                        )
+                        .join("")
+                    : ""
+                }
+                <tr>
+                    <td colspan="5">${data.gender} ${data.fullName}</td>
+                    <td colspan="4">نام مشتری</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${convertToPersianNumber(
+                      data.phoneNumber,
+                    )}</td>
+                    <td colspan="4">شماره تماس</td>
+                </tr>
+                <tr>
+                  <td colspan="5" dir="rtl" style="text-align: center;">${formatToPersianDate(createdAt)}</td>
+
+                    <td colspan="4">تاریخ سفارش</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${formatNumberWithCommas(
+                      paymentInfo.SumTotalInvoice,
+                    )}</td>
+                    <td colspan="4">مبلغ کل</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${formatNumberWithCommas(
+                      paymentInfo.discount,
+                    )}</td>
+                    <td colspan="4">تخفیف</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${formatNumberWithCommas(
+                      paymentInfo.deposit,
+                    )}</td>
+                    <td colspan="4">دریافتی</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${formatNumberWithCommas(
+                      paymentInfo.billBalance,
+                    )}</td>
+                    <td colspan="4">باقیمانده</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${insurance.insuranceName}</td>
+                    <td colspan="4">نوع بیمه</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${employee.fullName}</td>
+                    <td colspan="4">فروشنده</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${paymentInfo.paymentMethod}</td>
+                    <td colspan="4">نحوه پرداخت</td>
+                </tr>
+                <tr>
+                    <td colspan="5">${company.companyName}</td>
+                    <td colspan="4">سفارش عدسی از</td>
+                </tr>
+            </tbody>
+        </table>
         </body>
         </html>
     `;

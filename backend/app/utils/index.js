@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
 const { PERMISSIONS } = require("../constants");
+const moment = require("jalali-moment");
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -231,6 +232,29 @@ const farsiDigitToEnglish = (farsiNumber) => {
   return parseFloat(englishNumber) || 0;
 };
 
+const convertToJalali = (isoDate) => {
+  let miladiMoment = moment(isoDate);
+  let jalaliDate = miladiMoment.locale("fa").format("YYYY/MM/DD HH:mm:ss");
+  return jalaliDate;
+};
+const convertToPersianNumber = (num) => {
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+  return num.toString().replace(/\d/g, (digit) => persianDigits[digit]);
+};
+
+const formatNumberWithCommas = (num) => {
+  return convertToPersianNumber(
+    num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+  );
+};
+const formatToPersianDate = (date) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = new Intl.DateTimeFormat("fa-IR", options).format(
+    new Date(date),
+  );
+  const parts = formattedDate.split(" ");
+  return `${parts[0]}/${parts[1]}/${parts[2]}`;
+};
 module.exports = {
   randomNumberGenerator,
   SignAccessToken,
@@ -245,4 +269,8 @@ module.exports = {
   getRolePermissions,
   farsiDigitToEnglish,
   smsThanksPurchase,
+  convertToJalali,
+  convertToPersianNumber,
+  formatNumberWithCommas,
+  formatToPersianDate,
 };

@@ -20,6 +20,8 @@ const generateCustomerInvoicePdf = require("../../../utils/createCustomerInvoice
 const {
   UserPrescriptionModel,
 } = require("../../../models/Invoice/UserPrescription.model");
+const { FrameModel } = require("../../../models/frame/Frame.model");
+const LensModel = require("../../../models/lens/Lens.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -107,7 +109,7 @@ class CustomersController extends Controller {
           await UserPrescriptionModel.create(
             {
               ...prescription,
-              frameId: prescription.frame?.id,
+              frameId: prescription.frame?.frameId,
               lensId: prescription.lens.lensId,
               frameColorCode: prescription.frame?.FrameColors?.[0]?.colorCode,
               InvoiceId: newInvoice.InvoiceId,
@@ -173,9 +175,18 @@ class CustomersController extends Controller {
               {
                 model: UserPrescriptionModel,
                 as: "prescriptions",
-
+                include: [
+                  {
+                    model: FrameModel,
+                    as: "frame",
+                  },
+                  {
+                    model: LensModel,
+                    as: "lens",
+                  },
+                ],
                 attributes: {
-                  exclude: ["createdAt", "updatedAt", "InvoiceId"],
+                  exclude: ["updatedAt", "InvoiceId"],
                 },
               },
               {
@@ -191,7 +202,6 @@ class CustomersController extends Controller {
                 "orderLensFrom",
                 "paymentToAccount",
                 "insuranceName",
-                "createdAt",
                 "updatedAt",
                 "userId",
               ],
@@ -200,7 +210,9 @@ class CustomersController extends Controller {
         ],
         attributes: { exclude: ["jobTitle", "otp", "createdAt", "updatedAt"] },
       });
+
       const employee = await UserModel.findByPk(employeeId);
+
       const invoicePdf = await generateCustomerInvoicePdf(
         fullUserData,
         invoiceNumber,

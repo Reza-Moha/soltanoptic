@@ -111,8 +111,26 @@ module.exports = {
         meteor: "meteor 5s linear infinite",
         ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
         "fade-loop": "fadeInOut 3s linear infinite",
+        heartbeat: "heartbeat 1.5s ease-in-out infinite",
       },
       keyframes: {
+        heartbeat: {
+          "0%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+          "15%": {
+            transform: "translate(-50%, -50%) scale(1.2)",
+          },
+          "25%": {
+            transform: "translate(-50%, -50%) scale(0.9)",
+          },
+          "35%": {
+            transform: "translate(-50%, -50%) scale(1.05)",
+          },
+          "100%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+        },
         ripple: {
           "0%, 100%": {
             transform: "translate(-50%, -50%) scale(1)",
