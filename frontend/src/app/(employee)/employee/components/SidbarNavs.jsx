@@ -5,6 +5,7 @@ import {
   Squares2X2Icon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { FaBorderTopLeft } from "react-icons/fa6";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,21 +26,15 @@ const sidebarNavs = [
   },
   {
     id: 3,
-    title: "ثبت ویزیت",
-    icon: <ChatBubbleBottomCenterIcon className="w-5 h-5" />,
-    href: "/profile/comments",
+    title: "سفارشات عدسی",
+    icon: <FaBorderTopLeft className="w-5 h-5" />,
+    href: "/employee/order-lens",
   },
   {
     id: 4,
     title: "پیگیری سفارش مشتری",
     icon: <Squares2X2Icon className="w-5 h-5" />,
     href: "/profile/categories",
-  },
-  {
-    id: 5,
-    title: "سفارشات عدسی",
-    icon: <UsersIcon className="w-5 h-5" />,
-    href: "/profile/users",
   },
 ];
 
@@ -54,9 +49,9 @@ export default function SideBarNavs() {
             <Link
               href={nav.href}
               className={classNames(
-                "flex items-center gap-x-2 rounded-2xl font-medium hover:text-primary-900 transition-all duration-200 text-secondary-700 py-3 px-4",
+                "flex items-center gap-x-2 rounded-2xl font-medium hover:text-slate-900 transition-all duration-200 text-slate-700 hover:bg-slate-100 py-3 px-4",
                 {
-                  "bg-green-100/60 !font-bold text-primary-900":
+                  "bg-green-100/60 !font-bold text-slate-900":
                     pathname === nav.href,
                 },
               )}

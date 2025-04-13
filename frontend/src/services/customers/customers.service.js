@@ -10,6 +10,11 @@ export async function getLastInvoiceNumberApi() {
     .get(`/api/admin/customers/get-last-invoice-number`)
     .then(({ data }) => data);
 }
+export async function getOrderLensDailyApi() {
+  return httpService
+    .get(`/api/admin/customers/get-order-lens-daily`)
+    .then(({ data }) => data);
+}
 
 export async function sendSmsPurchaseApi(data) {
   return httpService

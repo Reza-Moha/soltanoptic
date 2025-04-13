@@ -70,11 +70,11 @@ export default function CreatePurchaseInvoice() {
           values.descriptionPrice === 0 ? "" : values.descriptionPrice,
         employeeId: user.id,
       };
-      const { message, statusCode, fullUserData } =
+      const { message, statusCode, fullUserData ,invoicePdf} =
         await createNewInvoiceApi(formattedValues);
       if (statusCode === 201 && fullUserData) {
         toast.success(message);
-        setModalData(fullUserData);
+        setModalData({fullUserData,invoicePdf});
         setShowModal(true);
       }
     } catch (error) {
@@ -224,6 +224,7 @@ export default function CreatePurchaseInvoice() {
       )}
       {showModal && modalData && (
         <CustomerInfoPopup
+
           customerInfo={modalData || {}}
           setShowModal={setShowModal}
           invoiceNumber={lastInvoiceNumber || 0}

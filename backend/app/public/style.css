@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "IRANSans";
+    src: url("./font/IRANSansWeb.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  body {
+    @apply font-iranSans text-right;
+  }
+}
+
+@layer utilities {
+  .font-iranSans {
+    font-family: "IRANSans";
+  }
+}

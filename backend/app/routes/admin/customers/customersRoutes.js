@@ -22,6 +22,12 @@ router.post(
   CustomersController.sendSmsThanksForThePurchase,
 );
 
+router.get(
+  "/get-order-lens-daily",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.lensOrdersDaily
+);
+
 module.exports = {
   customersRoutes: router,
 };

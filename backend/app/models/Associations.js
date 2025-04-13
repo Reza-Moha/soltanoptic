@@ -124,7 +124,10 @@ const Associations = () => {
     foreignKey: "lensId",
     as: "lens",
   });
-
+  CompanyModel.hasMany(InvoiceModel, {
+    foreignKey: "orderLensFrom",
+    as: "invoices",
+  });
   FrameModel.hasMany(UserPrescriptionModel, {
     foreignKey: "frameId",
     as: "prescriptions",

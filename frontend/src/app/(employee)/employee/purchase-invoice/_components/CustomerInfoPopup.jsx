@@ -29,6 +29,19 @@ export const CustomerInfoPopup = ({
     }
   };
 
+  const printInvoicePdf = async () => {
+    if (customerInfo.invoicePdf) {
+      const printWindow = window.open(customerInfo.invoicePdf);
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+      }
+    } else {
+      toast.error("لینک قبض موجود نیست!");
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -73,7 +86,7 @@ export const CustomerInfoPopup = ({
                           gender: customerInfo.gender,
                           customerName: customerInfo.fullName,
                         },
-                        e,
+                        e
                       )
                     }
                   >
@@ -84,9 +97,7 @@ export const CustomerInfoPopup = ({
               )}
             </div>
             <div
-              onClick={() => {
-                console.log(customerInfo.invoicePdf);
-              }}
+              onClick={printInvoicePdf}
               className="col-span-1 flex px-2 items-center justify-center gap-2 bg-green-200 text-green-500 rounded hover:bg-green-400 hover:text-white transition-all ease-linear duration-300 cursor-pointer"
             >
               <button className="px-1 py-2 text-sm">چاپ قبض</button>

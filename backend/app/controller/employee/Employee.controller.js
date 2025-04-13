@@ -17,7 +17,7 @@ const { Roles } = require("../../models/Roles.model");
 class EmployeeController extends Controller {
   async createNewEmployee(req, res, next) {
     try {
-      // اعتبارسنجی ورودی‌ها
+
       await createNewEmployeeSchema.validateAsync(req.body);
 
       const {
@@ -31,16 +31,13 @@ class EmployeeController extends Controller {
         description,
       } = req.body;
 
-      // مدیریت تصویر پروفایل
       const image =
         fileUploadPath && filename
           ? path.join(fileUploadPath, filename).replace(/\\/g, "/")
           : null;
 
-      // حذف مقادیر نامعتبر از ورودی
       deleteInvalidPropertyInObject(req.body, BlackListFields);
 
-      // بررسی وجود کاربر با شماره تلفن و کد ملی
       const existingUser = await UserModel.findOne({
         where: {
           [Op.or]: [{ phoneNumber }, { nationalId }],
@@ -51,7 +48,6 @@ class EmployeeController extends Controller {
         throw CreateError.BadRequest("همکاری با این مشخصات قبلاً ثبت شده است");
       }
 
-      // ایجاد کاربر جدید
       const newEmployee = await UserModel.create({
         profileImage: image,
         phoneNumber,
@@ -60,7 +56,7 @@ class EmployeeController extends Controller {
         nationalId,
         jobTitle,
         description,
-        role: process.env.EMPLOYEE_ROLE, // بررسی کنید که این مقدار به درستی تنظیم شده باشد
+        role: process.env.EMPLOYEE_ROLE, 
       });
 
       if (!newEmployee) {
@@ -69,11 +65,11 @@ class EmployeeController extends Controller {
         );
       }
 
-      // ارتباط نقش با کاربر
+
       const [updatedRowsCount] = await Roles.update(
         { UserId: newEmployee.id },
         {
-          where: { roleId: jobTitle }, // فرض می‌شود که `jobTitle` با `roleId` هم‌خوانی دارد
+          where: { roleId: jobTitle },
           returning: true,
         },
       );
@@ -82,7 +78,7 @@ class EmployeeController extends Controller {
         throw CreateError.InternalServerError("عملیات ویرایش نقش انجام نشد");
       }
 
-      // بازگرداندن نتیجه به کاربر
+
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "همکار جدید با موفقیت ثبت گردید",
@@ -92,7 +88,7 @@ class EmployeeController extends Controller {
         }),
       });
     } catch (error) {
-      // حذف فایل در صورت خطا (اگر وجود داشته باشد)
+  
       if (req.body.fileUploadPath && req.body.filename) {
         const image = path
           .join(req.body.fileUploadPath, req.body.filename)

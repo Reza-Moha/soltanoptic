@@ -28,7 +28,6 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
     const page = await browser.newPage();
     await page.setViewport({ width: 790, height: 790 });
 
-    // اضافه کردن استایل برای فونت در Puppeteer
     await page.addStyleTag({
       content: `
         @font-face {
@@ -48,13 +47,22 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
     const { paymentInfo, insurance, prescriptions, createdAt, company } =
       data.customerInvoices[0];
 
+      const contentHeight = await page.evaluate(() => {
+        return document.body.scrollHeight;
+      });
+      
     const htmlContent = `
         <!DOCTYPE html>
         <html lang="fa">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+           
             <title>قبض ${invoiceNumber}</title>
+               <link href="file://${path.join(
+                 __dirname,
+                 "../public/css/styles.css"
+               )}" rel="stylesheet">
             <style type="text/css">
                 .tg {
                     border-collapse: collapse;
@@ -71,6 +79,7 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
                     background-color: #f3f3f3;
                 }
             </style>
+              <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
         </head>
         <body>
         <table class="tg">
@@ -105,7 +114,7 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
                     <td colspan="2">${prescription.osCyl}</td>
                     <td>${prescription.osAx}</td>
                     <td colspan="3">${prescription.frame.serialNumber}</td>
-                </tr>`,
+                </tr>`
                         )
                         .join("")
                     : ""
@@ -116,36 +125,38 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
                 </tr>
                 <tr>
                     <td colspan="5">${convertToPersianNumber(
-                      data.phoneNumber,
+                      data.phoneNumber
                     )}</td>
                     <td colspan="4">شماره تماس</td>
                 </tr>
                 <tr>
-                  <td colspan="5" dir="rtl" style="text-align: center;">${formatToPersianDate(createdAt)}</td>
+                  <td colspan="5" dir="rtl" style="text-align: center;">${formatToPersianDate(
+                    createdAt
+                  )}</td>
 
                     <td colspan="4">تاریخ سفارش</td>
                 </tr>
                 <tr>
                     <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.SumTotalInvoice,
+                      paymentInfo.SumTotalInvoice
                     )}</td>
                     <td colspan="4">مبلغ کل</td>
                 </tr>
                 <tr>
                     <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.discount,
+                      paymentInfo.discount
                     )}</td>
                     <td colspan="4">تخفیف</td>
                 </tr>
                 <tr>
                     <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.deposit,
+                      paymentInfo.deposit
                     )}</td>
                     <td colspan="4">دریافتی</td>
                 </tr>
                 <tr>
                     <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.billBalance,
+                      paymentInfo.billBalance
                     )}</td>
                     <td colspan="4">باقیمانده</td>
                 </tr>
@@ -179,7 +190,11 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
     await page.pdf({
       path: filePath,
       width: "79mm",
+      height: `${contentHeight}px`,
+      scale: 1,
       printBackground: true,
+      preferCSSPageSize: true,
+      clip: { x: 0, y: 0, width: 790, height: contentHeight },
     });
 
     await browser.close();

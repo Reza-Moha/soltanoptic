@@ -10,7 +10,7 @@ function EmployeeHeader() {
   const { user, isLoading } = useSelector((state) => state.auth);
   return (
     <header
-      className={`bg-secondary-0 ${isLoading ? "bg-opacity-30 blur-md" : ""}`}
+      className={`bg-white ${isLoading ? "bg-opacity-30 blur-md" : ""}`}
     >
       <div className="flex items-center justify-between py-5 px-4 lg:px-8">
         <div className="flex items-center gap-x-3">

@@ -10,14 +10,14 @@ function EmployeeSideBar() {
   const router = useRouter();
 
   const logoutHandler = async () => {
-    await dispatch(logOutUser());
+    dispatch(logOutUser());
     router.push("/");
   };
 
   return (
     <div className="overflow-y-auto flex flex-col p-5 h-screen pt-10 lg:pt-8">
       {/* Drawer header */}
-      <div className=" border-b border-b-secondary-200 pb-2 mb-6">
+      <div className=" border-b border-b-slate-200 pb-2 mb-6">
         <DataTime textColor="text-white border border-black/20 bg-slate-800" />
       </div>
       {/* Drawer content */}

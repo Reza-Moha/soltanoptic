@@ -6,7 +6,7 @@ const {
   sendSmsThanksForThePurchaseSchema,
 } = require("../../../validation/admin/admin.schema");
 const { UserModel } = require("../../../models/User.model");
-const { Op } = require("sequelize");
+const { Op, literal, fn, where, col, Sequelize } = require("sequelize");
 const { sequelize } = require("../../../libs/DBConfig");
 const { InvoiceModel } = require("../../../models/Invoice/Invoice.model");
 const {
@@ -22,6 +22,7 @@ const {
 } = require("../../../models/Invoice/UserPrescription.model");
 const { FrameModel } = require("../../../models/frame/Frame.model");
 const LensModel = require("../../../models/lens/Lens.model");
+const { FrameColor } = require("../../../models/frame/FrameColor.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -48,11 +49,6 @@ class CustomersController extends Controller {
         gender,
       } = await createNewPurchaseInvoiceSchema.validateAsync(req.body);
 
-      // Check for invalid admin phone number
-      // if (phoneNumber === process.env.ADMIN_PHONENUMBER)
-      //   throw CreateError.BadRequest("شماره موبایل وارد شده نامعتبر است");
-
-      // Find the user by fullName or phoneNumber
       let user = await UserModel.findOne({
         where: {
           [Op.or]: [{ fullName }, { phoneNumber }],
@@ -106,6 +102,21 @@ class CustomersController extends Controller {
 
       if (prescriptions && prescriptions.length > 0) {
         for (const prescription of prescriptions) {
+          const frameColor = await FrameColor.findOne({
+            where: {
+              colorCode: prescription.frame?.FrameColors?.[0]?.colorCode,
+              FrameModelFrameId: prescription.frame?.frameId,
+            },
+          });
+
+          if (!frameColor) {
+            throw CreateError.NotFound("رنگ انتخابی برای این فریم یافت نشد.");
+          }
+
+          if (frameColor.count <= 0) {
+            throw CreateError.BadRequest("موجودی این رنگ فریم تمام شده است.");
+          }
+
           await UserPrescriptionModel.create(
             {
               ...prescription,
@@ -114,6 +125,11 @@ class CustomersController extends Controller {
               frameColorCode: prescription.frame?.FrameColors?.[0]?.colorCode,
               InvoiceId: newInvoice.InvoiceId,
             },
+            { transaction },
+          );
+
+          await frameColor.update(
+            { count: frameColor.count - 1 },
             { transaction },
           );
         }
@@ -264,6 +280,71 @@ class CustomersController extends Controller {
         statusCode: HttpStatus.OK,
         message: "پیامک تشکر از خرید با موفقیت ارسال گردید",
         result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async lensOrdersDaily(req, res, next) {
+    try {
+      const invoices = await InvoiceModel.findAll({
+        where: Sequelize.literal(
+          `DATE("customerInvoice"."createdAt") = CURRENT_DATE`,
+        ),
+        include: [
+          {
+            model: CompanyModel,
+            as: "company",
+            attributes: ["companyName", "whatsappNumber"],
+          },
+          {
+            model: UserModel,
+            as: "employee",
+            attributes: ["fullName", "jobTitle"],
+          },
+          {
+            model: UserModel,
+            as: "customer",
+            attributes: ["fullName", "gender"],
+          },
+          {
+            model: UserPrescriptionModel,
+            as: "prescriptions",
+            include: [
+              {
+                model: LensModel,
+                as: "lens",
+                attributes: {
+                  exclude: ["description", "LensGroupId", "LensCategoryId"],
+                },
+              },
+            ],
+            attributes: {
+              exclude: [
+                "updatedAt",
+                "lensId",
+                "frameId",
+                "createdAt",
+                "PrescriptionId",
+              ],
+            },
+          },
+        ],
+        attributes: {
+          exclude: [
+            "insuranceName",
+            "orderLensFrom",
+            "paymentToAccount",
+            "updatedAt",
+            "userId",
+            "SumTotalInvoice",
+          ],
+        },
+      });
+      return res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        lensOrdersDaily: invoices,
       });
     } catch (error) {
       next(error);
