@@ -22,3 +22,8 @@ export async function sendSmsPurchaseApi(data) {
     .post(`/api/admin/customers/send-sms-purchase`, data)
     .then(({ data }) => data);
 }
+export async function sendLensOrderApi(invoiceId) {
+  return httpService
+    .post(`/api/admin/customers/sendLensOrder`, invoiceId)
+    .then(({ data }) => data);
+}

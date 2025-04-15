@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,6 +8,8 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DateObject from "react-date-object";
 import { motion, AnimatePresence } from "framer-motion";
 import { getOrderLensDaily } from "@/redux/slices/customersSlice";
+import { sendLensOrderApi } from "@/services/customers/customers.service";
+import toast from "react-hot-toast";
 
 export default function OrderLens() {
   const { isLoading, orderLensDaily } = useSelector(
@@ -27,21 +28,19 @@ export default function OrderLens() {
     searchParams.get("company") || "",
   );
 
-  // تاریخ امروز به عنوان مقدار پیش‌فرض
   const today = new DateObject({ calendar: persian, locale: persian_fa });
   const [selectedDate, setSelectedDate] = useState(today);
 
-  // درخواست داده‌ها زمانی که تاریخ تغییر می‌کند
+  const [orderStatus, setOrderStatus] = useState({});
+
   useEffect(() => {
     const date = selectedDate?.isValid
       ? selectedDate.convert("gregorian").format("YYYY-MM-DD")
       : null;
 
-    // ارسال درخواست به سرور با تاریخ امروز یا تاریخ انتخاب شده
     dispatch(getOrderLensDaily(date));
   }, [selectedDate]);
 
-  // اعمال فیلتر روی داده‌ها
   const filteredData = useMemo(() => {
     const q = search.toLowerCase();
     return orderLensDaily?.filter(
@@ -55,14 +54,12 @@ export default function OrderLens() {
         const matchCompany =
           !selectedCompanyId || company?.CompanyId === selectedCompanyId;
 
-        // تبدیل تاریخ createdAt به میلادی
         const createdDate = new DateObject({
           date: createdAt,
           calendar: persian,
           locale: persian_fa,
         });
 
-        // مقایسه تاریخ‌ها
         const matchDate =
           !selectedDate ||
           (selectedDate?.isValid &&
@@ -74,7 +71,6 @@ export default function OrderLens() {
     );
   }, [search, selectedCompanyId, selectedDate, orderLensDaily]);
 
-  // به روزرسانی URL با پارامترهای فیلتر شده
   useEffect(() => {
     const params = new URLSearchParams();
     if (search.trim()) params.set("q", search);
@@ -87,9 +83,33 @@ export default function OrderLens() {
     router.replace(`?${params.toString()}`, { scroll: false });
   }, [search, selectedCompanyId, selectedDate]);
 
-  // زمانی که داده‌ها لود می‌شوند، ابتدا بدون فیلتر نشان داده شوند
   if (isLoading || companyLoading)
     return <p className="text-center py-4">در حال دریافت اطلاعات ...</p>;
+
+  const handleSendOrder = async (invoiceId) => {
+    try {
+      setOrderStatus((prevState) => ({
+        ...prevState,
+        [invoiceId]: "sending",
+      }));
+
+      const sendLensOrder = await sendLensOrderApi({ invoiceId });
+      if (sendLensOrder.statusCode === 200) {
+        toast.success(sendLensOrder.message);
+
+        setOrderStatus((prevState) => ({
+          ...prevState,
+          [invoiceId]: "sent",
+        }));
+      }
+    } catch (e) {
+      console.log(e);
+      setOrderStatus((prevState) => ({
+        ...prevState,
+        [invoiceId]: undefined,
+      }));
+    }
+  };
 
   return (
     <div className="overflow-x-auto p-4">
@@ -139,6 +159,7 @@ export default function OrderLens() {
             <th className="px-4 py-2 border">تاریخ صدور</th>
             <th className="px-4 py-2 border">نسخه</th>
             <th className="px-4 py-2 border">مشخصات لنز</th>
+            <th className="px-4 py-2 border">ارسال سفارش</th>
           </tr>
         </thead>
         <tbody>
@@ -170,7 +191,7 @@ export default function OrderLens() {
                   <td className="px-4 py-2 border">
                     {prescriptions?.map(
                       ({
-                        PrescriptionId,
+                        InvoiceId,
                         odSph,
                         odCyl,
                         odAx,
@@ -181,7 +202,7 @@ export default function OrderLens() {
                         label,
                       }) => (
                         <div
-                          key={PrescriptionId}
+                          key={InvoiceId}
                           className="bg-blue-50 p-2 rounded mb-2 text-xs"
                         >
                           <p>
@@ -201,10 +222,10 @@ export default function OrderLens() {
                     )}
                   </td>
                   <td className="px-4 py-2 border">
-                    {prescriptions?.map(({ PrescriptionId, lens }) =>
+                    {prescriptions?.map(({ InvoiceId, lens }) =>
                       lens ? (
                         <div
-                          key={PrescriptionId}
+                          key={InvoiceId}
                           className="bg-green-50 p-2 rounded mb-2 text-xs"
                         >
                           <p>
@@ -220,6 +241,28 @@ export default function OrderLens() {
                         "ندارد"
                       ),
                     )}
+                  </td>
+                  <td className="px-4 py-2 border">
+                    <button
+                      onClick={() => handleSendOrder(InvoiceId)}
+                      disabled={
+                        orderStatus[InvoiceId] === "sent" ||
+                        orderStatus[InvoiceId] === "sending"
+                      }
+                      className={`${
+                        orderStatus[InvoiceId] === "sent"
+                          ? "bg-green-500"
+                          : orderStatus[InvoiceId] === "sending"
+                            ? "bg-yellow-500"
+                            : "bg-blue-500"
+                      } text-white py-1 px-4 rounded`}
+                    >
+                      {orderStatus[InvoiceId] === "sending"
+                        ? "در حال ارسال ..."
+                        : orderStatus[InvoiceId] === "sent"
+                          ? "سفارش داده شد"
+                          : "ارسال سفارش"}
+                    </button>
                   </td>
                 </motion.tr>
               ),
