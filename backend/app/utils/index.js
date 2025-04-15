@@ -7,6 +7,8 @@ const fs = require("fs");
 const axios = require("axios");
 const { PERMISSIONS } = require("../constants");
 const moment = require("jalali-moment");
+const jalaali = require("jalaali-js");
+
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -237,6 +239,13 @@ const convertToJalali = (isoDate) => {
   let jalaliDate = miladiMoment.locale("fa").format("YYYY/MM/DD HH:mm:ss");
   return jalaliDate;
 };
+
+function convertJalaliToGregorian(jalaliDate) {
+  const [jy, jm, jd] = jalaliDate.split("-").map(Number);
+  const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
+  return `${gy.toString().padStart(4, "0")}-${gm.toString().padStart(2, "0")}-${gd.toString().padStart(2, "0")}`;
+}
+
 const convertToPersianNumber = (num) => {
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
   return num.toString().replace(/\d/g, (digit) => persianDigits[digit]);
@@ -273,4 +282,5 @@ module.exports = {
   convertToPersianNumber,
   formatNumberWithCommas,
   formatToPersianDate,
+  convertJalaliToGregorian,
 };

@@ -12,7 +12,11 @@ const { InvoiceModel } = require("../../../models/Invoice/Invoice.model");
 const {
   PaymentInfoModel,
 } = require("../../../models/Invoice/PaymentInfo.model");
-const { farsiDigitToEnglish, smsThanksPurchase } = require("../../../utils");
+const {
+  farsiDigitToEnglish,
+  smsThanksPurchase,
+  convertJalaliToGregorian,
+} = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
 const { InsuranceModel } = require("../../../models/Insurance.model");
@@ -288,10 +292,30 @@ class CustomersController extends Controller {
 
   async lensOrdersDaily(req, res, next) {
     try {
-      const invoices = await InvoiceModel.findAll({
-        where: Sequelize.literal(
+      const { date } = req.query;
+      let filterCondition;
+
+      if (date) {
+        const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+        const normalizedDate = date.replace(/[۰-۹]/g, (d) =>
+          persianDigits.indexOf(d),
+        );
+        const isJalali = /^1[34]\d{2}-\d{1,2}-\d{1,2}$/.test(normalizedDate);
+        const gregorianDate = isJalali
+          ? convertJalaliToGregorian(normalizedDate)
+          : normalizedDate;
+
+        filterCondition = Sequelize.literal(
+          `DATE("customerInvoice"."createdAt") = '${gregorianDate}'`,
+        );
+      } else {
+        filterCondition = Sequelize.literal(
           `DATE("customerInvoice"."createdAt") = CURRENT_DATE`,
-        ),
+        );
+      }
+
+      const invoices = await InvoiceModel.findAll({
+        where: filterCondition,
         include: [
           {
             model: CompanyModel,
@@ -342,6 +366,7 @@ class CustomersController extends Controller {
           ],
         },
       });
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         lensOrdersDaily: invoices,

@@ -35,15 +35,13 @@ export const getLastInvoiceNumber = createAsyncThunk(
   },
 );
 export const getOrderLensDaily = createAsyncThunk(
-  "customer/getOrderLensDaily",
-  async (_, { rejectWithValue }) => {
+  "orderLens/getDaily",
+  async (date, thunkAPI) => {
     try {
-      const data = await getOrderLensDailyApi();
-      return data.lensOrdersDaily;
+      const response = await getOrderLensDailyApi(date);
+      return response.lensOrdersDaily;
     } catch (error) {
-      const errors = error?.response?.data?.errors;
-      toast.error(errors.message);
-      return rejectWithValue(errors);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   },
 );

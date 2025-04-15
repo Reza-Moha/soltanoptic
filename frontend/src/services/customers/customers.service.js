@@ -10,9 +10,10 @@ export async function getLastInvoiceNumberApi() {
     .get(`/api/admin/customers/get-last-invoice-number`)
     .then(({ data }) => data);
 }
-export async function getOrderLensDailyApi() {
+export async function getOrderLensDailyApi(date) {
+  const query = date ? `?date=${encodeURIComponent(date)}` : "";
   return httpService
-    .get(`/api/admin/customers/get-order-lens-daily`)
+    .get(`/api/admin/customers/get-order-lens-daily${query}`)
     .then(({ data }) => data);
 }
 
