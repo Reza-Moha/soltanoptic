@@ -6,9 +6,10 @@ const {
   sendSmsThanksForThePurchaseSchema,
 } = require("../../../validation/admin/admin.schema");
 const { UserModel } = require("../../../models/User.model");
-const { Op, literal, fn, where, col, Sequelize } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const { sequelize } = require("../../../libs/DBConfig");
 const { InvoiceModel } = require("../../../models/Invoice/Invoice.model");
+
 const {
   PaymentInfoModel,
 } = require("../../../models/Invoice/PaymentInfo.model");
@@ -16,6 +17,7 @@ const {
   farsiDigitToEnglish,
   smsThanksPurchase,
   convertJalaliToGregorian,
+  sendPDFToTelegramGroup,
 } = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
@@ -27,6 +29,9 @@ const {
 const { FrameModel } = require("../../../models/frame/Frame.model");
 const LensModel = require("../../../models/lens/Lens.model");
 const { FrameColor } = require("../../../models/frame/FrameColor.model");
+const { createPDF } = require("../../../utils/createOrderLensDailyPdf");
+const path = require("path");
+const { promises } = require("node:fs");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -372,6 +377,32 @@ class CustomersController extends Controller {
         lensOrdersDaily: invoices,
       });
     } catch (error) {
+      next(error);
+    }
+  }
+
+  async sendLensOrder(req, res, next) {
+    try {
+      const { invoiceId } = req.body;
+
+      const { pdfPath, fileName } = await createPDF(invoiceId);
+
+      if (!pdfPath) {
+        throw new Error("مسیر فایل PDF یافت نشد");
+      }
+
+      await sendPDFToTelegramGroup(pdfPath, invoiceId);
+
+      await promises.unlink(
+        path.join(__dirname, "../../../", "public/orderLensDaily/", fileName),
+      );
+
+      res.status(HttpStatus.OK).send({
+        statusCode: HttpStatus.OK,
+        message: "سفارش عدسی به شرکت مورد نظر ارسال شد و فایل PDF حذف شد.",
+      });
+    } catch (error) {
+      console.error(error);
       next(error);
     }
   }

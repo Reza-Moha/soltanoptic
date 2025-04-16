@@ -7,8 +7,14 @@ const fs = require("fs");
 const axios = require("axios");
 const { PERMISSIONS } = require("../constants");
 const moment = require("jalali-moment");
+const { InvoiceModel } = require("../models/Invoice/Invoice.model");
+const { CompanyModel } = require("../models/Company.model");
+const {
+  UserPrescriptionModel,
+} = require("../models/Invoice/UserPrescription.model");
+const LensModel = require("../models/lens/Lens.model");
+const FormData = require("form-data");
 const jalaali = require("jalaali-js");
-
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -264,6 +270,85 @@ const formatToPersianDate = (date) => {
   const parts = formattedDate.split(" ");
   return `${parts[0]}/${parts[1]}/${parts[2]}`;
 };
+
+const getInvoiceDetails = async (invoiceId) => {
+  try {
+    const invoice = await InvoiceModel.findByPk(invoiceId, {
+      include: [
+        {
+          model: CompanyModel,
+          as: "company",
+          attributes: ["companyName", "whatsappNumber"],
+        },
+        {
+          model: UserModel,
+          as: "employee",
+          attributes: ["fullName", "jobTitle"],
+        },
+        {
+          model: UserModel,
+          as: "customer",
+          attributes: ["fullName", "gender"],
+        },
+        {
+          model: UserPrescriptionModel,
+          as: "prescriptions",
+          include: [
+            {
+              model: LensModel,
+              as: "lens",
+              attributes: {
+                exclude: ["description", "LensGroupId", "LensCategoryId"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: [
+              "updatedAt",
+              "lensId",
+              "frameId",
+              "createdAt",
+              "PrescriptionId",
+            ],
+          },
+        },
+      ],
+    });
+
+    if (invoice) {
+      await invoice.update({ lensOrderStatus: "orderLenses" });
+    }
+
+    return invoice;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendPDFToTelegramGroup = async (pdfPath, invoiceId) => {
+  const telegramUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendDocument`;
+
+  try {
+    const formData = new FormData();
+    formData.append("chat_id", process.env.TELEGRAM_GROUP_CHAT);
+    formData.append("document", fs.createReadStream(pdfPath));
+
+    const response = await axios.post(telegramUrl, formData, {
+      headers: {
+        ...formData.getHeaders(),
+      },
+    });
+    if (response.status === 200) {
+      const invoice = await InvoiceModel.findByPk(invoiceId);
+      if (invoice) {
+        await invoice.update({ lensOrderAt: new Date() });
+      }
+    }
+  } catch (error) {
+    console.error("Error sending PDF to Telegram group:", error);
+  }
+};
+
 module.exports = {
   randomNumberGenerator,
   SignAccessToken,
@@ -283,4 +368,6 @@ module.exports = {
   formatNumberWithCommas,
   formatToPersianDate,
   convertJalaliToGregorian,
+  getInvoiceDetails,
+  sendPDFToTelegramGroup,
 };

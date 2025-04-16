@@ -25,7 +25,13 @@ router.post(
 router.get(
   "/get-order-lens-daily",
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
-  CustomersController.lensOrdersDaily
+  CustomersController.lensOrdersDaily,
+);
+
+router.post(
+  "/sendLensOrder",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.sendLensOrder,
 );
 
 module.exports = {

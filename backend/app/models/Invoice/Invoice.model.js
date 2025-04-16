@@ -32,6 +32,21 @@ InvoiceModel.init(
       type: DataTypes.UUID,
       allowNull: true,
     },
+    lensOrderStatus: {
+      type: DataTypes.ENUM(
+        "registered",
+        "orderLenses",
+        "workshopSection",
+        "readyToDeliver",
+        "delivered",
+      ),
+      allowNull: false,
+      defaultValue: "registered",
+    },
+    lensOrderAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     sequelize,
