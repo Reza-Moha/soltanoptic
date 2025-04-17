@@ -6,62 +6,49 @@ export async function middleware(req) {
 
   const ADMIN_ROLE = Number(process.env.ADMIN_ROLE);
   const EMPLOYEE_ROLE = Number(process.env.EMPLOYEE_ROLE);
+  const WORKSHOP_MANAGER_ROLE = Number(process.env.WORKSHOP_MANAGER_ROLE);
+  const SALES_AGENT_ROLE = Number(process.env.SALES_AGENT_ROLE);
   const USER_ROLE = Number(process.env.USER_ROLE);
 
+  const ROLE_PATH_MAP = {
+    [ADMIN_ROLE]: ["/admin"],
+    [EMPLOYEE_ROLE]: ["/employee"],
+    [WORKSHOP_MANAGER_ROLE]: ["/employee"],
+    [SALES_AGENT_ROLE]: ["/employee"],
+    [USER_ROLE]: ["/user"],
+  };
+
   const user = await authMiddleware(req);
+
   if (!user) {
-    if (
-      pathname.startsWith("/admin/") ||
-      pathname.startsWith("/employee/") ||
-      pathname.startsWith("/user/")
-    ) {
-      const loginUrl = new URL(
-        `/login?redirect=${encodeURIComponent(pathname)}`,
-        req.url,
+    const needsAuth = ["/admin/", "/employee/", "/user/"].some((path) =>
+      pathname.startsWith(path),
+    );
+    if (needsAuth) {
+      return NextResponse.redirect(
+        new URL(`/login?redirect=${encodeURIComponent(pathname)}`, req.url),
       );
-      return NextResponse.redirect(loginUrl);
     }
     return NextResponse.next();
   }
 
   const userRole = Number(user.role);
 
-  if (pathname.startsWith("/admin/dashboard") && userRole !== ADMIN_ROLE) {
-    const unauthorizedUrl = new URL(`/login`, req.url);
-    return NextResponse.redirect(unauthorizedUrl);
-  }
-
-  if (pathname.startsWith("/employee") && userRole !== EMPLOYEE_ROLE) {
-    const unauthorizedUrl = new URL(`/login`, req.url);
-    return NextResponse.redirect(unauthorizedUrl);
-  }
-
-  if (pathname.startsWith("/user") && userRole !== USER_ROLE) {
-    const unauthorizedUrl = new URL(`/login`, req.url);
-    return NextResponse.redirect(unauthorizedUrl);
-  }
-
   if (pathname.startsWith("/login")) {
-    if (userRole === ADMIN_ROLE) {
-      const adminDashboardUrl = new URL(`/admin/dashboard`, req.url);
-      return NextResponse.redirect(adminDashboardUrl);
-    } else if (userRole === EMPLOYEE_ROLE) {
-      const employeeDashboardUrl = new URL(`/employee`, req.url);
-      return NextResponse.redirect(employeeDashboardUrl);
-    } else if (userRole === USER_ROLE) {
-      const userDashboardUrl = new URL(`/user/`, req.url);
-      return NextResponse.redirect(userDashboardUrl);
-    }
+    const defaultRedirectPath = ROLE_PATH_MAP[userRole]?.[0] || "/user";
+    return NextResponse.redirect(new URL(defaultRedirectPath, req.url));
+  }
+
+  const allowedPaths = ROLE_PATH_MAP[userRole] || [];
+  const isAllowedPath = allowedPaths.some((path) => pathname.startsWith(path));
+
+  if (!isAllowedPath) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/employee/:path*",
-    "/user/:path*",
-    "/login",
-  ],
+  matcher: ["/admin/:path*", "/employee/:path*", "/user/:path*", "/login"],
 };

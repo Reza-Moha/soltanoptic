@@ -14,7 +14,6 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
   const [selectedFrame, setSelectedFrame] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const itemsPerPage = 10;
-
   const filteredFrameList = (frameList || []).filter((frame) => {
     return (
       frame.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -95,20 +94,23 @@ export const ChoseFrame = ({ setShowFrameModal, onFrameSelect }) => {
                     <td className="p-2">{frame.serialNumber}</td>
                     <td className="p-2">{frame.price}</td>
                     <td className="p-2">
-                      {/* نمایش رنگ‌ها برای انتخاب */}
-                      {(frame.FrameColors || []).map((color, colorIndex) => (
-                        <button
-                          type="button"
-                          key={colorIndex}
-                          onClick={() => handleColorSelect(frame, color, index)}
-                          className={`p-3 rounded mr-2 my-1 ${
-                            color === selectedColor
-                              ? "bg-blue-500 text-white"
-                              : "bg-gray-200 hover:bg-gray-300"
-                          }`}
-                          style={{ backgroundColor: color.colorCode }}
-                        ></button>
-                      ))}
+                      {(frame.FrameColors || [])
+                        .filter((color) => color.count > 0)
+                        .map((color, colorIndex) => (
+                          <button
+                            type="button"
+                            key={colorIndex}
+                            onClick={() =>
+                              handleColorSelect(frame, color, index)
+                            }
+                            className={`p-3 rounded mr-2 my-1 ${
+                              color === selectedColor
+                                ? "ring-2 ring-blue-500"
+                                : "bg-gray-200 hover:bg-gray-300"
+                            }`}
+                            style={{ backgroundColor: color.colorCode }}
+                          ></button>
+                        ))}
                     </td>
                   </tr>
                 ))}

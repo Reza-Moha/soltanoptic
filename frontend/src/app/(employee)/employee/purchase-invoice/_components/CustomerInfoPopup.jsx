@@ -13,7 +13,7 @@ export const CustomerInfoPopup = ({
   invoiceNumber,
 }) => {
   const [sendingSms, setSendingSms] = useState(0);
-
+  console.log(customerInfo);
   const sendSmsThanksForThePurchaseHandler = async (values, e) => {
     try {
       setSendingSms(1);
@@ -30,15 +30,32 @@ export const CustomerInfoPopup = ({
   };
 
   const printInvoicePdf = async () => {
-    if (customerInfo.invoicePdf) {
-      const printWindow = window.open(customerInfo.invoicePdf);
+    if (!customerInfo.invoicePdf) {
+      toast.error("لینک قبض موجود نیست!");
+      return;
+    }
+
+    try {
+      const response = await fetch(customerInfo.invoicePdf, {
+        method: "GET",
+      });
+      const blob = await response.blob();
+
+      const blobUrl = URL.createObjectURL(blob);
+      const printWindow = window.open(blobUrl, "_blank");
+
       if (printWindow) {
+        printWindow.focus();
         printWindow.onload = () => {
           printWindow.print();
+          URL.revokeObjectURL(blobUrl);
         };
+      } else {
+        toast.error("باز کردن پنجره چاپ با شکست مواجه شد");
       }
-    } else {
-      toast.error("لینک قبض موجود نیست!");
+    } catch (error) {
+      console.error("خطا در چاپ PDF:", error);
+      toast.error("چاپ قبض با شکست مواجه شد");
     }
   };
 
@@ -57,7 +74,7 @@ export const CustomerInfoPopup = ({
             className="text-green-500 bg-green-50 animate-bounce"
           />
 
-          <p>{`قبض ${customerInfo.fullName} به شماره ${invoiceNumber} با موفقیت ذخیره شد.`}</p>
+          <p>{`قبض ${customerInfo.fullUserData.fullName} به شماره ${invoiceNumber} با موفقیت ذخیره شد.`}</p>
         </div>
         <div className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-4">
@@ -86,7 +103,7 @@ export const CustomerInfoPopup = ({
                           gender: customerInfo.gender,
                           customerName: customerInfo.fullName,
                         },
-                        e
+                        e,
                       )
                     }
                   >

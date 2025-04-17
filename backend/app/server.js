@@ -29,6 +29,7 @@ module.exports = class Application {
     this.#app.use(bodyParser.json());
     this.#app.use(express.json());
     this.#app.use(express.static(path.join(__dirname, "public")));
+    this.#app.use("/temp", express.static(path.join(__dirname, "temp")));
     this.#app.use(helmet());
     this.#app.use(xss());
     this.#app.use(morgan("dev"));

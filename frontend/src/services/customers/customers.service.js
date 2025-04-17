@@ -27,3 +27,19 @@ export async function sendLensOrderApi(invoiceId) {
     .post(`/api/admin/customers/sendLensOrder`, invoiceId)
     .then(({ data }) => data);
 }
+export async function sendToWorkshopApi(invoiceId) {
+  return httpService
+    .post(`/api/admin/customers/sendToWorkshop`, invoiceId)
+    .then(({ data }) => data);
+}
+export async function getAllInvoicesApi(page = 1, size = 30, search = "") {
+  return httpService
+    .get(`/api/admin/customers/getAllInvoices`, {
+      params: {
+        page,
+        size,
+        search,
+      },
+    })
+    .then(({ data }) => data);
+}

@@ -13,7 +13,14 @@ export const ChoseLens = ({ setShowLensModal, onLensSelect }) => {
   const [filterCategory, setFilterCategory] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterRefractiveIndex, setFilterRefractiveIndex] = useState("");
+  const [imageErrors, setImageErrors] = useState({});
 
+  const handleImageError = (lensId) => {
+    setImageErrors((prev) => ({
+      ...prev,
+      [lensId]: true,
+    }));
+  };
   const categories = useMemo(() => {
     return [
       ...new Set(lensList.map((lens) => lens.LensCategory.lensCategoryName)),
@@ -142,19 +149,27 @@ export const ChoseLens = ({ setShowLensModal, onLensSelect }) => {
                   >
                     <td className="p-2 flex items-center gap-2">
                       <div className="w-12 h-12 relative">
-                        <Image
-                          className="rounded object-fill"
-                          src={`${process.env.NEXT_PUBLIC_API_URL}/${
-                            lens.lensImage || "default-image.jpg"
-                          }`}
-                          alt={lens.lensName || "تصویر عدسی"}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          onError={(e) =>
-                            (e.target.src = "/fallback-image.jpg")
-                          }
-                        />
+                        {!lens.lensImage || imageErrors[lens.lensId] ? (
+                          <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded">
+                            <span className="text-gray-500 text-lg">🚫</span>
+                          </div>
+                        ) : (
+                          <Image
+                            className="rounded object-fill"
+                            src={`${process.env.NEXT_PUBLIC_API_URL}/${lens.lensImage}`}
+                            alt={lens.lensName || "تصویر عدسی"}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            onError={() => {
+                              setImageErrors((prev) => ({
+                                ...prev,
+                                [lens.lensId]: true,
+                              }));
+                            }}
+                          />
+                        )}
                       </div>
+
                       {lens.lensName}
                     </td>
                     <td className="p-2">

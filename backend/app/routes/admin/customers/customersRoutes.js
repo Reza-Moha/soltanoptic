@@ -33,7 +33,16 @@ router.post(
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
   CustomersController.sendLensOrder,
 );
-
+router.post(
+  "/sendToWorkshop",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.sendToWorkshop,
+);
+router.get(
+  "/getAllInvoices",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.getAllInvoicesPaginated,
+);
 module.exports = {
   customersRoutes: router,
 };

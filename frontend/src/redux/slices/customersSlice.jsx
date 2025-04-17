@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import toast from "react-hot-toast";
+
 import {
   createNewInvoiceApi,
   getLastInvoiceNumberApi,
   getOrderLensDailyApi,
+  getAllInvoicesApi,
 } from "@/services/customers/customers.service";
 
 export const createNewInvoice = createAsyncThunk(
@@ -21,6 +22,7 @@ export const createNewInvoice = createAsyncThunk(
     }
   },
 );
+
 export const getLastInvoiceNumber = createAsyncThunk(
   "customer/invoiceNumber",
   async (_, { rejectWithValue }) => {
@@ -34,6 +36,7 @@ export const getLastInvoiceNumber = createAsyncThunk(
     }
   },
 );
+
 export const getOrderLensDaily = createAsyncThunk(
   "orderLens/getDaily",
   async (date, thunkAPI) => {
@@ -46,6 +49,22 @@ export const getOrderLensDaily = createAsyncThunk(
   },
 );
 
+export const getAllInvoicesPaginated = createAsyncThunk(
+  "customer/getAllInvoicesPaginated",
+  async ({ page = 1, size = 30, search = "" }, thunkAPI) => {
+    try {
+      const response = await getAllInvoicesApi(page, size, search);
+      return {
+        invoices: response.invoices,
+        pagination: response.pagination,
+      };
+    } catch (error) {
+      toast.error("خطا در دریافت لیست قبض‌ها");
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  },
+);
+
 const customerSlice = createSlice({
   name: "customer",
   initialState: {
@@ -53,24 +72,16 @@ const customerSlice = createSlice({
     invoiceList: [],
     orderLensDaily: [],
     lastInvoiceNumber: 0,
+    allInvoices: [],
+    totalPages: 0,
+    currentPage: 1,
     isLoading: true,
+    invoicesLoading: false,
     error: null,
   },
 
   extraReducers: (builder) => {
     builder
-      // .addCase(fetchAllBanks.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(fetchAllBanks.fulfilled, (state, action) => {
-      //   state.bankList = action.payload;
-      //   state.isLoading = false;
-      // })
-      // .addCase(fetchAllBanks.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.error = action.payload;
-      // })
-
       .addCase(createNewInvoice.pending, (state) => {
         state.isLoading = true;
       })
@@ -102,6 +113,19 @@ const customerSlice = createSlice({
       })
       .addCase(getOrderLensDaily.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllInvoicesPaginated.pending, (state) => {
+        state.invoicesLoading = true;
+      })
+      .addCase(getAllInvoicesPaginated.fulfilled, (state, action) => {
+        state.allInvoices = action.payload.invoices;
+        state.totalPages = action.payload.pagination.totalPages;
+        state.currentPage = action.payload.pagination.page;
+        state.invoicesLoading = false;
+      })
+      .addCase(getAllInvoicesPaginated.rejected, (state, action) => {
+        state.invoicesLoading = false;
         state.error = action.payload;
       });
   },

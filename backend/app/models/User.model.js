@@ -15,6 +15,7 @@ UserModel.init(
     },
     nationalId: {
       type: DataTypes.STRING,
+      unique: true,
     },
     jobTitle: {
       type: DataTypes.STRING,
@@ -24,6 +25,7 @@ UserModel.init(
     },
     phoneNumber: {
       type: DataTypes.STRING,
+      unique: true,
     },
     description: {
       type: DataTypes.STRING,
@@ -48,7 +50,7 @@ UserModel.init(
     modelName: "User",
     tableName: "Users",
     timestamps: true,
-  }
+  },
 );
 
 module.exports = {

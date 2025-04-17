@@ -1,19 +1,19 @@
 import {
-  createNewLensCategoryApi,
   createNewLensApi,
+  createNewLensCategoryApi,
   createNewLensTypeApi,
   createNewRefractiveIndexApi,
+  deleteLensByIdApi,
   deleteLensCategoriesByIdApi,
   deleteLensTypeById,
   deleteRefractiveIndexByIdApi,
+  getAllLensApi,
   getAllLensCategoriesApi,
   getAllLensTypeApi,
   getAllRefractiveIndexApi,
-  getAllLensApi,
-  deleteLensByIdApi,
   pricingLensApi,
 } from "@/services/admin/lens/lens.service";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import toast from "react-hot-toast";
 
@@ -59,8 +59,7 @@ export const fetchAllLens = createAsyncThunk(
   "lens/fetchAllLens",
   async ({ page = 1, size = 5, search = "" }, { rejectWithValue }) => {
     try {
-      const data = await getAllLensApi(page, size, search);
-      return data;
+      return await getAllLensApi(page, size, search);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

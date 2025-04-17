@@ -8,6 +8,7 @@ import { fetchAllLens } from "@/redux/slices/lensSlice";
 import { fetchAllBanks } from "@/redux/slices/bankSlice";
 import { fetchAllCompanies } from "@/redux/slices/companiesSlice";
 import {
+  getAllInvoicesPaginated,
   getLastInvoiceNumber,
   getOrderLensDaily,
 } from "@/redux/slices/customersSlice";
@@ -21,7 +22,8 @@ export const EmployeeDashboardWrapper = ({ children }) => {
     dispatch(fetchAllBanks());
     dispatch(fetchAllCompanies());
     dispatch(getLastInvoiceNumber());
-    dispatch(getOrderLensDaily())
+    dispatch(getOrderLensDaily());
+    dispatch(getAllInvoicesPaginated({ page: 1, size: 30, search: "" }));
   }, [dispatch]);
   return <div className="xl:max-w-screen-xl">{children}</div>;
 };

@@ -32,6 +32,16 @@ const { FrameColor } = require("../../../models/frame/FrameColor.model");
 const { createPDF } = require("../../../utils/createOrderLensDailyPdf");
 const path = require("path");
 const { promises } = require("node:fs");
+const { LensCategory } = require("../../../models/lens/LensCategory.model");
+const { LensGroup } = require("../../../models/lens/LensGroup.model");
+const { LensType } = require("../../../models/lens/LensType.model");
+const {
+  RefractiveIndex,
+} = require("../../../models/lens/RefractiveIndex.model");
+const { FrameImages } = require("../../../models/frame/FrameImage.model");
+const { FrameType } = require("../../../models/frame/FrameType.model");
+const { FrameGender } = require("../../../models/frame/FrameGender.model");
+const { FrameCategory } = require("../../../models/frame/FramCategory.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -261,11 +271,12 @@ class CustomersController extends Controller {
     try {
       const lastInvoice = await InvoiceModel.findOne({
         attributes: ["invoiceNumber"],
-        order: [["createdAt", "DESC"]],
+        order: [["invoiceNumber", "DESC"]],
       });
 
       const lastInvoiceNumber = lastInvoice ? lastInvoice.invoiceNumber : 999;
       const newInvoiceNumber = lastInvoiceNumber + 1;
+
       res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         invoiceNumber: newInvoiceNumber,
@@ -298,13 +309,17 @@ class CustomersController extends Controller {
   async lensOrdersDaily(req, res, next) {
     try {
       const { date } = req.query;
+
+      function convertPersianToEnglishDigits(input) {
+        return input.replace(/[۰-۹]/g, (char) =>
+          String.fromCharCode(char.charCodeAt(0) - 1728),
+        );
+      }
+
       let filterCondition;
 
       if (date) {
-        const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
-        const normalizedDate = date.replace(/[۰-۹]/g, (d) =>
-          persianDigits.indexOf(d),
-        );
+        const normalizedDate = convertPersianToEnglishDigits(date);
         const isJalali = /^1[34]\d{2}-\d{1,2}-\d{1,2}$/.test(normalizedDate);
         const gregorianDate = isJalali
           ? convertJalaliToGregorian(normalizedDate)
@@ -325,7 +340,7 @@ class CustomersController extends Controller {
           {
             model: CompanyModel,
             as: "company",
-            attributes: ["companyName", "whatsappNumber"],
+            attributes: ["CompanyId", "companyName"],
           },
           {
             model: UserModel,
@@ -372,8 +387,8 @@ class CustomersController extends Controller {
         },
       });
 
-      return res.status(HttpStatus.OK).send({
-        statusCode: HttpStatus.OK,
+      return res.status(200).send({
+        statusCode: 200,
         lensOrdersDaily: invoices,
       });
     } catch (error) {
@@ -404,6 +419,133 @@ class CustomersController extends Controller {
     } catch (error) {
       console.error(error);
       next(error);
+    }
+  }
+
+  async getAllInvoicesPaginated(req, res, next) {
+    try {
+      const { page = 1, size = 30, search = "" } = req.query;
+      const limit = +size;
+      const offset = (page - 1) * limit;
+      const searchCondition = search.trim()
+        ? {
+            [Op.or]: [
+              Sequelize.where(
+                Sequelize.cast(
+                  Sequelize.col("customerInvoice.invoiceNumber"),
+                  "TEXT",
+                ),
+                { [Op.iLike]: `%${search}%` },
+              ),
+              { "$customer.fullName$": { [Op.iLike]: `%${search}%` } },
+              {
+                "$prescriptions.lens.lensName$": { [Op.iLike]: `%${search}%` },
+              },
+              { "$prescriptions.frame.name$": { [Op.iLike]: `%${search}%` } },
+              Sequelize.where(
+                Sequelize.cast(
+                  Sequelize.col("customerInvoice.SumTotalInvoice"),
+                  "TEXT",
+                ),
+                { [Op.iLike]: `%${search}%` },
+              ),
+            ],
+          }
+        : {};
+
+      const { rows: invoices, count: total } =
+        await InvoiceModel.findAndCountAll({
+          where: searchCondition,
+          offset,
+          limit,
+          order: [["createdAt", "DESC"]],
+          include: [
+            { model: CompanyModel, as: "company" },
+            { model: BankModel, as: "bank" },
+            { model: InsuranceModel, as: "insurance" },
+            { model: PaymentInfoModel, as: "paymentInfo" },
+            { model: UserModel, as: "customer" },
+            { model: UserModel, as: "employee" },
+            {
+              model: UserPrescriptionModel,
+              as: "prescriptions",
+              include: [
+                {
+                  model: FrameModel,
+                  as: "frame",
+                  include: [
+                    { model: FrameCategory },
+                    { model: FrameGender },
+                    { model: FrameType },
+                    {
+                      model: FrameColor,
+                      include: [{ model: FrameImages }],
+                    },
+                  ],
+                },
+                {
+                  model: LensModel,
+                  as: "lens",
+                  include: [
+                    { model: LensCategory },
+                    { model: LensGroup },
+                    { model: LensType },
+                    { model: RefractiveIndex },
+                  ],
+                },
+              ],
+            },
+          ],
+        });
+
+      return res.status(200).json({
+        statusCode: 200,
+        invoices,
+        pagination: {
+          total,
+          page: +page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching paginated invoices with search:", error);
+      next(error);
+    }
+  }
+
+  async sendToWorkshop(req, res, next) {
+    try {
+      const { invoiceId } = req.body;
+
+      if (!invoiceId) {
+        return res.status(400).send({
+          statusCode: 400,
+          message: "شناسه فاکتور اجباری است.",
+        });
+      }
+
+      const invoice = await InvoiceModel.findByPk(invoiceId);
+
+      if (!invoice) {
+        return res.status(404).send({
+          statusCode: 404,
+          message: "فاکتور یافت نشد.",
+        });
+      }
+
+      invoice.lensOrderStatus = "workShopSection";
+      invoice.workShopSectionAt = new Date();
+
+      await invoice.save();
+
+      return res.status(200).send({
+        statusCode: 200,
+        message: "تحویل به کارگاه با موفقیت ثبت شد.",
+        invoice,
+      });
+    } catch (e) {
+      next(e);
     }
   }
 }

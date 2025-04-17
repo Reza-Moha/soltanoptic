@@ -36,7 +36,7 @@ InvoiceModel.init(
       type: DataTypes.ENUM(
         "registered",
         "orderLenses",
-        "workshopSection",
+        "workShopSection",
         "readyToDeliver",
         "delivered",
       ),
@@ -44,6 +44,18 @@ InvoiceModel.init(
       defaultValue: "registered",
     },
     lensOrderAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    workShopSectionAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    readyToDeliverAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    deliveredAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },

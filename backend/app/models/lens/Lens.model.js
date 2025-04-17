@@ -10,6 +10,7 @@ const LensModel = sequelize.define(
       allowNull: false,
       unique: true,
       primaryKey: true,
+      onDelete: "CASCADE",
     },
     lensName: {
       type: DataTypes.STRING,

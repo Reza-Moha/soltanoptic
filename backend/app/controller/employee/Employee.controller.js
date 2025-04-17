@@ -17,7 +17,6 @@ const { Roles } = require("../../models/Roles.model");
 class EmployeeController extends Controller {
   async createNewEmployee(req, res, next) {
     try {
-
       await createNewEmployeeSchema.validateAsync(req.body);
 
       const {
@@ -37,17 +36,17 @@ class EmployeeController extends Controller {
           : null;
 
       deleteInvalidPropertyInObject(req.body, BlackListFields);
-
-      const existingUser = await UserModel.findOne({
-        where: {
-          [Op.or]: [{ phoneNumber }, { nationalId }],
-        },
-      });
-
-      if (existingUser) {
-        throw CreateError.BadRequest("همکاری با این مشخصات قبلاً ثبت شده است");
+      const existingPhone = await UserModel.findOne({ where: { phoneNumber } });
+      if (existingPhone) {
+        throw CreateError.BadRequest("شماره تماس وارد شده قبلاً ثبت شده است");
       }
 
+      const existingNationalId = await UserModel.findOne({
+        where: { nationalId },
+      });
+      if (existingNationalId) {
+        throw CreateError.BadRequest("کد ملی وارد شده قبلاً ثبت شده است");
+      }
       const newEmployee = await UserModel.create({
         profileImage: image,
         phoneNumber,
@@ -56,7 +55,7 @@ class EmployeeController extends Controller {
         nationalId,
         jobTitle,
         description,
-        role: process.env.EMPLOYEE_ROLE, 
+        role: process.env.EMPLOYEE_ROLE,
       });
 
       if (!newEmployee) {
@@ -64,7 +63,6 @@ class EmployeeController extends Controller {
           "ایجاد همکار جدید با خطا مواجه شد لطفاً دوباره تلاش کنید",
         );
       }
-
 
       const [updatedRowsCount] = await Roles.update(
         { UserId: newEmployee.id },
@@ -78,7 +76,6 @@ class EmployeeController extends Controller {
         throw CreateError.InternalServerError("عملیات ویرایش نقش انجام نشد");
       }
 
-
       return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         message: "همکار جدید با موفقیت ثبت گردید",
@@ -88,7 +85,6 @@ class EmployeeController extends Controller {
         }),
       });
     } catch (error) {
-  
       if (req.body.fileUploadPath && req.body.filename) {
         const image = path
           .join(req.body.fileUploadPath, req.body.filename)
@@ -103,10 +99,22 @@ class EmployeeController extends Controller {
   async getAllEmployee(req, res, next) {
     try {
       const allEmployee = await UserModel.findAll({
-        where: { role: process.env.EMPLOYEE_ROLE },
+        where: {
+          role: {
+            [Op.in]: [
+              process.env.EMPLOYEE_ROLE,
+              process.env.WORKSHOP_MANAGER_ROLE,
+              process.env.ACCOUNTING_OFFICER_ROLE,
+            ],
+          },
+        },
         attributes: { exclude: ["otp", "createdAt", "updatedAt", "role"] },
       });
-      if (!allEmployee) throw CreateError.NotFound("همکاری یافت نشد");
+
+      if (!allEmployee || allEmployee.length === 0) {
+        throw CreateError.NotFound("همکاری یافت نشد");
+      }
+
       return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         allEmployee,
