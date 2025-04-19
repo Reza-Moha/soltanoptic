@@ -9,6 +9,7 @@ const statusLabels = {
     orderLenses: { label: "سفارش داده شده", isDisabled: true },
     workShopSection: { label: "قسمت کارگاه", isDisabled: true },
     readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    sendOrderSms: { label: "پیامک آماده تحویل ارسال شده", isDisabled: true },
     delivered: { label: "تحویل داده شده", isDisabled: true },
   },
   workshop: {
@@ -16,6 +17,7 @@ const statusLabels = {
     orderLenses: { label: "تحویل به کارگاه", isDisabled: false },
     workShopSection: { label: "قسمت کارگاه", isDisabled: true },
     readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    sendOrderSms: { label: "پیامک آماده تحویل ارسال شده", isDisabled: true },
     delivered: { label: "تحویل داده شده", isDisabled: true },
   },
   readyToDeliver: {
@@ -23,6 +25,15 @@ const statusLabels = {
     orderLenses: { label: "تحویل به کارگاه", isDisabled: true },
     workShopSection: { label: "تحویل بسته بندی", isDisabled: false },
     readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    sendOrderSms: { label: "پیامک آماده تحویل ارسال شده", isDisabled: true },
+    delivered: { label: "تحویل داده شده", isDisabled: true },
+  },
+  sendSmsDelivery: {
+    registered: { label: "نیاز به سفارش عدسی", isDisabled: true },
+    orderLenses: { label: "تحویل به کارگاه", isDisabled: true },
+    workShopSection: { label: "تحویل بسته بندی", isDisabled: true },
+    readyToDeliver: { label: "ارسال پیامک آماده شد", isDisabled: false },
+    sendOrderSms: { label: "پیامک آماده تحویل ارسال شده", isDisabled: true },
     delivered: { label: "تحویل داده شده", isDisabled: true },
   },
 };

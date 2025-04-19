@@ -37,6 +37,11 @@ export async function sendToDeliverApi(data) {
     .post(`/api/admin/customers/sendToDeliver`, data)
     .then(({ data }) => data);
 }
+export async function sendSmsDeliveryApi(data) {
+  return httpService
+    .post(`/api/admin/customers/sendSmsDelivery`, data)
+    .then(({ data }) => data);
+}
 export async function getAllInvoicesApi(page = 1, size = 30, search = "") {
   return httpService
     .get(`/api/admin/customers/getAllInvoices`, {

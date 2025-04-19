@@ -43,6 +43,11 @@ router.post(
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
   CustomersController.sendToDeliver,
 );
+router.post(
+  "/sendSmsDelivery",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.sendDeliverySms,
+);
 router.get(
   "/getAllInvoices",
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),

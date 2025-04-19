@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { GiMicroscopeLens } from "react-icons/gi";
 import { FaBorderTopLeft, FaScrewdriverWrench } from "react-icons/fa6";
+import { FaFirstOrder } from "react-icons/fa";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -46,6 +47,12 @@ const sidebarNavs = [
   },
   {
     id: 6,
+    title: "عینک های آماده تحویل",
+    icon: <FaFirstOrder className="w-5 h-5" />,
+    href: "/employee/readyToDelivery",
+  },
+  {
+    id: 7,
     title: "بخش کارگاه",
     icon: <FaScrewdriverWrench className="w-5 h-5" />,
     href: "/employee/workshopSection",

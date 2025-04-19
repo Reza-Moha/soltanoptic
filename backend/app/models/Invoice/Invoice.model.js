@@ -38,6 +38,7 @@ InvoiceModel.init(
         "orderLenses",
         "workShopSection",
         "readyToDeliver",
+        "sendOrderSms",
         "delivered",
       ),
       allowNull: false,
@@ -72,6 +73,14 @@ InvoiceModel.init(
       allowNull: true,
     },
     deliveredBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    sendOrderSmsAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    sendOrderSmsBy: {
       type: DataTypes.STRING,
       allowNull: true,
     },

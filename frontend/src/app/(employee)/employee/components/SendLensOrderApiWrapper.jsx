@@ -1,6 +1,7 @@
 "use client";
 import {
   sendLensOrderApi,
+  sendSmsDeliveryApi,
   sendToDeliverApi,
   sendToWorkshopApi,
 } from "@/services/customers/customers.service";
@@ -14,4 +15,7 @@ export async function sendToWorkshopApiWrapper({ invoiceId, userId }) {
 }
 export async function sendToDeliverApiWrapper({ invoiceId, userId }) {
   return await sendToDeliverApi({ invoiceId, userId });
+}
+export async function sendSmsDeliveryApiWrapper({ invoiceId, userId }) {
+  return await sendSmsDeliveryApi({ invoiceId, userId });
 }

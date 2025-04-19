@@ -352,6 +352,26 @@ const sendPDFToTelegramGroup = async (pdfPath, invoiceId) => {
   }
 };
 
+const orderDeliverySms = async (
+  RecNumber,
+  gender,
+  invoiceNumber,
+  customerName,
+  responsibleForDelivery,
+) => {
+  const accessHash = process.env.SMS_ACCESS_HASH;
+  const phoneNumber = process.env.SMS_PHONENUMBER;
+  const patternId = process.env.ORDER_DELEVIRY_SMS_PATTER_ID;
+  try {
+    const response = await axios.get(
+      `http://smspanel.trez.ir/SendPatternWithUrl.ashx?AccessHash=${accessHash}&PhoneNumber=${phoneNumber}&PatternId=${patternId}&RecNumber=${RecNumber}&Smsclass=1&token1=${gender}&token2=${customerName}&token3=${invoiceNumber}&token4=${responsibleForDelivery}`,
+    );
+    return { success: true, message: response.data.Message };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 module.exports = {
   randomNumberGenerator,
   SignAccessToken,
@@ -373,4 +393,5 @@ module.exports = {
   convertJalaliToGregorian,
   getInvoiceDetails,
   sendPDFToTelegramGroup,
+  orderDeliverySms,
 };

@@ -19,6 +19,7 @@ const {
   convertJalaliToGregorian,
   sendPDFToTelegramGroup,
   normalizeEmptyUUIDs,
+  orderDeliverySms,
 } = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
@@ -580,6 +581,60 @@ class CustomersController extends Controller {
       return res.status(200).send({
         statusCode: 200,
         message: "عینک با موفقیت به بخش بسته بندی تحویل داده شد",
+        invoice,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async sendDeliverySms(req, res, next) {
+    try {
+      const { invoiceId, userId } = req.body;
+
+      if (!invoiceId && userId) {
+        return res.status(400).send({
+          statusCode: 400,
+          message: "شناسه فاکتور اجباری است.",
+        });
+      }
+      const registeredUser = await UserModel.findByPk(userId);
+      const invoice = await InvoiceModel.findByPk(invoiceId, {
+        include: [
+          {
+            model: UserModel,
+            as: "customer",
+            attributes: ["fullName", "gender"],
+          },
+        ],
+      });
+
+      if (!invoice) {
+        return res.status(404).send({
+          statusCode: 404,
+          message: "فاکتور یافت نشد.",
+        });
+      }
+      const { customer } = invoice;
+      const result = await orderDeliverySms(
+        customer.phoneNumber,
+        customer.gender,
+        invoice.InvoiceId,
+        customer.fullName,
+        `${registeredUser.gender} ${registeredUser.fullName}`,
+      );
+      console.log(result);
+      if (!result.success) {
+        throw CreateError.NotFound("پیامک آماده شد سفارش ارسال نشد ");
+      }
+      invoice.lensOrderStatus = "sendOrderSms";
+      invoice.sendOrderSmsBy = registeredUser.fullName;
+      invoice.sendOrderSmsAt = new Date();
+
+      await invoice.save();
+      return res.status(200).send({
+        statusCode: 200,
+        message: "عینک با موفقیت به بخش تحویل ارجاع داده شد",
         invoice,
       });
     } catch (e) {

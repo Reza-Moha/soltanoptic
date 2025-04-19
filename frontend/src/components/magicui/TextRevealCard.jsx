@@ -1,48 +1,57 @@
 "use client";
+import React from "react";
 import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge";
 
-export default function TextRevealCard({
+const TextRevealCard = ({
   text,
   revealText,
   byText,
-  icon = "🔘",
-  isPassed = false,
-  isActive = false,
-  className,
-}) {
+  icon,
+  isPassed,
+  isActive,
+}) => {
+  const iconVariants = {
+    initial: { scale: 1, rotate: 0 },
+    active: {
+      scale: [1, 1.3, 1],
+      rotate: [0, 15, -15, 0],
+      transition: {
+        duration: 0.8,
+        repeat: Infinity,
+        repeatDelay: 2,
+      },
+    },
+    passed: {
+      scale: 1.2,
+      color: "#10B981", // emerald-500
+    },
+  };
+
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className={twMerge(
-        "min-w-[160px] text-center rounded-xl px-4 py-3 border shadow-md transition-all duration-300",
-        isPassed
-          ? "bg-emerald-100 border-emerald-500 text-emerald-800"
-          : "bg-gray-100 border-gray-300 text-gray-500",
-        isActive && "ring-2 ring-emerald-400",
-        className,
-      )}
-    >
-      <div className="flex flex-col items-center space-y-1">
-        <div className="text-2xl">{icon}</div>
-        <div className="font-semibold text-sm">{text}</div>
-        <motion.div
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-xs text-gray-600"
-        >
-          {revealText}
-        </motion.div>
-        {byText && (
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] text-gray-500 mt-1"
-          >
-            {`توسط ${byText}`}
-          </motion.div>
-        )}
+    <div className="flex flex-col items-center min-w-[120px] px-3">
+      <motion.div
+        className={`w-12 h-12 flex items-center justify-center text-xl rounded-full border-2 ${
+          isActive
+            ? "border-emerald-500 text-emerald-500"
+            : isPassed
+              ? "border-emerald-300 text-emerald-400"
+              : "border-gray-300 text-gray-300"
+        }`}
+        variants={iconVariants}
+        initial="initial"
+        animate={isActive ? "active" : isPassed ? "passed" : "initial"}
+      >
+        {icon}
+      </motion.div>
+      <div className="text-xs mt-2 text-center text-gray-600 font-semibold">
+        {text}
       </div>
-    </motion.div>
+      <div className="text-[10px] text-gray-500 mt-1">{revealText}</div>
+      {byText && (
+        <div className="text-[10px] text-gray-400">توسط: {byText}</div>
+      )}
+    </div>
   );
-}
+};
+
+export default TextRevealCard;
