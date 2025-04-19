@@ -47,10 +47,10 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
     const { paymentInfo, insurance, prescriptions, createdAt, company } =
       data.customerInvoices[0];
 
-      const contentHeight = await page.evaluate(() => {
-        return document.body.scrollHeight;
-      });
-      
+    const contentHeight = await page.evaluate(() => {
+      return document.body.scrollHeight;
+    });
+
     const htmlContent = `
         <!DOCTYPE html>
         <html lang="fa">
@@ -61,7 +61,7 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
             <title>قبض ${invoiceNumber}</title>
                <link href="file://${path.join(
                  __dirname,
-                 "../public/css/styles.css"
+                 "../public/css/styles.css",
                )}" rel="stylesheet">
             <style type="text/css">
                 .tg {
@@ -88,95 +88,124 @@ const generateCustomerInvoicePdf = async (data, invoiceNumber, employee) => {
                     <th colspan="9">${invoiceNumber} - سلطان اپتیک</th>
                 </tr>
             </thead>
-            <tbody>
-                ${
-                  prescriptions.length > 0
-                    ? prescriptions
-                        .map(
-                          (prescription) => `
-                <tr>
-                    <td>${prescription.label}</td>
-                    <td colspan="2">SPH</td>
-                    <td colspan="2">CYL</td>
-                    <td>AXE</td>
-                    <td colspan="3">PD: ${prescription.pd}</td>
-                </tr>
-                <tr>
-                    <td>OD</td>
-                    <td colspan="2">${prescription.odSph}</td>
-                    <td colspan="2">${prescription.odCyl}</td>
-                    <td>${prescription.odAx}</td>
-                    <td colspan="3">${prescription.lens.lensName}</td>
-                </tr>
-                <tr>
-                    <td>OS</td>
-                    <td colspan="2">${prescription.osSph}</td>
-                    <td colspan="2">${prescription.osCyl}</td>
-                    <td>${prescription.osAx}</td>
-                    <td colspan="3">${prescription.frame.serialNumber}</td>
-                </tr>`
-                        )
-                        .join("")
-                    : ""
-                }
-                <tr>
-                    <td colspan="5">${data.gender} ${data.fullName}</td>
-                    <td colspan="4">نام مشتری</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${convertToPersianNumber(
-                      data.phoneNumber
-                    )}</td>
-                    <td colspan="4">شماره تماس</td>
-                </tr>
-                <tr>
-                  <td colspan="5" dir="rtl" style="text-align: center;">${formatToPersianDate(
-                    createdAt
-                  )}</td>
+       <tbody>
+  ${
+    prescriptions.length > 0
+      ? prescriptions
+          .map(
+            (prescription) => `
+      <tr>
+          <td>${prescription.label || ""}</td>
+          <td colspan="2">SPH</td>
+          <td colspan="2">CYL</td>
+          <td>AXE</td>
+          <td colspan="3">PD: ${prescription.pd || ""}</td>
+      </tr>
+      <tr>
+          <td>OD</td>
+          <td colspan="2">${prescription.odSph || ""}</td>
+          <td colspan="2">${prescription.odCyl || ""}</td>
+          <td>${prescription.odAx || ""}</td>
+          <td colspan="3">${prescription.lens?.lensName || ""}</td>
+      </tr>
+      <tr>
+          <td>OS</td>
+          <td colspan="2">${prescription.osSph || ""}</td>
+          <td colspan="2">${prescription.osCyl || ""}</td>
+          <td>${prescription.osAx || ""}</td>
+          <td colspan="3">${prescription.frame?.serialNumber || ""}</td>
+      </tr>`,
+          )
+          .join("")
+      : ""
+  }
 
-                    <td colspan="4">تاریخ سفارش</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.SumTotalInvoice
-                    )}</td>
-                    <td colspan="4">مبلغ کل</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.discount
-                    )}</td>
-                    <td colspan="4">تخفیف</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.deposit
-                    )}</td>
-                    <td colspan="4">دریافتی</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${formatNumberWithCommas(
-                      paymentInfo.billBalance
-                    )}</td>
-                    <td colspan="4">باقیمانده</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${insurance.insuranceName}</td>
-                    <td colspan="4">نوع بیمه</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${employee.fullName}</td>
-                    <td colspan="4">فروشنده</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${paymentInfo.paymentMethod}</td>
-                    <td colspan="4">نحوه پرداخت</td>
-                </tr>
-                <tr>
-                    <td colspan="5">${company.companyName}</td>
-                    <td colspan="4">سفارش عدسی از</td>
-                </tr>
-            </tbody>
+  <tr>
+    <td colspan="5">${data.gender || ""} ${data.fullName || ""}</td>
+    <td colspan="4">نام مشتری</td>
+  </tr>
+  <tr>
+    <td colspan="5">${convertToPersianNumber(data.phoneNumber || "")}</td>
+    <td colspan="4">شماره تماس</td>
+  </tr>
+  <tr>
+    <td colspan="5" dir="rtl" style="text-align: center;">${formatToPersianDate(createdAt)}</td>
+    <td colspan="4">تاریخ سفارش</td>
+  </tr>
+  ${
+    paymentInfo?.SumTotalInvoice
+      ? `
+  <tr>
+    <td colspan="5">${formatNumberWithCommas(paymentInfo.SumTotalInvoice)}</td>
+    <td colspan="4">مبلغ کل</td>
+  </tr>`
+      : ""
+  }
+  ${
+    paymentInfo?.discount
+      ? `
+  <tr>
+    <td colspan="5">${formatNumberWithCommas(paymentInfo.discount)}</td>
+    <td colspan="4">تخفیف</td>
+  </tr>`
+      : ""
+  }
+  ${
+    paymentInfo?.deposit
+      ? `
+  <tr>
+    <td colspan="5">${formatNumberWithCommas(paymentInfo.deposit)}</td>
+    <td colspan="4">دریافتی</td>
+  </tr>`
+      : ""
+  }
+  ${
+    paymentInfo?.billBalance
+      ? `
+  <tr>
+    <td colspan="5">${formatNumberWithCommas(paymentInfo.billBalance)}</td>
+    <td colspan="4">باقیمانده</td>
+  </tr>`
+      : ""
+  }
+  ${
+    insurance?.insuranceName
+      ? `
+  <tr>
+    <td colspan="5">${insurance.insuranceName}</td>
+    <td colspan="4">نوع بیمه</td>
+  </tr>`
+      : ""
+  }
+  ${
+    employee?.fullName
+      ? `
+  <tr>
+    <td colspan="5">${employee.fullName}</td>
+    <td colspan="4">فروشنده</td>
+  </tr>`
+      : ""
+  }
+  ${
+    paymentInfo?.paymentMethod
+      ? `
+  <tr>
+    <td colspan="5">${paymentInfo.paymentMethod}</td>
+    <td colspan="4">نحوه پرداخت</td>
+  </tr>`
+      : ""
+  }
+  ${
+    company?.companyName
+      ? `
+  <tr>
+    <td colspan="5">${company.companyName}</td>
+    <td colspan="4">سفارش عدسی از</td>
+  </tr>`
+      : ""
+  }
+</tbody>
+
         </table>
         </body>
         </html>

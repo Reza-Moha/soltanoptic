@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 export default function TextRevealCard({
   text,
   revealText,
+  byText,
   icon = "🔘",
   isPassed = false,
   isActive = false,
@@ -22,7 +23,7 @@ export default function TextRevealCard({
         className,
       )}
     >
-      <div className="flex flex-col items-center space-y-2">
+      <div className="flex flex-col items-center space-y-1">
         <div className="text-2xl">{icon}</div>
         <div className="font-semibold text-sm">{text}</div>
         <motion.div
@@ -32,6 +33,15 @@ export default function TextRevealCard({
         >
           {revealText}
         </motion.div>
+        {byText && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[11px] text-gray-500 mt-1"
+          >
+            {`توسط ${byText}`}
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );

@@ -271,7 +271,7 @@ const formatToPersianDate = (date) => {
   return `${parts[0]}/${parts[1]}/${parts[2]}`;
 };
 
-const getInvoiceDetails = async (invoiceId) => {
+const getInvoiceDetails = async (invoiceId, userId) => {
   try {
     const invoice = await InvoiceModel.findByPk(invoiceId, {
       include: [
@@ -314,9 +314,12 @@ const getInvoiceDetails = async (invoiceId) => {
         },
       ],
     });
-
+    const registeredUser = await UserModel.findByPk(userId);
     if (invoice) {
-      await invoice.update({ lensOrderStatus: "orderLenses" });
+      await invoice.update({
+        lensOrderStatus: "orderLenses",
+        lensOrderBy: registeredUser.fullName,
+      });
     }
 
     return invoice;

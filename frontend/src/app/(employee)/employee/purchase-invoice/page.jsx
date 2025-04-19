@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FieldArray, Form, Formik } from "formik";
 import { createNewPurchaseInvoiceSchema } from "@/validators/admin";
 import SubmitBtn from "@/components/Ui/SubmitBtn";
@@ -17,11 +17,13 @@ import { PaymentMethods } from "./_components/PaymentMethods/PaymentMethods";
 import { ChoseCompaniesLens } from "./_components/ChoseCompaneisLens";
 import { ChoseTypeOfFrameModal } from "./_components/ChoseFrame/ChoseTypeOfFrameModal";
 import { CustomerInfoPopup } from "./_components/CustomerInfoPopup";
+import { getLastInvoiceNumber } from "@/redux/slices/customersSlice";
 export default function CreatePurchaseInvoice() {
   const { lastInvoiceNumber, isLoading } = useSelector(
     (state) => state.customerSlice,
   );
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const initialValues = {
     invoiceNumber: lastInvoiceNumber || 0,
     employeeId: user?.id || "",
@@ -62,7 +64,7 @@ export default function CreatePurchaseInvoice() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
 
-  const createNewPurchaseInvoiceHandler = async (values) => {
+  const createNewPurchaseInvoiceHandler = async (values, { resetForm }) => {
     try {
       const formattedValues = {
         ...values,
@@ -70,12 +72,14 @@ export default function CreatePurchaseInvoice() {
           values.descriptionPrice === 0 ? "" : values.descriptionPrice,
         employeeId: user.id,
       };
-      const { message, statusCode, fullUserData ,invoicePdf} =
+      const { message, statusCode, fullUserData, invoicePdf } =
         await createNewInvoiceApi(formattedValues);
       if (statusCode === 201 && fullUserData) {
+        resetForm();
         toast.success(message);
-        setModalData({fullUserData,invoicePdf});
+        setModalData({ fullUserData, invoicePdf });
         setShowModal(true);
+        dispatch(getLastInvoiceNumber());
       }
     } catch (error) {
       const errors = error?.response?.data?.errors;
@@ -208,7 +212,11 @@ export default function CreatePurchaseInvoice() {
                     <ChoseCompaniesLens values={values} />
                   </div>
                   <SubmitBtn disabled={isLoading || isSubmitting}>
-                    {isSubmitting ? <BeatLoader size={5} /> : "ذخیره قبض"}
+                    {isSubmitting ? (
+                      <BeatLoader size={5} color="#fff" />
+                    ) : (
+                      "ذخیره قبض"
+                    )}
                   </SubmitBtn>
                 </div>
                 {showPopup && (
@@ -224,7 +232,6 @@ export default function CreatePurchaseInvoice() {
       )}
       {showModal && modalData && (
         <CustomerInfoPopup
-
           customerInfo={modalData || {}}
           setShowModal={setShowModal}
           invoiceNumber={lastInvoiceNumber || 0}

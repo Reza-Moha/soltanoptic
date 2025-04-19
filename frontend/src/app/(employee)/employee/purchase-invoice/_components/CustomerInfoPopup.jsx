@@ -40,19 +40,51 @@ export const CustomerInfoPopup = ({
         method: "GET",
       });
       const blob = await response.blob();
-
       const blobUrl = URL.createObjectURL(blob);
-      const printWindow = window.open(blobUrl, "_blank");
 
-      if (printWindow) {
-        printWindow.focus();
-        printWindow.onload = () => {
-          printWindow.print();
-          URL.revokeObjectURL(blobUrl);
-        };
-      } else {
+      const printWindow = window.open("", "_blank");
+      if (!printWindow) {
         toast.error("باز کردن پنجره چاپ با شکست مواجه شد");
+        return;
       }
+
+      printWindow.document.write(`
+      <html>
+        <head>
+          <style>
+            @media print {
+              body {
+                margin: 0;
+                padding: 0;
+              }
+              embed {
+                width: 790px !important;
+                height: 100vh;
+              }
+            }
+            body, html {
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+            }
+            embed {
+              width: 100%;
+              height: 100vh;
+            }
+          </style>
+        </head>
+        <body>
+          <embed src="${blobUrl}" type="application/pdf" />
+        </body>
+      </html>
+    `);
+      printWindow.document.close();
+
+      printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+        URL.revokeObjectURL(blobUrl);
+      };
     } catch (error) {
       console.error("خطا در چاپ PDF:", error);
       toast.error("چاپ قبض با شکست مواجه شد");

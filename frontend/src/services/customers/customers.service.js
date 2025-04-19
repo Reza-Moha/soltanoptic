@@ -22,14 +22,19 @@ export async function sendSmsPurchaseApi(data) {
     .post(`/api/admin/customers/send-sms-purchase`, data)
     .then(({ data }) => data);
 }
-export async function sendLensOrderApi(invoiceId) {
+export async function sendLensOrderApi(data) {
   return httpService
-    .post(`/api/admin/customers/sendLensOrder`, invoiceId)
+    .post(`/api/admin/customers/sendLensOrder`, data)
     .then(({ data }) => data);
 }
-export async function sendToWorkshopApi(invoiceId) {
+export async function sendToWorkshopApi(data) {
   return httpService
-    .post(`/api/admin/customers/sendToWorkshop`, invoiceId)
+    .post(`/api/admin/customers/sendToWorkshop`, data)
+    .then(({ data }) => data);
+}
+export async function sendToDeliverApi(data) {
+  return httpService
+    .post(`/api/admin/customers/sendToDeliver`, data)
     .then(({ data }) => data);
 }
 export async function getAllInvoicesApi(page = 1, size = 30, search = "") {

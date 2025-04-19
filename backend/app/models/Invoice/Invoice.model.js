@@ -47,16 +47,32 @@ InvoiceModel.init(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    lensOrderBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     workShopSectionAt: {
       type: DataTypes.DATE,
+      allowNull: true,
+    },
+    workShopSectionBy: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     readyToDeliverAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    readyToDeliverBy: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     deliveredAt: {
       type: DataTypes.DATE,
+      allowNull: true,
+    },
+    deliveredBy: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },

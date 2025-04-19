@@ -3,8 +3,8 @@ const { launch } = require("puppeteer");
 const path = require("path");
 const { getInvoiceDetails } = require("./index");
 
-const createPDF = async (invoiceId) => {
-  const invoice = await getInvoiceDetails(invoiceId);
+const createPDF = async (invoiceId, userId) => {
+  const invoice = await getInvoiceDetails(invoiceId, userId);
   if (!invoice) {
     throw new Error("Invoice not found");
   }

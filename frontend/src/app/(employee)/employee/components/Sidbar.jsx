@@ -21,17 +21,18 @@ function EmployeeSideBar() {
         <DataTime textColor="text-white border border-black/20 bg-slate-800" />
       </div>
       {/* Drawer content */}
-      <div className="overflow-y-auto flex-auto">
+      <div className="overflow-y-auto flex-1">
         <SideBarNavs />
-        <div
-          onClick={logoutHandler}
-          className="flex items-center gap-x-2 rounded-2xl font-medium transition-all duration-200  py-3 px-4 hover:text-rose-900 hover:bg-rose-200 cursor-pointer"
-        >
-          <TbLogout2 className=" ml-4 h-5 w-5" />
-          <span>خروج</span>
-        </div>
+      </div>
+      <div
+        onClick={logoutHandler}
+        className="flex items-center gap-x-2 rounded-2xl font-medium transition-all duration-200  py-3 px-4 hover:text-rose-900 hover:bg-rose-200 cursor-pointer border border-rose-300"
+      >
+        <TbLogout2 className=" ml-4 h-5 w-5" />
+        <span>خروج</span>
       </div>
     </div>
   );
 }
+
 export default EmployeeSideBar;

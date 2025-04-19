@@ -231,3 +231,39 @@ export const convertFarsiToEnglish = (farsiNumber) => {
   }
   return parseFloat(englishNumber) || 0;
 };
+
+const normalizePersianNumbers = (str) => {
+  if (typeof str !== "string") return str;
+  const persianNums = "۰۱۲۳۴۵۶۷۸۹";
+  const englishNums = "0123456789";
+  return str
+    .replace(/[٬,]/g, "")
+    .split("")
+    .map((ch) => {
+      const index = persianNums.indexOf(ch);
+      return index !== -1 ? englishNums[index] : ch;
+    })
+    .join("");
+};
+
+export const normalizeInvoiceValues = (values) => {
+  const fieldsToNormalize = [
+    "SumTotalInvoice",
+    "billBalance",
+    "deposit",
+    "descriptionPrice",
+    "discount",
+  ];
+  const normalizedValues = { ...values };
+  for (const field of fieldsToNormalize) {
+    if (
+      normalizedValues[field] !== undefined &&
+      normalizedValues[field] !== null
+    ) {
+      normalizedValues[field] = normalizePersianNumbers(
+        normalizedValues[field].toString(),
+      );
+    }
+  }
+  return normalizedValues;
+};

@@ -18,6 +18,7 @@ const {
   smsThanksPurchase,
   convertJalaliToGregorian,
   sendPDFToTelegramGroup,
+  normalizeEmptyUUIDs,
 } = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
 const { BankModel } = require("../../../models/Bank.model");
@@ -47,7 +48,7 @@ class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const {
+      let {
         InsuranceAmount,
         employeeId,
         SumTotalInvoice,
@@ -67,43 +68,40 @@ class CustomersController extends Controller {
         prescriptions,
         gender,
       } = await createNewPurchaseInvoiceSchema.validateAsync(req.body);
+      insuranceName = insuranceName === "" ? null : insuranceName;
+      orderLensFrom = orderLensFrom === "" ? null : orderLensFrom;
+      paymentToAccount = paymentToAccount === "" ? null : paymentToAccount;
+      const cleanedNationalId = nationalId === "" ? null : nationalId;
 
       let user = await UserModel.findOne({
         where: {
-          [Op.or]: [{ fullName }, { phoneNumber }],
+          [Op.or]: [{ phoneNumber }, fullName ? { fullName } : null].filter(
+            Boolean,
+          ),
         },
       });
 
-      if (!user) {
-        if (fullName === null && gender === null) {
-          user = await UserModel.findOne({
-            where: { phoneNumber },
-          });
+      if (user) {
+        const updatedFields = {};
 
-          if (user) {
-            user = await user.update(
-              {
-                nationalId,
-                phoneNumber,
-              },
-              { transaction },
-            );
-          } else {
-            user = await UserModel.create(
-              { phoneNumber, nationalId },
-              { transaction },
-            );
-          }
-        } else {
-          user = await UserModel.create(
-            { fullName, phoneNumber, nationalId, gender },
-            { transaction },
-          );
+        if (!user.fullName && fullName) updatedFields.fullName = fullName;
+        if (!user.gender && gender) updatedFields.gender = gender;
+        if (!user.nationalId && cleanedNationalId)
+          updatedFields.nationalId = cleanedNationalId;
+
+        if (Object.keys(updatedFields).length > 0) {
+          await user.update(updatedFields, { transaction });
         }
       } else {
-        if (fullName && gender) {
-          await user.update({ fullName, gender, nationalId }, { transaction });
-        }
+        user = await UserModel.create(
+          {
+            fullName,
+            phoneNumber,
+            gender,
+            nationalId: cleanedNationalId,
+          },
+          { transaction },
+        );
       }
 
       const newInvoice = await InvoiceModel.create(
@@ -118,7 +116,6 @@ class CustomersController extends Controller {
         },
         { transaction },
       );
-
       if (prescriptions && prescriptions.length > 0) {
         for (const prescription of prescriptions) {
           const frameColor = await FrameColor.findOne({
@@ -127,7 +124,7 @@ class CustomersController extends Controller {
               FrameModelFrameId: prescription.frame?.frameId,
             },
           });
-
+          console.log("frameColor", frameColor);
           if (!frameColor) {
             throw CreateError.NotFound("رنگ انتخابی برای این فریم یافت نشد.");
           }
@@ -157,7 +154,7 @@ class CustomersController extends Controller {
       const formatedSumTotalInvoice = farsiDigitToEnglish(SumTotalInvoice || 0);
       const formatedInsuranceAmount = farsiDigitToEnglish(billBalance) || 0;
 
-      if (paymentMethod && paymentToAccount) {
+      if (paymentMethod) {
         await PaymentInfoModel.create(
           {
             InvoiceId: newInvoice.InvoiceId,
@@ -262,6 +259,11 @@ class CustomersController extends Controller {
     } catch (error) {
       if (transaction && !transaction.finished) {
         await transaction.rollback();
+      }
+      if (error.isJoi) {
+        console.error("🔴 Joi validation error:", error.details);
+      } else {
+        console.error("❌ Other error:", error);
       }
       next(error);
     }
@@ -398,9 +400,8 @@ class CustomersController extends Controller {
 
   async sendLensOrder(req, res, next) {
     try {
-      const { invoiceId } = req.body;
-
-      const { pdfPath, fileName } = await createPDF(invoiceId);
+      const { invoiceId, userId } = req.body;
+      const { pdfPath, fileName } = await createPDF(invoiceId, userId);
 
       if (!pdfPath) {
         throw new Error("مسیر فایل PDF یافت نشد");
@@ -516,9 +517,9 @@ class CustomersController extends Controller {
 
   async sendToWorkshop(req, res, next) {
     try {
-      const { invoiceId } = req.body;
+      const { invoiceId, userId } = req.body;
 
-      if (!invoiceId) {
+      if (!invoiceId && userId) {
         return res.status(400).send({
           statusCode: 400,
           message: "شناسه فاکتور اجباری است.",
@@ -533,8 +534,9 @@ class CustomersController extends Controller {
           message: "فاکتور یافت نشد.",
         });
       }
-
+      const registeredUser = await UserModel.findByPk(userId);
       invoice.lensOrderStatus = "workShopSection";
+      invoice.workShopSectionBy = registeredUser.fullName;
       invoice.workShopSectionAt = new Date();
 
       await invoice.save();
@@ -542,6 +544,42 @@ class CustomersController extends Controller {
       return res.status(200).send({
         statusCode: 200,
         message: "تحویل به کارگاه با موفقیت ثبت شد.",
+        invoice,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async sendToDeliver(req, res, next) {
+    try {
+      const { invoiceId, userId } = req.body;
+
+      if (!invoiceId && userId) {
+        return res.status(400).send({
+          statusCode: 400,
+          message: "شناسه فاکتور اجباری است.",
+        });
+      }
+      const registeredUser = await UserModel.findByPk(userId);
+      const invoice = await InvoiceModel.findByPk(invoiceId);
+
+      if (!invoice) {
+        return res.status(404).send({
+          statusCode: 404,
+          message: "فاکتور یافت نشد.",
+        });
+      }
+
+      invoice.lensOrderStatus = "readyToDeliver";
+      invoice.readyToDeliverBy = registeredUser.fullName;
+      invoice.readyToDeliverAt = new Date();
+
+      await invoice.save();
+
+      return res.status(200).send({
+        statusCode: 200,
+        message: "عینک با موفقیت به بخش بسته بندی تحویل داده شد",
         invoice,
       });
     } catch (e) {

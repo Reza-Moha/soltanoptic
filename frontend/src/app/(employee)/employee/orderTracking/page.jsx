@@ -50,18 +50,21 @@ export default function OrderTracking() {
       key: "orderLenses",
       label: "سفارش عدسی",
       timeField: "lensOrderAt",
+      orderByField: "lensOrderBy",
       icon: "🛒",
     },
     {
       key: "workShopSection",
       label: "بخش فنی",
       timeField: "workShopSectionAt",
+      orderByField: "workShopSectionBy",
       icon: "🛠",
     },
     {
       key: "readyToDeliver",
       label: "آماده تحویل",
       timeField: "readyToDeliverAt",
+      orderByField: "readyToDeliverBy",
       icon: "📦",
     },
     {
@@ -186,6 +189,10 @@ export default function OrderTracking() {
                                             },
                                           )
                                         : "در انتظار..."
+                                    }
+                                    byText={
+                                      step.orderByField &&
+                                      invoice[step.orderByField]
                                     }
                                     icon={step.icon}
                                     isPassed={isPassed}

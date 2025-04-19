@@ -1,23 +1,73 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+
+const statusLabels = {
+  order: {
+    registered: { label: "آماده سفارش", isDisabled: false },
+    orderLenses: { label: "سفارش داده شده", isDisabled: true },
+    workShopSection: { label: "قسمت کارگاه", isDisabled: true },
+    readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    delivered: { label: "تحویل داده شده", isDisabled: true },
+  },
+  workshop: {
+    registered: { label: "نیاز به سفارش عدسی", isDisabled: true },
+    orderLenses: { label: "تحویل به کارگاه", isDisabled: false },
+    workShopSection: { label: "قسمت کارگاه", isDisabled: true },
+    readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    delivered: { label: "تحویل داده شده", isDisabled: true },
+  },
+  readyToDeliver: {
+    registered: { label: "نیاز به سفارش عدسی", isDisabled: true },
+    orderLenses: { label: "تحویل به کارگاه", isDisabled: true },
+    workShopSection: { label: "تحویل بسته بندی", isDisabled: false },
+    readyToDeliver: { label: "آماده تحویل", isDisabled: true },
+    delivered: { label: "تحویل داده شده", isDisabled: true },
+  },
+};
+
+const getButtonClass = (status) => {
+  switch (status) {
+    case "sent":
+      return "bg-green-500";
+    case "sending":
+      return "bg-yellow-500";
+    default:
+      return "bg-blue-500";
+  }
+};
 
 export default function OrderSendButton({
   invoiceId,
   lensOrderStatus,
-  pageType = "order", // "order" | "workshop"
-  initialStatus = undefined,
+  pageType = "order",
+  initialStatus,
   onStatusChange = () => {},
   sendApi,
 }) {
   const [status, setStatus] = useState(initialStatus);
+  const { user } = useSelector((state) => state.auth);
+
+  const { label, isDisabled } = useMemo(() => {
+    const base = statusLabels[pageType]?.[lensOrderStatus] || {
+      label: "",
+      isDisabled: true,
+    };
+
+    if (status === "sending")
+      return { label: "در حال ارسال ...", isDisabled: true };
+    if (status === "sent") return { label: "انجام شد", isDisabled: true };
+
+    return base;
+  }, [pageType, lensOrderStatus, status]);
 
   const handleSend = async () => {
     try {
       setStatus("sending");
       onStatusChange("sending");
 
-      const response = await sendApi({ invoiceId });
+      const response = await sendApi({ invoiceId, userId: user.id });
 
       if (response.statusCode === 200) {
         toast.success(response.message);
@@ -26,61 +76,18 @@ export default function OrderSendButton({
       } else {
         throw new Error(response.message || "خطا در ارسال");
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("🔴 ارسال ناموفق:", error);
       setStatus(undefined);
       onStatusChange(undefined);
     }
   };
 
-  // تنظیم متن و فعال بودن دکمه بر اساس صفحه و وضعیت
-  let label = "";
-  let isDisabled = true;
-
-  if (pageType === "order") {
-    if (lensOrderStatus === "registered") {
-      label = "آماده سفارش";
-      isDisabled = false;
-    } else if (lensOrderStatus === "orderLenses") {
-      label = "سفارش داده شده";
-    } else if (lensOrderStatus === "workShopSection") {
-      label = "قسمت کارگاه";
-    } else if (lensOrderStatus === "readyToDeliver") {
-      label = "آماده تحویل";
-    } else if (lensOrderStatus === "delivered") {
-      label = "تحویل داده شده";
-    }
-  } else if (pageType === "workshop") {
-    if (lensOrderStatus === "registered") {
-      label = "نیاز به سفارش عدسی";
-    } else if (lensOrderStatus === "orderLenses") {
-      label = "تحویل به کارگاه";
-      isDisabled = false;
-    } else if (lensOrderStatus === "workShopSection") {
-      label = "قسمت کارگاه";
-    } else if (lensOrderStatus === "readyToDeliver") {
-      label = "آماده تحویل";
-    } else if (lensOrderStatus === "delivered") {
-      label = "تحویل داده شده";
-    }
-  }
-
-  if (status === "sending") label = "در حال ارسال ...";
-  if (status === "sent") label = "انجام شد";
-
-  const buttonClass = isDisabled
-    ? "bg-gray-400"
-    : status === "sent"
-      ? "bg-green-500"
-      : status === "sending"
-        ? "bg-yellow-500"
-        : "bg-blue-500";
-
   return (
     <button
       onClick={handleSend}
       disabled={isDisabled}
-      className={`${buttonClass} text-white py-1 px-4 rounded`}
+      className={`text-white py-1 px-4 rounded ${isDisabled ? "bg-gray-400" : getButtonClass(status)}`}
     >
       {label}
     </button>

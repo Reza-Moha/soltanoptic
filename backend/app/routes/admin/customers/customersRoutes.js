@@ -38,6 +38,11 @@ router.post(
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
   CustomersController.sendToWorkshop,
 );
+router.post(
+  "/sendToDeliver",
+  checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),
+  CustomersController.sendToDeliver,
+);
 router.get(
   "/getAllInvoices",
   checkPermission([PERMISSIONS.ADMIN, PERMISSIONS.EMPLOYEE]),

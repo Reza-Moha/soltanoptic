@@ -478,9 +478,23 @@ const createNewPurchaseInvoiceSchema = Joi.object({
       "array.min": "حداقل یک نسخه باید ثبت شود",
     }),
 
-  insuranceName: Joi.string().allow(null, "").optional(),
+  insuranceName: Joi.string()
+    .guid({ version: ["uuidv4"] })
+    .allow(null, "")
+    .optional()
+    .messages({
+      "string.guid": "فرمت UUID معتبر نیست",
+    }),
 
-  InsuranceAmount: Joi.string().allow(null, ""),
+  InsuranceAmount: Joi.alternatives()
+    .try(
+      Joi.string(),
+      Joi.number().custom((value) => value.toString()),
+    )
+    .allow(null, "")
+    .messages({
+      "alternatives.types": "مقدار بیمه باید رشته یا عدد باشد",
+    }),
 
   descriptionPrice: Joi.alternatives()
     .try(Joi.number().min(0), Joi.string().allow(""))
