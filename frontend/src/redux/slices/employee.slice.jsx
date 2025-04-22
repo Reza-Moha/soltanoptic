@@ -1,8 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createNewEmployeeApi,
-  getAllEmployeeApi,
   deleteEmployeeByIdApi,
+  getAccountingReportApi,
+  getAllEmployeeApi,
+  getEmployeePerformanceApi,
   updateEmployeeApi,
 } from "@/services/admin/employee/employee.service";
 import toast from "react-hot-toast";
@@ -16,7 +18,17 @@ export const fetchAllEmployees = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
-  }
+  },
+);
+export const getAccountingReport = createAsyncThunk(
+  "employee/accountingReport",
+  async (query, { rejectWithValue }) => {
+    try {
+      return await getAccountingReportApi(query);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
 );
 
 export const createNewEmployee = createAsyncThunk(
@@ -33,7 +45,7 @@ export const createNewEmployee = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 export const updateEmployee = createAsyncThunk(
@@ -48,7 +60,21 @@ export const updateEmployee = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
+);
+export const getEmployeePerformance = createAsyncThunk(
+  "employee/performance",
+  async ({ employeeId }, { rejectWithValue }) => {
+    try {
+      const data = await getEmployeePerformanceApi(employeeId);
+      toast.success(data.message);
+      return data;
+    } catch (error) {
+      const data = error?.response?.data.errors;
+      toast.error(data.message);
+      return rejectWithValue(data);
+    }
+  },
 );
 
 export const deleteEmployee = createAsyncThunk(
@@ -63,13 +89,20 @@ export const deleteEmployee = createAsyncThunk(
       toast.error(data.message);
       return rejectWithValue(data);
     }
-  }
+  },
 );
 
 const employeeSlice = createSlice({
   name: "employee",
   initialState: {
     employeeList: [],
+    employeePerformance: [],
+    accountingReport: {
+      reportDate: "",
+      daily: {},
+      weekly: {},
+      monthly: {},
+    },
     isLoading: false,
     error: null,
   },
@@ -86,6 +119,28 @@ const employeeSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      .addCase(getAccountingReport.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAccountingReport.fulfilled, (state, action) => {
+        state.accountingReport = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getAccountingReport.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getEmployeePerformance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getEmployeePerformance.fulfilled, (state, action) => {
+        state.employeePerformance = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getEmployeePerformance.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
       .addCase(createNewEmployee.fulfilled, (state, action) => {
         state.employeeList.push(action.payload);
@@ -93,7 +148,7 @@ const employeeSlice = createSlice({
 
       .addCase(updateEmployee.fulfilled, (state, action) => {
         const index = state.employeeList.findIndex(
-          (em) => em.id === action.payload.id
+          (em) => em.id === action.payload.id,
         );
 
         if (index !== -1) {
@@ -103,7 +158,7 @@ const employeeSlice = createSlice({
 
       .addCase(deleteEmployee.fulfilled, (state, action) => {
         state.employeeList = state.employeeList.filter(
-          (emp) => emp.id !== action.payload
+          (emp) => emp.id !== action.payload,
         );
       });
   },

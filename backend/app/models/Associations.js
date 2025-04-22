@@ -21,6 +21,9 @@ const { CompanyModel } = require("./Company.model");
 const { BankModel } = require("./Bank.model");
 const { InsuranceModel } = require("./Insurance.model");
 const { UserPrescriptionModel } = require("./Invoice/UserPrescription.model");
+const {
+  LensOrderStatusTracking,
+} = require("./Invoice/LensOrderStatusTracking.model");
 
 const Associations = () => {
   // roles & permissions
@@ -58,6 +61,54 @@ const Associations = () => {
     as: "employee",
   });
 
+  UserModel.hasMany(LensOrderStatusTracking, {
+    foreignKey: "workShopSectionBy",
+    sourceKey: "id",
+    as: "workShopSectionTracks",
+  });
+
+  UserModel.hasMany(LensOrderStatusTracking, {
+    foreignKey: "readyToDeliverBy",
+    sourceKey: "id",
+    as: "readyToDeliverTracks",
+  });
+
+  UserModel.hasMany(LensOrderStatusTracking, {
+    foreignKey: "deliveredBy",
+    sourceKey: "id",
+    as: "deliveredTracks",
+  });
+
+  UserModel.hasMany(LensOrderStatusTracking, {
+    foreignKey: "sendOrderSmsBy",
+    sourceKey: "id",
+    as: "sendOrderSmsTracks",
+  });
+
+  // LensOrderStatusTracking belongs to Users
+  LensOrderStatusTracking.belongsTo(UserModel, {
+    foreignKey: "workShopSectionBy",
+    targetKey: "id",
+    as: "workShopSectionByUser",
+  });
+
+  LensOrderStatusTracking.belongsTo(UserModel, {
+    foreignKey: "readyToDeliverBy",
+    targetKey: "id",
+    as: "readyToDeliverByUser",
+  });
+
+  LensOrderStatusTracking.belongsTo(UserModel, {
+    foreignKey: "deliveredBy",
+    targetKey: "id",
+    as: "deliveredByUser",
+  });
+
+  LensOrderStatusTracking.belongsTo(UserModel, {
+    foreignKey: "sendOrderSmsBy",
+    targetKey: "id",
+    as: "sendOrderSmsByUser",
+  });
   // lens
 
   LensCategory.hasOne(LensModel, { onDelete: "CASCADE" });
@@ -68,6 +119,15 @@ const Associations = () => {
 
   LensType.hasOne(LensModel, { onDelete: "CASCADE" });
   LensModel.belongsTo(LensType, { onDelete: "CASCADE" });
+
+  LensModel.belongsTo(LensOrderStatusTracking, {
+    as: "lensOrderStatusTracking",
+    foreignKey: "lensOrderStatusTrackingId",
+  });
+  LensOrderStatusTracking.hasOne(LensModel, {
+    as: "lens",
+    foreignKey: "lensOrderStatusTrackingId",
+  });
 
   LensGroup.hasOne(LensModel, { onDelete: "CASCADE" });
   LensModel.belongsTo(LensGroup, { onDelete: "CASCADE" });

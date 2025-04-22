@@ -1,17 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@/components/Ui/Avatar";
 import ButtonIcon from "@/components/Ui/ButtonIcon";
 import { toPersianDigits } from "@/utils";
 import Image from "next/image";
+import { useEffect } from "react";
+import { getEmployeePerformance } from "@/redux/slices/employee.slice";
 
 function EmployeeHeader() {
   const { user, isLoading } = useSelector((state) => state.auth);
+
   return (
-    <header
-      className={`bg-white ${isLoading ? "bg-opacity-30 blur-md" : ""}`}
-    >
+    <header className={`bg-white ${isLoading ? "bg-opacity-30 blur-md" : ""}`}>
       <div className="flex items-center justify-between py-5 px-4 lg:px-8">
         <div className="flex items-center gap-x-3">
           <div className="flex flex-col lg:flex-row justify-start lg:items-center gap-x-2">
@@ -43,4 +44,5 @@ function EmployeeHeader() {
     </header>
   );
 }
+
 export default EmployeeHeader;

@@ -6,6 +6,7 @@ import {
   getLastInvoiceNumberApi,
   getOrderLensDailyApi,
   getAllInvoicesApi,
+  sendSmsDeliveryApi,
 } from "@/services/customers/customers.service";
 
 export const createNewInvoice = createAsyncThunk(
@@ -61,6 +62,19 @@ export const getAllInvoicesPaginated = createAsyncThunk(
     } catch (error) {
       toast.error("خطا در دریافت لیست قبض‌ها");
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  },
+);
+export const sendSmsDelivery = createAsyncThunk(
+  "orderLens/sendSmsDelivery",
+  async ({ invoiceId, userId }, { rejectWithValue }) => {
+    try {
+      const response = await sendSmsDeliveryApi({ invoiceId, userId });
+      toast.success(response.message);
+      return response.invoice;
+    } catch (error) {
+      toast.error(error?.response?.data?.errors?.message || "خطا در ارسال");
+      return rejectWithValue(error?.response?.data || error.message);
     }
   },
 );
@@ -126,6 +140,20 @@ const customerSlice = createSlice({
       })
       .addCase(getAllInvoicesPaginated.rejected, (state, action) => {
         state.invoicesLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(sendSmsDelivery.fulfilled, (state, action) => {
+        const { InvoiceId } = action.payload;
+
+        const index = state.orderLensDaily.findIndex(
+          (invoice) => invoice.InvoiceId === InvoiceId,
+        );
+        if (index !== -1) {
+          state.orderLensDaily[index].lensOrderStatus = "sendOrderSms";
+        }
+      })
+
+      .addCase(sendSmsDelivery.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

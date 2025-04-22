@@ -1,5 +1,5 @@
 "use client";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserProfile } from "@/redux/slices/authSlice";
 import { fetchAllInsurance } from "@/redux/slices/insuranceSlice";
@@ -12,8 +12,13 @@ import {
   getLastInvoiceNumber,
   getOrderLensDaily,
 } from "@/redux/slices/customersSlice";
+import {
+  getAccountingReport,
+  getEmployeePerformance,
+} from "@/redux/slices/employee.slice";
 export const EmployeeDashboardWrapper = ({ children }) => {
   const dispatch = useDispatch();
+  const { user, isLoading } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(fetchUserProfile());
     dispatch(fetchAllInsurance());
@@ -23,7 +28,13 @@ export const EmployeeDashboardWrapper = ({ children }) => {
     dispatch(fetchAllCompanies());
     dispatch(getLastInvoiceNumber());
     dispatch(getOrderLensDaily());
+    dispatch(getAccountingReport());
     dispatch(getAllInvoicesPaginated({ page: 1, size: 30, search: "" }));
   }, [dispatch]);
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(getEmployeePerformance({ employeeId: user.id }));
+    }
+  }, [user?.id, dispatch]);
   return <div className="xl:max-w-screen-xl">{children}</div>;
 };

@@ -15,6 +15,9 @@ const {
 const LensModel = require("../models/lens/Lens.model");
 const FormData = require("form-data");
 const jalaali = require("jalaali-js");
+const {
+  LensOrderStatusTracking,
+} = require("../models/Invoice/LensOrderStatusTracking.model");
 const randomNumberGenerator = () => {
   const number = Math.floor(Math.random() * 100000 + 1);
   if (number.toString().length > 4) {
@@ -300,31 +303,48 @@ const getInvoiceDetails = async (invoiceId, userId) => {
               attributes: {
                 exclude: ["description", "LensGroupId", "LensCategoryId"],
               },
+              include: [
+                {
+                  model: LensOrderStatusTracking,
+                  as: "lensOrderStatusTracking",
+                },
+              ],
             },
           ],
           attributes: {
-            exclude: [
-              "updatedAt",
-              "lensId",
-              "frameId",
-              "createdAt",
-              "PrescriptionId",
-            ],
+            exclude: ["updatedAt", "frameId", "createdAt"],
           },
         },
       ],
     });
-    const registeredUser = await UserModel.findByPk(userId);
+
+    if (!invoice) {
+      console.error(`Invoice with ID ${invoiceId} not found.`);
+      return null;
+    }
     if (invoice) {
-      await invoice.update({
-        lensOrderStatus: "orderLenses",
-        lensOrderBy: registeredUser.fullName,
-      });
+      invoice.lensOrderStatus = "orderLenses";
+      await invoice.save();
+    }
+    const prescription = invoice.prescriptions[0];
+
+    if (prescription?.lens?.lensOrderStatusTracking?.id) {
+      const trackingId = prescription.lens.lensOrderStatusTracking.id;
+
+      const trackingInstance =
+        await LensOrderStatusTracking.findByPk(trackingId);
+
+      if (trackingInstance) {
+        trackingInstance.lensOrderedBy = userId;
+        trackingInstance.lensOrderAt = new Date();
+        await trackingInstance.save();
+      }
     }
 
     return invoice;
   } catch (error) {
-    console.log(error);
+    console.error("❌ خطا در دریافت جزئیات فاکتور:", error);
+    return null;
   }
 };
 

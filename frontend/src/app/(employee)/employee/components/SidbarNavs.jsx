@@ -6,12 +6,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { GiMicroscopeLens } from "react-icons/gi";
 import { FaBorderTopLeft, FaScrewdriverWrench } from "react-icons/fa6";
+import { MdAccountBalanceWallet } from "react-icons/md";
 import { FaFirstOrder } from "react-icons/fa";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
-import { ROLES } from "@/constants/roles.enum";
 import SidebarSkeleton from "@/app/(employee)/employee/components/SidbarSkeleton";
 
 const sidebarNavs = [
@@ -53,10 +53,17 @@ const sidebarNavs = [
   },
   {
     id: 7,
+    title: "حسابداری",
+    icon: <MdAccountBalanceWallet className="w-5 h-5" />,
+    href: "/employee/accounting",
+    permission: "ACCOUNTING",
+  },
+  {
+    id: 8,
     title: "بخش کارگاه",
     icon: <FaScrewdriverWrench className="w-5 h-5" />,
     href: "/employee/workshopSection",
-    roleRequired: ROLES.WORKSHOP_MANAGER,
+    permission: "WORKSHOP_MANAGER",
   },
 ];
 
@@ -66,9 +73,11 @@ export default function SideBarNavs() {
 
   if (!user) return <SidebarSkeleton />;
 
+  const userPermissions = user?.Role?.permissions?.map((p) => p.title) ?? [];
+
   const filteredNavs = sidebarNavs.filter((nav) => {
-    if (nav.roleRequired) {
-      return String(user.role) === String(nav.roleRequired);
+    if (nav.permission) {
+      return userPermissions.includes(nav.permission);
     }
     return true;
   });

@@ -15,6 +15,25 @@ export async function getAllEmployeeApi() {
     .get(`/api/admin/get-all-employee`)
     .then(({ data }) => data);
 }
+export async function getEmployeePerformanceApi(id) {
+  return httpService
+    .get(`/api/employee/receivePerformance/${id}`)
+    .then(({ data }) => data);
+}
+export async function getAccountingReportApi(query = "") {
+  try {
+    const queryString =
+      typeof query === "string" && query.trim().startsWith("?") ? query : "";
+
+    const response = await httpService.get(
+      `/api/employee/accountingReport${queryString}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error.response?.data || error.message || "Unexpected error";
+  }
+}
 
 export async function deleteEmployeeByIdApi(id) {
   return httpService

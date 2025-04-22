@@ -18,7 +18,6 @@ const {
   smsThanksPurchase,
   convertJalaliToGregorian,
   sendPDFToTelegramGroup,
-  normalizeEmptyUUIDs,
   orderDeliverySms,
 } = require("../../../utils");
 const { CompanyModel } = require("../../../models/Company.model");
@@ -44,6 +43,9 @@ const { FrameImages } = require("../../../models/frame/FrameImage.model");
 const { FrameType } = require("../../../models/frame/FrameType.model");
 const { FrameGender } = require("../../../models/frame/FrameGender.model");
 const { FrameCategory } = require("../../../models/frame/FramCategory.model");
+const {
+  LensOrderStatusTracking,
+} = require("../../../models/Invoice/LensOrderStatusTracking.model");
 
 class CustomersController extends Controller {
   async createNewInvoice(req, res, next) {
@@ -346,6 +348,18 @@ class CustomersController extends Controller {
             attributes: ["CompanyId", "companyName"],
           },
           {
+            model: BankModel,
+            as: "bank",
+          },
+          {
+            model: InsuranceModel,
+            as: "insurance",
+          },
+          {
+            model: PaymentInfoModel,
+            as: "paymentInfo",
+          },
+          {
             model: UserModel,
             as: "employee",
             attributes: ["fullName", "jobTitle"],
@@ -365,6 +379,12 @@ class CustomersController extends Controller {
                 attributes: {
                   exclude: ["description", "LensGroupId", "LensCategoryId"],
                 },
+                include: [
+                  {
+                    model: LensOrderStatusTracking,
+                    as: "lensOrderStatusTracking",
+                  },
+                ],
               },
             ],
             attributes: {
@@ -427,8 +447,9 @@ class CustomersController extends Controller {
   async getAllInvoicesPaginated(req, res, next) {
     try {
       const { page = 1, size = 30, search = "" } = req.query;
-      const limit = +size;
-      const offset = (page - 1) * limit;
+      const limit = Number(size);
+      const offset = (Number(page) - 1) * limit;
+
       const searchCondition = search.trim()
         ? {
             [Op.or]: [
@@ -455,63 +476,94 @@ class CustomersController extends Controller {
           }
         : {};
 
-      const { rows: invoices, count: total } =
-        await InvoiceModel.findAndCountAll({
-          where: searchCondition,
-          offset,
-          limit,
-          order: [["createdAt", "DESC"]],
-          include: [
-            { model: CompanyModel, as: "company" },
-            { model: BankModel, as: "bank" },
-            { model: InsuranceModel, as: "insurance" },
-            { model: PaymentInfoModel, as: "paymentInfo" },
-            { model: UserModel, as: "customer" },
-            { model: UserModel, as: "employee" },
-            {
-              model: UserPrescriptionModel,
-              as: "prescriptions",
-              include: [
-                {
-                  model: FrameModel,
-                  as: "frame",
-                  include: [
-                    { model: FrameCategory },
-                    { model: FrameGender },
-                    { model: FrameType },
-                    {
-                      model: FrameColor,
-                      include: [{ model: FrameImages }],
-                    },
-                  ],
-                },
-                {
-                  model: LensModel,
-                  as: "lens",
-                  include: [
-                    { model: LensCategory },
-                    { model: LensGroup },
-                    { model: LensType },
-                    { model: RefractiveIndex },
-                  ],
-                },
-              ],
-            },
-          ],
-        });
+      const { rows, count } = await InvoiceModel.findAndCountAll({
+        where: searchCondition,
+        offset,
+        limit,
+        order: [["createdAt", "DESC"]],
+        include: [
+          { model: CompanyModel, as: "company" },
+          { model: BankModel, as: "bank" },
+          { model: InsuranceModel, as: "insurance" },
+          { model: PaymentInfoModel, as: "paymentInfo" },
+          {
+            model: UserModel,
+            as: "customer",
+            attributes: ["id", "fullName", "gender", "phoneNumber"],
+          },
+          { model: UserModel, as: "employee", attributes: ["id", "fullName"] },
+          {
+            model: UserPrescriptionModel,
+            as: "prescriptions",
+            include: [
+              {
+                model: FrameModel,
+                as: "frame",
+                include: [
+                  { model: FrameCategory },
+                  { model: FrameGender },
+                  { model: FrameType },
+                  {
+                    model: FrameColor,
+                    include: [{ model: FrameImages }],
+                  },
+                ],
+              },
+              {
+                model: LensModel,
+                as: "lens",
+                include: [
+                  { model: LensCategory },
+                  { model: LensGroup },
+                  { model: LensType },
+                  { model: RefractiveIndex },
+                  {
+                    model: LensOrderStatusTracking,
+                    as: "lensOrderStatusTracking",
+                    include: [
+                      {
+                        model: UserModel,
+                        as: "workShopSectionByUser",
+                        attributes: ["fullName"],
+                      },
+                      {
+                        model: UserModel,
+                        as: "readyToDeliverByUser",
+                        attributes: ["fullName"],
+                      },
+                      {
+                        model: UserModel,
+                        as: "deliveredByUser",
+                        attributes: ["fullName"],
+                      },
+                      {
+                        model: UserModel,
+                        as: "sendOrderSmsByUser",
+                        attributes: ["fullName"],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      const plainInvoices = rows.map((invoice) => invoice.get({ plain: true }));
 
       return res.status(200).json({
         statusCode: 200,
-        invoices,
+        invoices: plainInvoices,
         pagination: {
-          total,
-          page: +page,
+          total: count,
+          page: Number(page),
           limit,
-          totalPages: Math.ceil(total / limit),
+          totalPages: Math.ceil(count / limit),
         },
       });
     } catch (error) {
-      console.error("Error fetching paginated invoices with search:", error);
+      console.error("❌ Error in getAllInvoicesPaginated:", error);
       next(error);
     }
   }
@@ -520,35 +572,60 @@ class CustomersController extends Controller {
     try {
       const { invoiceId, userId } = req.body;
 
-      if (!invoiceId && userId) {
-        return res.status(400).send({
-          statusCode: 400,
-          message: "شناسه فاکتور اجباری است.",
-        });
+      if (!invoiceId) {
+        throw CreateError.BadRequest("شناسه فاکتور الزامی است.");
       }
 
-      const invoice = await InvoiceModel.findByPk(invoiceId);
+      const [invoice, registeredUser] = await Promise.all([
+        InvoiceModel.findByPk(invoiceId, {
+          include: [
+            {
+              association: "prescriptions",
+              include: [
+                {
+                  association: "lens",
+                  include: ["lensOrderStatusTracking"],
+                },
+              ],
+            },
+          ],
+        }),
+        UserModel.findByPk(userId),
+      ]);
 
       if (!invoice) {
-        return res.status(404).send({
-          statusCode: 404,
-          message: "فاکتور یافت نشد.",
-        });
+        throw CreateError.NotFound("فاکتور یافت نشد.");
       }
-      const registeredUser = await UserModel.findByPk(userId);
-      invoice.lensOrderStatus = "workShopSection";
-      invoice.workShopSectionBy = registeredUser.fullName;
-      invoice.workShopSectionAt = new Date();
 
+      if (!registeredUser) {
+        throw CreateError.NotFound("کاربر یافت نشد.");
+      }
+
+      invoice.lensOrderStatus = "workShopSection";
       await invoice.save();
 
-      return res.status(200).send({
+      const prescription = invoice.prescriptions?.[0];
+      const tracking = prescription?.lens?.lensOrderStatusTracking;
+
+      if (tracking?.id) {
+        const trackingInstance = await LensOrderStatusTracking.findByPk(
+          tracking.id,
+        );
+
+        if (trackingInstance) {
+          trackingInstance.workShopSectionBy = registeredUser.id;
+          trackingInstance.workShopSectionAt = new Date();
+          await trackingInstance.save();
+        }
+      }
+
+      return res.status(200).json({
         statusCode: 200,
-        message: "تحویل به کارگاه با موفقیت ثبت شد.",
+        message: "فاکتور با موفقیت به بخش کارگاه ارجاع داده شد.",
         invoice,
       });
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 
@@ -556,35 +633,54 @@ class CustomersController extends Controller {
     try {
       const { invoiceId, userId } = req.body;
 
-      if (!invoiceId && userId) {
-        return res.status(400).send({
-          statusCode: 400,
-          message: "شناسه فاکتور اجباری است.",
-        });
+      if (!invoiceId) {
+        throw CreateError.BadRequest("شناسه فاکتور الزامی است.");
       }
-      const registeredUser = await UserModel.findByPk(userId);
-      const invoice = await InvoiceModel.findByPk(invoiceId);
 
-      if (!invoice) {
-        return res.status(404).send({
-          statusCode: 404,
-          message: "فاکتور یافت نشد.",
-        });
-      }
+      const [invoice, registeredUser] = await Promise.all([
+        InvoiceModel.findByPk(invoiceId, {
+          include: [
+            {
+              association: "prescriptions",
+              include: [
+                {
+                  association: "lens",
+                  include: ["lensOrderStatusTracking"],
+                },
+              ],
+            },
+          ],
+        }),
+        UserModel.findByPk(userId),
+      ]);
+
+      if (!invoice) throw CreateError.NotFound("فاکتور یافت نشد.");
+      if (!registeredUser) throw CreateError.NotFound("کاربر یافت نشد.");
 
       invoice.lensOrderStatus = "readyToDeliver";
-      invoice.readyToDeliverBy = registeredUser.fullName;
-      invoice.readyToDeliverAt = new Date();
-
       await invoice.save();
 
-      return res.status(200).send({
+      const prescription = invoice.prescriptions?.[0];
+      const tracking = prescription?.lens?.lensOrderStatusTracking;
+
+      if (tracking?.id) {
+        const trackingInstance = await LensOrderStatusTracking.findByPk(
+          tracking.id,
+        );
+        if (trackingInstance) {
+          trackingInstance.readyToDeliverBy = registeredUser.id;
+          trackingInstance.readyToDeliverAt = new Date();
+          await trackingInstance.save();
+        }
+      }
+
+      return res.status(200).json({
         statusCode: 200,
-        message: "عینک با موفقیت به بخش بسته بندی تحویل داده شد",
+        message: "عینک با موفقیت به بخش بسته‌بندی تحویل داده شد.",
         invoice,
       });
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 
@@ -592,53 +688,127 @@ class CustomersController extends Controller {
     try {
       const { invoiceId, userId } = req.body;
 
-      if (!invoiceId && userId) {
-        return res.status(400).send({
-          statusCode: 400,
-          message: "شناسه فاکتور اجباری است.",
-        });
+      if (!invoiceId) {
+        throw CreateError.BadRequest("شناسه فاکتور الزامی است.");
       }
-      const registeredUser = await UserModel.findByPk(userId);
-      const invoice = await InvoiceModel.findByPk(invoiceId, {
-        include: [
-          {
-            model: UserModel,
-            as: "customer",
-            attributes: ["fullName", "gender"],
-          },
-        ],
-      });
 
-      if (!invoice) {
-        return res.status(404).send({
-          statusCode: 404,
-          message: "فاکتور یافت نشد.",
-        });
-      }
+      const [invoice, registeredUser] = await Promise.all([
+        InvoiceModel.findByPk(invoiceId, {
+          include: [
+            {
+              model: UserModel,
+              as: "customer",
+              attributes: ["fullName", "gender", "phoneNumber"],
+            },
+            {
+              association: "prescriptions",
+              include: [
+                {
+                  association: "lens",
+                  include: ["lensOrderStatusTracking"],
+                },
+              ],
+            },
+          ],
+        }),
+        UserModel.findByPk(userId),
+      ]);
+
+      if (!invoice) throw CreateError.NotFound("فاکتور یافت نشد.");
+      if (!registeredUser) throw CreateError.NotFound("کاربر یافت نشد.");
+
       const { customer } = invoice;
-      const result = await orderDeliverySms(
-        customer.phoneNumber,
-        customer.gender,
-        invoice.InvoiceId,
-        customer.fullName,
-        `${registeredUser.gender} ${registeredUser.fullName}`,
-      );
-      console.log(result);
-      if (!result.success) {
-        throw CreateError.NotFound("پیامک آماده شد سفارش ارسال نشد ");
-      }
-      invoice.lensOrderStatus = "sendOrderSms";
-      invoice.sendOrderSmsBy = registeredUser.fullName;
-      invoice.sendOrderSmsAt = new Date();
+      // const smsResult = await orderDeliverySms(
+      //   customer.phoneNumber,
+      //   customer.gender,
+      //   invoice.invoiceNumber,
+      //   customer.fullName,
+      //   `${registeredUser.gender} ${registeredUser.fullName}`,
+      // );
 
+      // if (!smsResult.success) {
+      //   throw createError(500, "ارسال پیامک موفقیت‌آمیز نبود.");
+      // }
+
+      invoice.lensOrderStatus = "sendOrderSms";
       await invoice.save();
-      return res.status(200).send({
+
+      const prescription = invoice.prescriptions?.[0];
+      const tracking = prescription?.lens?.lensOrderStatusTracking;
+
+      if (tracking?.id) {
+        const trackingInstance = await LensOrderStatusTracking.findByPk(
+          tracking.id,
+        );
+        if (trackingInstance) {
+          trackingInstance.sendOrderSmsBy = registeredUser.id;
+          trackingInstance.sendOrderSmsAt = new Date();
+          await trackingInstance.save();
+        }
+      }
+
+      return res.status(200).json({
         statusCode: 200,
-        message: "عینک با موفقیت به بخش تحویل ارجاع داده شد",
+        message: "عینک با موفقیت به بخش تحویل ارجاع داده شد.",
         invoice,
       });
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deliveryToCustomer(req, res, next) {
+    try {
+      const { invoiceId, userId } = req.body;
+
+      if (!invoiceId) {
+        throw CreateError.BadRequest("شناسه فاکتور الزامی است.");
+      }
+
+      const [invoice, registeredUser] = await Promise.all([
+        InvoiceModel.findByPk(invoiceId, {
+          include: [
+            {
+              association: "prescriptions",
+              include: [
+                {
+                  association: "lens",
+                  include: ["lensOrderStatusTracking"],
+                },
+              ],
+            },
+          ],
+        }),
+        UserModel.findByPk(userId),
+      ]);
+
+      if (!invoice) throw CreateError.NotFound("فاکتور یافت نشد.");
+      if (!registeredUser) throw CreateError.NotFound("کاربر یافت نشد.");
+
+      invoice.lensOrderStatus = "delivered";
+      await invoice.save();
+
+      const prescription = invoice.prescriptions?.[0];
+      const tracking = prescription?.lens?.lensOrderStatusTracking;
+
+      if (tracking?.id) {
+        const trackingInstance = await LensOrderStatusTracking.findByPk(
+          tracking.id,
+        );
+        if (trackingInstance) {
+          trackingInstance.deliveredBy = registeredUser.id;
+          trackingInstance.deliveredAt = new Date();
+          await trackingInstance.save();
+        }
+      }
+
+      return res.status(200).json({
+        statusCode: 200,
+        message: "عینک با موفقیت به مشتری تحویل داده شد.",
+        invoice,
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }

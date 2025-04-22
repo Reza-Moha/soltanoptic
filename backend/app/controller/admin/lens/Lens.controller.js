@@ -19,6 +19,9 @@ const LensModel = require("../../../models/lens/Lens.model");
 const { deleteFileInPublic } = require("../../../utils");
 const { LensGroup } = require("../../../models/lens/LensGroup.model");
 const { Sequelize, Op } = require("sequelize");
+const {
+  LensOrderStatusTracking,
+} = require("../../../models/Invoice/LensOrderStatusTracking.model");
 class LensController extends Controller {
   async createNewLens(req, res, next) {
     try {
@@ -41,6 +44,9 @@ class LensController extends Controller {
       if (exsistLens)
         throw CreateError.BadRequest("عدسی با این مشخصات قبلا ثبت شده است");
       await LensModel.sync({ alter: true });
+      await LensOrderStatusTracking.sync({ alter: true });
+
+      const trackingInstance = await LensOrderStatusTracking.create({});
       const createdNewLens = await LensModel.create({
         lensImage,
         lensName,
@@ -48,6 +54,7 @@ class LensController extends Controller {
         LensCategoryId,
         RefractiveIndexId,
         LensTypeId,
+        lensOrderStatusTrackingId: trackingInstance.id,
       });
       if (!createdNewLens)
         throw CreateError.InternalServerError(
@@ -65,6 +72,7 @@ class LensController extends Controller {
                 exclude: ["createdAt", "updatedAt"],
               },
             },
+            { model: LensOrderStatusTracking },
           ],
           attributes: {
             exclude: ["lensCategoryId", "RefractiveIndexId", "LensTypeId"],
